@@ -16,10 +16,6 @@ class Login
     string password;
     int num;
 
-    bool admin_logged = false;
-    bool teach_logged = false;
-    bool stud_logged = false;
-
 public:
     void get_cred();
     void check_cred();
