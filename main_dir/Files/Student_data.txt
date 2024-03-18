@@ -1,0 +1,9 @@
+Serial_Number Roll_Number Name Branch Section 
+
+--> is file me ishi order me data store krana.
+
+--> and ye sb kuch erase kr dena
+
+--> Append Mode ka bhu dhyan rkhna
+
+--> Entry Jb Dalegi to serial number credential wale serial number se match krna chaiye.
