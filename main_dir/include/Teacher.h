@@ -3,8 +3,6 @@
 
 #include <iostream>
 
-
-
 class Teacher
 {
 
@@ -12,7 +10,6 @@ class Teacher
 
 public:
     void teach_home();
-    
 };
 
 #endif
