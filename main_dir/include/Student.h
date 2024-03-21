@@ -5,7 +5,8 @@
 
 
 
-class Student{                 
+class Student{  
+    int option;               
     
 public:
     void stud_home(int);

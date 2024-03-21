@@ -3,16 +3,13 @@
 
 #include <iostream>
 
-
-
 class Teacher
 {
 
-    static int nos; // nos -- number of student
+    // static int nos;     // nos -- number of student
 
 public:
     void teach_home();
-    int get_nos();
 };
 
 #endif
