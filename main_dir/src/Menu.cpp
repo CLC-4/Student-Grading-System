@@ -134,7 +134,7 @@ void Login::check_cred()
     int stored_id;
     string stored_pass;
     // char stored_name[10];
-    ifstream stud_cred("../Files/Credentials.txt", ios::in);
+    fstream stud_cred("../Files/Credentials.txt", ios::in);
 
     while (stud_cred >> num >> stored_id >> stored_pass)
     {
@@ -147,7 +147,7 @@ void Login::check_cred()
         }
     }
 
-    cout << "Login failed. Invalid credentials." << endl;
+    //cout << "Login failed. Invalid credentials." << endl;
     num = 0;
     stud_cred.close();
 }

@@ -20,17 +20,19 @@ public:
     void get_cred();
     void check_cred();
     int logged_person();
-    
 };
 
 class Menu
 {
-    int option;
+
     int log_per;
 
+
+    int option;
+
 public:
-    void show_menu();                            // This function shows Menu
-    void get_choice();                           // This function gets user choice
+    void show_menu();                                                                          // This function shows Menu
+    void get_choice();                                                                         // This function gets user choice
     void choice_exe(Admin &admin, Login &login, Teacher &teacher, Student &student, Pub &pub); // This function executes users choice
 };
 
