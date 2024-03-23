@@ -76,7 +76,7 @@ void Teacher::student_entry() {
                     cin >> section;
 
                     // Save data to file
-                    ofstream outFile("Student_data.txt", ios::app); // Open file in append mode
+                    ofstream outFile("../Files/Student_data.txt", ios::app); // Open file in append mode
                     if (outFile.is_open()) {
                         outFile << serialNumber << " " << rollNumber << " " << name << " " << branch << " " << section << endl;
                         outFile.close();
@@ -111,3 +111,4 @@ void Teacher::student_entry() {
             break;
     }
 }
+

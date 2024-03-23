@@ -6,4 +6,4 @@ Serial_Number Roll_Number Name Branch Section
 
 --> Append Mode ka bhu dhyan rkhna
 
---> Entry Jb Dalegi to serial number credential wale serial number se match krna chaiye.
+--> Entry Jb Dalegi to serial number credential wale serial number se match krna chaiye.1 1 abhay CSE 1
