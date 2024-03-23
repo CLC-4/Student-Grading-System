@@ -10,6 +10,7 @@ class Teacher
 
 public:
     void teach_home();
+    void student_entry();
 };
 
 #endif
