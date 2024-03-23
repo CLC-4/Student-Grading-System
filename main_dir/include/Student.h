@@ -2,8 +2,10 @@
 #define STUD_H
 
 #include <iostream>
-#include <Menu.h>
+
 #include<fstream>
+
+using namespace std;
 
 class Student 
 {
