@@ -2,20 +2,18 @@
 #define STUD_H
 
 #include <iostream>
-
-#include<fstream>
-
+#include <fstream>
+#include<iomanip>
 using namespace std;
 
 class Student 
 {
-int option;
-int sem;
+    int option;
+    int sem;
 public:
-    void stud_home(int);
-    void res_find(int,int);
-    void display_res(int,string,string,int);
-    
+    void displayMenu(int); 
+    void findResults(int, int); 
+    void showResults(int, string, string, int, int); 
 };
 
 #endif

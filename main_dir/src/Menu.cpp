@@ -98,7 +98,7 @@ void Menu::choice_exe(Admin &admin, Login &login, Teacher &teacher, Student &stu
                 cin.get();
                 system("CLS");
 
-                student.stud_home(log_per);
+                student.displayMenu(log_per);
             }
             else
             {
