@@ -94,44 +94,33 @@ void Student::showResults(int rno, string name, string branch, int section, int 
     int sno;
     char symbol;
     bool sno_matched = false;
-    while (sem_m >> symbol >> sno)
+
+    string subject;
+    double minor1, minor2, internal, major, total;
+    string grades;
+
+    system("CLS");
+
+    cout << "University Institute of Engineering and Technology" << endl
+         << "-------------------------------------------------------------------------------" << endl;
+
+    cout << "Name: " << name << endl
+         << "Roll No.: " << rno << endl
+         << "Branch/Section: " << branch << "-" << section << endl
+         << "-------------------------------------------------------------------------------" << endl;
+
+    cout << setw(5) << left << "SNo." << setw(20) << "Subject" << setw(10) << "Minor1" << setw(10) << "Minor2" << setw(10) << "Major" << setw(10) << "Total" << setw(10) << "Grades" << endl;
+    cout << "-------------------------------------------------------------------------------" << endl;
+int i =1;
+    while (sem_m >> sno >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
     {
-        if (symbol == '#' && sno == log_per)
+        
+        if (sno == log_per)
         {
             sno_matched = true;
+            cout << setw(5) <<i<< left << setw(20) << subject << setw(10) << minor1 << setw(10) << minor2 << setw(10) << major << setw(10) << total << setw(10) << grades << endl;
 
-            system("CLS");
-
-            cout << "University Institute of Engineering and Technology" << endl
-                 << "-------------------------------------------------------------------------------" << endl;
-
-            cout << "Name: " << name << endl
-                 << "Roll No.: " << rno << endl
-                 << "Branch/Section: " << branch << "-" << section << endl
-                 << "-------------------------------------------------------------------------------" << endl;
-
-            // Set center alignment for text
-            cout << setw(5) << left << "SNo." << setw(20) << "Subject" << setw(10) << "Minor1" << setw(10) << "Minor2" << setw(10) << "Major" << setw(10) << "Total" << setw(10) << "Grades" << endl;
-            cout << "-------------------------------------------------------------------------------" << endl;
-
-            string subject;
-            double minor1, minor2, internal, major, total;
-            string grades;
-            int i = 1;
-            while (sem_m >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
-            {
-                // Set center alignment for text
-                cout << setw(5) << left << i << setw(20) << subject << setw(10) << minor1 << setw(10) << minor2 << setw(10) << major << setw(10) << total << setw(10) << grades << endl;
-                i++;
-            }
-            break;
         }
-    }
-
-    sem_m.close(); // Close the file
-
-    if (!sno_matched)
-    {
-        cout << "Results not found for SNO: " << log_per << endl;
+        
     }
 }
