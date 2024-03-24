@@ -32,7 +32,7 @@ void Teacher::teach_home()
         // Add code to perform Option 3 action
         break;
     case 4:
-        cout << "Exiting..." << endl;
+        cout << "Please press enter" << endl;
         break;
     default:
         cout << "Invalid choice. Please try again." << endl;
@@ -171,7 +171,6 @@ void Teacher::student_entry()
         system("CLS");
         // cout << "You selected Modify" << endl;
         modify_entry();
-        // Add code to perform Modify option action
         break;
     case 4:
         cout << "Exiting..." << endl;
@@ -286,30 +285,11 @@ void Teacher::modify_entry(){int rollNumToModify;
 
     dataFile.close();
     tempDataFile.close();
-    // Update corresponding entry in credentials file
-    ifstream credFile("../Files/Credentials.txt");
-    ofstream tempCredFile("../Files/temp_cred.txt");
-    
-    while (credFile >> serialNumber >> rollNum >> name ) {
-        if (rollNum == rollNumToModify) {
-            found = true;
-            cout << "Enter New Name: ";
-            cin.ignore(); // Consume the newline character left by previous input
-            getline(cin, name);
-            
-            tempCredFile << serialNumber << " " << rollNum << " " << name << endl; // Write modified data
-        } else {
-            tempCredFile << serialNumber << " " << rollNum << " " << name << endl; // Write unchanged data
-        }
-    }
-
-    credFile.close();
-    tempCredFile.close();
+   
     if (found) {
         remove("../Files/Student_data.txt"); // Remove the original data file
         rename("../Files/temp_data.txt", "../Files/Student_data.txt"); // Rename the temporary data file
-        remove("../Files/Credentials.txt"); // Remove the original credentials file
-        rename("../Files/temp_cred.txt", "../Files/Credentials.txt"); // Rename the temporary credentials file
+        
         cout << "Student with Roll Number " << rollNumToModify << " modified successfully." << endl;
 } else {
         cout << "Student with Roll Number " << rollNumToModify << " not found." << endl;
