@@ -1,6 +1,2 @@
-Serial_Number Roll_Number Name Branch Section 
-3 233018 aniket CSE 1
-4 233019 ankit CSE 2
-5 233020 anshdeep CSE 1
-6 233021 anavi IT 2
-7 233022 Bhupesh CSE 1
+3 233020 Anshdeep CSE 1
+4 233023 Aniket IT 2
