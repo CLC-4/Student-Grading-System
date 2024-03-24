@@ -102,15 +102,65 @@ void Teacher::student_entry()
             break;
         }
         case 2:
+            
             system("CLS");
-            cout << "You selected Set Default" << endl;
-            // Add code for Set Default option action
+            {
+            // cout << "You selected Set Default" << endl;
+            cout<<"Set default Branch :";
+            string DefaultBranch;
+            cin>>DefaultBranch;
+            cout<<"Set default Section :";
+            int DefaultSection;
+            cin>>DefaultSection;
+            cout << "Number of entries :";
+            int n;
+            cin>>n;
+            for (int i=1;i<= n;i++){
+              
+            cout << "New Student Entry :" << endl;
+            sno = sno_upd();
+            // cout << "Enter Serial Number: ";
+            // int serialNumber;
+            // cin >> serialNumber;
+            cout << "Enter Roll Number: ";
+            int rollNum;
+            cin >> rollNum;
+            cout << "Enter Name: ";
+            string name;
+            cin.ignore(); // Consume the newline character left by previous input
+            getline(cin, name);
+            cout << "Enter Branch: ";
+            
+            string branch;
+            branch=DefaultBranch;
+            
+            
+            int section;
+            section = DefaultSection;
+
+            // Save data to file
+            ofstream outFile("../Files/Student_data.txt", ios::app); // Open file in append mode
+            if (outFile.is_open())
+            {
+                outFile << sno << " " << rollNum << " " << name << " " << branch << " " << section << endl;
+                outFile.close();
+                cout << "Student data saved successfully." << endl;
+                gen_cred(rollNum, name);
+            }
+            else
+            {
+                cout << "Unable to open file." << endl;
+            }  
+            }
+            }
             break;
         default:
             cout << "Invalid choice. Please try again." << endl;
             break;
         }
         break;
+            
+        
     case 2:
         system("CLS");
         cout << "You selected Delete" << endl;
@@ -134,7 +184,7 @@ void Teacher::gen_cred(int rollnum, string name)
 {
 
     ofstream outFile("../Files/Credentials.txt", ios::app); // Open file in append mode
-    if (outFile.is_open())
+    if (outFile.is_open()) 
     {
 
         outFile << endl
