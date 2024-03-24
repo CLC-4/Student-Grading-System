@@ -14,6 +14,8 @@ public:
     void student_entry();
     void gen_cred(int, string);
     int sno_upd();
+    void delete_entry();
+    void modify_entry();
 };
 
 #endif

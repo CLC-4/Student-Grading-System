@@ -163,12 +163,14 @@ void Teacher::student_entry()
         
     case 2:
         system("CLS");
-        cout << "You selected Delete" << endl;
-        // Add code to perform Delete option action
+        // cout << "You selected Delete" << endl;
+        delete_entry();
+      
         break;
     case 3:
         system("CLS");
-        cout << "You selected Modify" << endl;
+        // cout << "You selected Modify" << endl;
+        modify_entry();
         // Add code to perform Modify option action
         break;
     case 4:
@@ -207,3 +209,108 @@ int Teacher::sno_upd(){
 }
 return count;
 }
+void Teacher::delete_entry() {
+    int rollNumToDelete;
+    cout << "Enter Roll Number of the student to delete: ";
+    cin >> rollNumToDelete;
+
+    ifstream dataFile("../Files/Student_data.txt");
+    ofstream tempDataFile("../Files/temp_data.txt");
+    ifstream credFile("../Files/Credentials.txt");
+    ofstream tempCredFile("../Files/temp_cred.txt");
+    int serialNumber, rollNum;
+    string name, branch, line;
+    int section;
+
+    bool found = false;
+
+    while (dataFile >> serialNumber >> rollNum >> name >> branch >> section) {
+        if (rollNum == rollNumToDelete) {
+            found = true;
+        } else {
+            tempDataFile << serialNumber << " " << rollNum << " " << name << " " << branch << " " << section << endl; // Write to temporary data file
+        }
+    }
+    dataFile.close();
+    tempDataFile.close();
+    // Remove corresponding entry from credentials file
+    while (credFile >> serialNumber >> rollNum >> name ) {
+        if (rollNum == rollNumToDelete) {
+            found = true;
+        } else {
+            tempCredFile << serialNumber << " " << rollNum << " " << name << endl; // Write to temporary data file
+        }
+    }
+    credFile.close();
+    tempCredFile.close();
+    if (found) {
+        remove("../Files/Student_data.txt"); // Remove the original data file
+        rename("../Files/temp_data.txt", "../Files/Student_data.txt"); // Rename the temporary data file
+        remove("../Files/Credentials.txt"); // Remove the original credentials file
+        rename("../Files/temp_cred.txt", "../Files/Credentials.txt"); // Rename the temporary credentials file
+        cout << "Student with Roll Number " << rollNumToDelete << " deleted successfully." << endl;
+    }
+    
+     else {
+        cout << "Student with Roll Number " << rollNumToDelete << " not found." << endl;
+    }
+}
+void Teacher::modify_entry(){int rollNumToModify;
+    cout << "Enter Roll Number of the student to modify: ";
+    cin >> rollNumToModify;
+
+    ifstream dataFile("../Files/Student_data.txt");
+    ofstream tempDataFile("../Files/temp_data.txt");
+
+    int serialNumber, rollNum;
+    string name, branch, line;
+    int section;
+
+    bool found = false;
+
+    while (dataFile >> serialNumber >> rollNum >> name >> branch >> section) {
+        if (rollNum == rollNumToModify) {
+            found = true;
+            cout << "Enter New Name: ";
+            cin.ignore(); // Consume the newline character left by previous input
+            getline(cin, name);
+            cout << "Enter New Branch: ";
+            getline(cin, branch);
+            cout << "Enter New Section: ";
+            cin >> section;
+            tempDataFile << serialNumber << " " << rollNum << " " << name << " " << branch << " " << section << endl; // Write modified data
+        } else {
+            tempDataFile << serialNumber << " " << rollNum << " " << name << " " << branch << " " << section << endl; // Write unchanged data
+        }
+    }
+
+    dataFile.close();
+    tempDataFile.close();
+    // Update corresponding entry in credentials file
+    ifstream credFile("../Files/Credentials.txt");
+    ofstream tempCredFile("../Files/temp_cred.txt");
+    
+    while (credFile >> serialNumber >> rollNum >> name ) {
+        if (rollNum == rollNumToModify) {
+            found = true;
+            cout << "Enter New Name: ";
+            cin.ignore(); // Consume the newline character left by previous input
+            getline(cin, name);
+            
+            tempCredFile << serialNumber << " " << rollNum << " " << name << endl; // Write modified data
+        } else {
+            tempCredFile << serialNumber << " " << rollNum << " " << name << endl; // Write unchanged data
+        }
+    }
+
+    credFile.close();
+    tempCredFile.close();
+    if (found) {
+        remove("../Files/Student_data.txt"); // Remove the original data file
+        rename("../Files/temp_data.txt", "../Files/Student_data.txt"); // Rename the temporary data file
+        remove("../Files/Credentials.txt"); // Remove the original credentials file
+        rename("../Files/temp_cred.txt", "../Files/Credentials.txt"); // Rename the temporary credentials file
+        cout << "Student with Roll Number " << rollNumToModify << " modified successfully." << endl;
+} else {
+        cout << "Student with Roll Number " << rollNumToModify << " not found." << endl;
+    }}
