@@ -49,6 +49,7 @@ void Menu::choice_exe(Admin &admin, Login &login, Teacher &teacher, Student &stu
                 cout << "Enter any key to Proceed!!";
                 cin.get();
                 system("CLS");      // Clears the screen
+                
                 admin.admin_home(); // If correct login details, directed to admin_home.
             }
             else
@@ -166,3 +167,5 @@ int Login::logged_person()
     else
         return num;
 }
+
+

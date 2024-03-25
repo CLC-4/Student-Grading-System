@@ -1,7 +1,0 @@
-SNo. Subject Subject_Code credits -- earse this line, it just to tell the order
-1 Programming_Fundamentals CS101
-2 Proffesional_Communication CS102
-3 Calculus CS103
-4 Workshop(P) CS104
-5 Proffesional_Communication(P) CS105
-6 Programming_Fundamentals(P) CS106

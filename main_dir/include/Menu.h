@@ -15,11 +15,17 @@ class Login
     int id;
     string password;
     int num;
+    protected:
+    bool admin_logged = false;
+    bool tech_logged = false;
+    bool stud_logged = false;
 
 public:
     void get_cred();
     void check_cred();
     int logged_person();
+    void forget_pass();
+    
 };
 
 class Menu

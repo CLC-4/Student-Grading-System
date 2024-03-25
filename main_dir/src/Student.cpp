@@ -51,38 +51,80 @@ void Student::findResults(int option, int log_per)
     switch (option)
     {
     case 1: // Semester Wise
+    {
         cout << "Enter The Semester : ";
-        cin >> sem;
-        if (sem == 1)
-        {
-            fstream sem("../Files/Student_data.txt");
-            int sno;
-            int rno;
-            string name;
-            string branch;
-            int section;
+        cin >> semester;
 
-            while (sem >> sno >> rno >> name >> branch >> section)
+        fstream sem("../Files/Student_data.txt");
+        int sno;
+        int rno;
+        string name;
+        string branch;
+        int section;
+
+        while (sem >> sno >> rno >> name >> branch >> section)
+        {
+            if (sno == log_per)
             {
-                if (sno == log_per)
-                {
-                    showResults(rno, name, branch, section, log_per);
-                }
+                showResults(rno, section, log_per, semester, name, branch);
             }
-            sem.close();
+        }
+        sem.close();
+
+        break;
+    }
+    case 2: // Subject
+    {
+        string sub_cod;
+        cout << "Enter the Subject Code : ";
+        cin >> sub_cod;
+
+        ifstream sub_file("../Files/Subject_data.txt");
+        if (!sub_file.is_open())
+        {
+            cout << "Error opening subject data file." << endl;
+            return;
         }
 
-        break;
+        int sem, cred;
+        string name, subjectCode;
 
-    case 2: // Subject
+        bool found = false;
+
+        while (sub_file >> sem >> name >> subjectCode >> cred)
+        {
+            if (subjectCode == sub_cod)
+            {
+                found = true;
+                system("CLS");
+                cout << "Subject Details:" << endl
+                     << "Semester: " << sem << endl
+                     << "Subject Name: " << name << endl
+                     << "Subject Code: " << subjectCode << endl
+                     << "Credits: " << cred << endl;
+
+                cout << "--------------------------------------------------------------------------------------------" << endl;
+                showResults(name, log_per);
+
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            cout << "Subject with code " << sub_cod << " not found." << endl;
+        }
+
+        sub_file.close();
         break;
+    }
 
     case 3: // Go Back
         break;
     }
 }
 
-void Student::showResults(int rno, string name, string branch, int section, int log_per)
+void Student::showResults(int rno, int section, int log_per, int semester, string name, string branch)
 {
     ifstream sem_m("../Files/Student_marks1.txt");
     if (!sem_m.is_open())
@@ -91,12 +133,12 @@ void Student::showResults(int rno, string name, string branch, int section, int 
         return;
     }
 
-    int sno;
-    char symbol;
+    int unq_num;
     bool sno_matched = false;
 
     string subject;
     double minor1, minor2, internal, major, total;
+    int sem;
     string grades;
 
     system("CLS");
@@ -111,16 +153,51 @@ void Student::showResults(int rno, string name, string branch, int section, int 
 
     cout << setw(5) << left << "SNo." << setw(20) << "Subject" << setw(10) << "Minor1" << setw(10) << "Minor2" << setw(10) << "Major" << setw(10) << "Total" << setw(10) << "Grades" << endl;
     cout << "-------------------------------------------------------------------------------" << endl;
-int i =1;
-    while (sem_m >> sno >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
+    int i = 1;
+    while (sem_m >> unq_num >> sem >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
     {
-        
-        if (sno == log_per)
+
+        if (unq_num == log_per && sem == semester)
         {
             sno_matched = true;
-            cout << setw(5) <<i<< left << setw(20) << subject << setw(10) << minor1 << setw(10) << minor2 << setw(10) << major << setw(10) << total << setw(10) << grades << endl;
-
+            cout << setw(5) << i << left << setw(20) << subject << setw(10) << minor1 << setw(10) << minor2 << setw(10) << major << setw(10) << total << setw(10) << grades << endl;
         }
-        
+    }
+}
+
+void Student::showResults(string name, int log_per)
+{
+    ifstream sem_m("../Files/Student_marks1.txt");
+    if (!sem_m.is_open())
+    {
+        cout << "Error opening file." << endl;
+        return;
+    }
+
+    int unq_num;
+    bool matched = false;
+
+    string subject;
+    double minor1, minor2, internal, major, total;
+    string grades;
+
+    while (sem_m >> unq_num >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
+    {
+
+        if (unq_num == log_per && subject == name)
+        {
+            matched = true;
+
+            cout << left << setw(12) << "Minor1" << setw(5) << minor1 << endl
+                 << setw(12) << "Minor2" << setw(5) << minor2 << endl
+                 << setw(12) << "Internal" << setw(5) << internal << endl
+                 << setw(12) << "Major" << setw(5) << major << endl
+                 << setw(12) << "Total" << setw(5) << total << endl
+                 << setw(12) << "Grades" << setw(5) << grades << endl;
+        }
+    }
+    if (!matched)
+    {
+        cout << "Subject Marks doesn't Exist!!" << endl;
     }
 }

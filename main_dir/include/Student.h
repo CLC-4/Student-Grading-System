@@ -9,11 +9,12 @@ using namespace std;
 class Student 
 {
     int option;
-    int sem;
+    int semester;
 public:
     void displayMenu(int); 
     void findResults(int, int); 
-    void showResults(int, string, string, int, int); 
+    void showResults(int, int,int,int,string, string); 
+    void showResults(string,int);
 };
 
 #endif
