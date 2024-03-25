@@ -1,1 +1,7 @@
-SNO. Subject Minor1 Minor2 Major Total Grades
+3 sub0 17.5 0 20 44.5 82 A
+3 sub1 20 0 20 45 85 A
+3 sub2 22 0 20 41 83 A
+3 sub3 27 0 20 43 90 A+
+4 sub1 21 0 20 44 85 A
+4 sub2 10 0 18 50 78 B+
+5 sub22 30 0 20 50 100 A+

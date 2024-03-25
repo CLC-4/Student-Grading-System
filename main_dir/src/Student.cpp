@@ -1,11 +1,9 @@
 #include "../include/Student.h"
 
-
 using namespace std;
 
-void Student::stud_home(int log_per)
+void Student::displayMenu(int log_per)
 {
-
     cout << "Hello Student " << log_per << "!!\n";
     cout << "1. Modify Personal Details" << endl
          << "2. Show Results" << endl
@@ -32,9 +30,9 @@ void Student::stud_home(int log_per)
              << "2. Particular Subject" << endl
              << "3. Back" << endl
              << endl
-             << "How do you want to see your results : " << endl;
+             << "How do you want to see your results : ";
         cin >> option;
-        res_find(option, log_per);
+        findResults(option, log_per);
 
         break;
 
@@ -48,7 +46,7 @@ void Student::stud_home(int log_per)
     }
 }
 
-void Student::res_find(int option, int log_per)
+void Student::findResults(int option, int log_per)
 {
     switch (option)
     {
@@ -57,7 +55,7 @@ void Student::res_find(int option, int log_per)
         cin >> sem;
         if (sem == 1)
         {
-            fstream sem("../Files/Sem1.txt");
+            fstream sem("../Files/Student_data.txt");
             int sno;
             int rno;
             string name;
@@ -68,12 +66,11 @@ void Student::res_find(int option, int log_per)
             {
                 if (sno == log_per)
                 {
-                    display_res(rno, name, branch, section);
+                    showResults(rno, name, branch, section, log_per);
                 }
             }
             sem.close();
         }
-        
 
         break;
 
@@ -85,8 +82,45 @@ void Student::res_find(int option, int log_per)
     }
 }
 
+void Student::showResults(int rno, string name, string branch, int section, int log_per)
+{
+    ifstream sem_m("../Files/Student_marks1.txt");
+    if (!sem_m.is_open())
+    {
+        cout << "Error opening file." << endl;
+        return;
+    }
 
-void Student::display_res(int rno,string name, string branch, int section){
-     fstream sem_m("../Files/Student_marks1.txt");
-     
+    int sno;
+    char symbol;
+    bool sno_matched = false;
+
+    string subject;
+    double minor1, minor2, internal, major, total;
+    string grades;
+
+    system("CLS");
+
+    cout << "University Institute of Engineering and Technology" << endl
+         << "-------------------------------------------------------------------------------" << endl;
+
+    cout << "Name: " << name << endl
+         << "Roll No.: " << rno << endl
+         << "Branch/Section: " << branch << "-" << section << endl
+         << "-------------------------------------------------------------------------------" << endl;
+
+    cout << setw(5) << left << "SNo." << setw(20) << "Subject" << setw(10) << "Minor1" << setw(10) << "Minor2" << setw(10) << "Major" << setw(10) << "Total" << setw(10) << "Grades" << endl;
+    cout << "-------------------------------------------------------------------------------" << endl;
+int i =1;
+    while (sem_m >> sno >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
+    {
+        
+        if (sno == log_per)
+        {
+            sno_matched = true;
+            cout << setw(5) <<i<< left << setw(20) << subject << setw(10) << minor1 << setw(10) << minor2 << setw(10) << major << setw(10) << total << setw(10) << grades << endl;
+
+        }
+        
+    }
 }
