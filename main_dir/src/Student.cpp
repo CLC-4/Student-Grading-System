@@ -175,13 +175,14 @@ void Student::showResults(string name, int log_per)
     }
 
     int unq_num;
+    int sem;
     bool matched = false;
 
     string subject;
     double minor1, minor2, internal, major, total;
     string grades;
 
-    while (sem_m >> unq_num >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
+    while (sem_m >> unq_num >> sem >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
     {
 
         if (unq_num == log_per && subject == name)
