@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-int Teacher::sno = 3;
+int Teacher::sno = 0;
 
 void Teacher::teach_home()
 {
@@ -77,11 +77,10 @@ void Teacher::student_entry()
             cin >> rollNum;
             cout << "Enter Name: ";
             string name;
-            cin.ignore(); // Consume the newline character left by previous input
-            getline(cin, name);
+            cin >> name;
             cout << "Enter Branch: ";
             string branch;
-            getline(cin, branch);
+            cin >> branch;
             cout << "Enter Section: ";
             int section;
             cin >> section;
@@ -127,8 +126,7 @@ void Teacher::student_entry()
             cin >> rollNum;
             cout << "Enter Name: ";
             string name;
-            cin.ignore(); // Consume the newline character left by previous input
-            getline(cin, name);
+            cin >> name;
             cout << "Enter Branch: ";
             
             string branch;
@@ -220,13 +218,15 @@ void Teacher::delete_entry() {
     int serialNumber, rollNum;
     string name, branch, line;
     int section;
-
-    bool found = false;
+    bool roll_match_d= false;
+    bool roll_match_c = false;
 
     while (dataFile >> serialNumber >> rollNum >> name >> branch >> section) {
         if (rollNum == rollNumToDelete) {
-            found = true;
+            roll_match_d = true;
         } else {
+            if(roll_match_d)
+            serialNumber --;
             tempDataFile << serialNumber << " " << rollNum << " " << name << " " << branch << " " << section << endl; // Write to temporary data file
         }
     }
@@ -235,14 +235,16 @@ void Teacher::delete_entry() {
     // Remove corresponding entry from credentials file
     while (credFile >> serialNumber >> rollNum >> name ) {
         if (rollNum == rollNumToDelete) {
-            found = true;
+            roll_match_c = true;
         } else {
+            if(roll_match_c)
+            serialNumber--;
             tempCredFile << serialNumber << " " << rollNum << " " << name << endl; // Write to temporary data file
         }
     }
     credFile.close();
     tempCredFile.close();
-    if (found) {
+    if (roll_match_c && roll_match_d) {
         remove("../Files/Student_data.txt"); // Remove the original data file
         rename("../Files/temp_data.txt", "../Files/Student_data.txt"); // Rename the temporary data file
         remove("../Files/Credentials.txt"); // Remove the original credentials file
