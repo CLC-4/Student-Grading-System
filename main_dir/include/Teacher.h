@@ -16,6 +16,9 @@ public:
     int sno_upd();
     void delete_entry();
     void modify_entry();
+    void enter_marks();
+    int get_sno(int);
+    void change_marks();
 };
 
 #endif

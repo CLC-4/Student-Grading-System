@@ -167,8 +167,28 @@ void Teacher::student_entry()
         break;
     case 3:
         system("CLS");
-        // cout << "You selected Modify" << endl;
-        modify_entry();
+        
+        do{
+        cout << "Modify :" << endl;
+        cout << "1. Student Details" << endl;
+        cout << "2. Marks" << endl;
+        cout << "3. Go back"<<endl;
+        do {
+            cout <<"Enter your choice :";
+            cin>>choice;
+            switch (choice){
+            case 1:
+            modify_entry();
+            case 2:
+            change_marks();
+            case 3:
+            //Go back
+            default :
+            cout <<"Please enter valid choice"<< endl;
+
+        }}while (choice != 1 || choice != 2 );
+        } while (choice != 3);
+        
         break;
     case 4:
         cout << "Exiting..." << endl;
@@ -256,6 +276,7 @@ void Teacher::delete_entry() {
         cout << "Student with Roll Number " << rollNumToDelete << " not found." << endl;
     }
 }
+
 void Teacher::modify_entry(){int rollNumToModify;
     cout << "Enter Roll Number of the student to modify: ";
     cin >> rollNumToModify;
@@ -296,3 +317,87 @@ void Teacher::modify_entry(){int rollNumToModify;
 } else {
         cout << "Student with Roll Number " << rollNumToModify << " not found." << endl;
     }}
+void Teacher::change_marks() {
+    cout << "Enter Roll Number: ";
+    int enteredrno;
+    cin >> enteredrno;
+
+    int gsno = get_sno(enteredrno); // Getting the sno for the entered roll number
+
+    if (gsno != 0) {
+        cout << "Enter Subject Name: ";
+        string esname;
+        cin>>esname;
+
+        ifstream marksFile("../Files/Student_marks1.txt");
+        ofstream tempMarksFile("../Files/temp_marks.txt");
+
+        int sno, sem;
+        string sname, grade;
+        double m1, m2, M, in, total;
+
+        bool found = false;
+        if (!marksFile.is_open()) {
+        cout << "Unable to open file" << endl;
+        return; // or exit the function
+        }
+        while (marksFile >> sno >> sem >> sname >> m1 >> m2 >> in >> M >> total >> grade) {
+           
+            if (sno == gsno && sname == esname) {
+                found = true;
+                
+                // Prompt user for new marks
+                cout << "Enter New Marks:" << endl;
+                cout << "Minor 1: ";
+                cin >> m1;
+                cout << "Minor 2: ";
+                cin >> m2;
+                cout << "Major: ";
+                cin >> M;
+
+                // Calculate the new total and grade
+                total = m1 + m2 + M + in;
+                // Update the grade based on total (your grading logic here)
+
+                // Write modified data to temporary file
+                tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << M << " " << total << " " << grade << endl;
+            } else {
+                // Write unchanged data to temporary file
+                tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << M << " " << total << " " << grade << endl;
+            }
+        }
+
+        marksFile.close();
+        tempMarksFile.close();
+
+        if (found) {
+            remove("../Files/Student_marks1.txt"); // Remove the original data file
+            rename("../Files/temp_marks.txt", "../Files/Student_marks1.txt"); // Rename the temporary data file
+            cout << "Marks changed successfully." << endl;
+        } else {
+            cout << "Marks not found for the specified student and subject." << endl;
+        }
+    } else {
+        cout << "Roll number not found." << endl;
+    }
+}
+
+int Teacher::get_sno(int enteredrno) {
+    ifstream dataFile("../Files/Student_data.txt");
+    int sno, rno;
+    string name, branch;
+    int section;
+
+    while (dataFile >> sno >> rno >> name >> branch >> section) {
+        if (rno == enteredrno) {
+            dataFile.close();
+            return sno;
+        }
+    }
+
+    // Close the file after use
+    dataFile.close();
+
+    // If the loop completes without finding the roll number, return 0
+    return 0;
+}
