@@ -37,76 +37,18 @@ void Menu::choice_exe(Admin &admin, Login &login, Teacher &teacher, Student &stu
     {
     case 1: // Admin Login
         system("CLS");
-        do
-        {
-            cout << "Welcome to Admin Login Page!" << endl
-                 << "Enter you Credentials!" << endl;
-            login.get_cred();                // Getting Admin Credentials
-            login.check_cred();              // Checking Admin Credentials
-            log_per = login.logged_person(); // Getting SNo. of Logged Person
-            if (log_per == 1)                // Admin have SNo 1, prevents other users to login through Admin Login Page.
-            {
-                cout << "Enter any key to Proceed!!";
-                cin.get();
-                system("CLS");      // Clears the screen
-                
-                admin.admin_home(); // If correct login details, directed to admin_home.
-            }
-            else
-            {
-                system("CLS");
-                cout << "Invalid Credentials!" << endl;
-            }
-        } while (log_per != 1); // if logged person other then admin then repeat the loop
+        admin_login(admin, login);
+
         break;
 
     case 2: // Teacher Login
         system("CLS");
-        do
-        {
-            cout << "Welcome to Teacher Login Page!" << endl
-                 << "Enter you Credentials!" << endl;
-            login.get_cred();
-            login.check_cred();
-            log_per = login.logged_person();
-            if (log_per == 2)
-            {
-                cout << "Enter any key to Proceed!!";
-                cin.get();
-                system("CLS");
-                teacher.teach_home();
-            }
-            else
-            {
-                system("CLS");
-                cout << "Invalid Credentials!" << endl;
-            }
-        } while (log_per != 2);
+        teacher_login(teacher, login);
         break;
 
     case 3: // Student Login
         system("CLS");
-        do
-        {
-            cout << "Welcome to Student Login Page!" << endl
-                 << "Enter you Credentials!" << endl;
-            login.get_cred();
-            login.check_cred();
-            log_per = login.logged_person();
-            if (log_per != 1 && log_per != 2 && log_per != 0)
-            {
-                cout << "Enter any key to Proceed!!";
-                cin.get();
-                system("CLS");
-
-                student.displayMenu(log_per);
-            }
-            else
-            {
-                system("CLS");
-                cout << "Invalid Credentials!" << endl;
-            }
-        } while (log_per == 1 || log_per == 2 || log_per == 0);
+        student_login(student, login);
         break;
 
     case 4: // Public
@@ -119,10 +61,87 @@ void Menu::choice_exe(Admin &admin, Login &login, Teacher &teacher, Student &stu
     }
 }
 
+void Menu::admin_login(Admin &admin, Login &login)
+{
+    do
+    {
+        cout << "Welcome to Admin Login Page!" << endl
+             << "Enter you Credentials!" << endl;
+        login.get_cred();                // Getting Admin Credentials
+        login.check_cred();              // Checking Admin Credentials
+        log_per = login.logged_person(); // Getting SNo. of Logged Person
+        if (log_per == 1)                // Admin have SNo 1, prevents other users to login through Admin Login Page.
+        {
+            cout << "Enter any key to Proceed!!";
+            cin.get();
+            system("CLS"); // Clears the screen
+
+            admin.admin_home(); // If correct login details, directed to admin_home.
+        }
+        else
+        {
+            system("CLS");
+            cout << "Invalid Credentials!" << endl;
+            
+        }
+    } while (log_per != 1); // if logged person other then admin then repeat the loop
+}
+
+void Menu::teacher_login(Teacher &teacher, Login &login)
+{
+    do
+    {
+        cout << "Welcome to Teacher Login Page!" << endl
+             << "Enter you Credentials!" << endl;
+        login.get_cred();
+        login.check_cred();
+        log_per = login.logged_person();
+        if (log_per == 2)
+        {
+            cout << "Enter any key to Proceed!!";
+            cin.get();
+            system("CLS");
+            teacher.teach_home();
+        }
+        else
+        {
+            system("CLS");
+            cout << "Invalid Credentials!" << endl;
+        }
+    } while (log_per != 2);
+}
+
+void Menu::student_login(Student &student, Login &login)
+{
+    do
+    {
+        cout << "Welcome to Student Login Page!" << endl
+             << "Enter you Credentials!" << endl;
+        login.get_cred();
+        login.check_cred();
+        log_per = login.logged_person();
+        if (log_per != 1 && log_per != 2 && log_per != 0)
+        {
+            cout << "Enter any key to Proceed!!";
+            cin.get();
+            system("CLS");
+
+            student.displayMenu(log_per);
+        }
+        else
+        {
+            system("CLS");
+            cout << "Invalid Credentials!" << endl;
+        }
+    } while (log_per == 1 || log_per == 2 || log_per == 0);
+}
+
 // Class : Login Member Functions
 
 void Login::get_cred()
 {
+    Menu menu;
+
     cout << "Login ID : ";
     cin >> id;
     cout << "Password : ";
@@ -148,7 +167,7 @@ void Login::check_cred()
         }
     }
 
-    //cout << "Login failed. Invalid credentials." << endl;
+    // cout << "Login failed. Invalid credentials." << endl;
     num = 0;
     stud_cred.close();
 }
@@ -167,5 +186,3 @@ int Login::logged_person()
     else
         return num;
 }
-
-
