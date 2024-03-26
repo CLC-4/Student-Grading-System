@@ -1,5 +1,5 @@
 3 1 Professional_Communication 30 0 20 43 93 A
-3 1 Fundamentals_of_Biotechnology 20 0 20 45 85 A
+3 1 Latest_Trends_And_Technologies_in_Computer_science 20 0 20 45 85 A
 3 1 Programming_fundamentals_P 22 0 20 41 83 A
 3 2 Applied_Chemistry 27 0 20 43 90 A+
 4 1 sub1 21 0 20 44 85 A

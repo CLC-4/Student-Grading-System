@@ -151,7 +151,8 @@ void Student::showResults(int rno, int section, int log_per, int semester, strin
          << "Branch/Section: " << branch << "-" << section << endl
          << "-------------------------------------------------------------------------------" << endl;
 
-    cout << setw(5) << left << "SNo." << setw(20) << "Subject" << setw(10) << "Minor1" << setw(10) << "Minor2" << setw(10) << "Major" << setw(10) << "Total" << setw(10) << "Grades" << endl;
+    cout << setw(5) << left << "SNo." << setw(30) << "Subject" << setw(10) << "Minor1" << setw(10) << "Minor2" << setw(10) << "Internal" << setw(10)
+         << "Major" << setw(10) << "Total" << setw(10) << "Grades" << endl;
     cout << "-------------------------------------------------------------------------------" << endl;
     int i = 1;
     while (sem_m >> unq_num >> sem >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
@@ -159,8 +160,21 @@ void Student::showResults(int rno, int section, int log_per, int semester, strin
 
         if (unq_num == log_per && sem == semester)
         {
+
             sno_matched = true;
-            cout << setw(5) << i << left << setw(20) << subject << setw(10) << minor1 << setw(10) << minor2 << setw(10) << major << setw(10) << total << setw(10) << grades << endl;
+            double length = subject.length();
+            cout << setw(5) << i++ << left << setw(30) << subject.substr(0, 28) << setw(10) << minor1 << setw(10) << minor2 << setw(10) << internal << setw(10) << major << setw(10) << total << setw(10) << grades << endl;
+
+            if (length > 28)
+            {
+                int rem_len = subject.length() - 28;
+                while (rem_len > 0)
+                {
+                    cout << setw(5) << left << " " << setw(1) << "-" << setw(29) << subject.substr(28) << endl;
+                    subject = subject.substr(28);
+                    rem_len = subject.length() - 28;
+                }
+            }
         }
     }
 }
