@@ -28,14 +28,16 @@ void Teacher::teach_home()
         system("CLS");
         student_entry(); // Call the function for student entry
         break;
-    
-
     case 3:
         system("CLS");
         {
-         cout<<"Enter Subject Name:";
-            string sname;
-            cin>> sname;
+            
+            bool found = false;
+
+            do{
+            cout<<"Enter Subject Code:";
+            string ecode;
+            cin >> ecode;
             cout<<"Enter Branch:";
             string ebranch;
             cin>> ebranch;
@@ -45,9 +47,10 @@ void Teacher::teach_home()
             cout<<"Enter Section:";
             int esecname;
             cin>> esecname;
+            string sname = get_subname(esem,ecode);
+            
             ifstream dataFile("../Files/Student_data.txt");
             
-            bool found = false;
             int serialNumber, rollNum;
             string name, branch, line;
             int section;
@@ -57,11 +60,14 @@ void Teacher::teach_home()
             found = true;
             Marks student;
             student.enterMarks(serialNumber,esem,sname);
-            system("CLS");
             student.change_marks(serialNumber,sname);
            }
         }
         dataFile.close();
+        
+        }
+        
+         while(found!= true);
         }
         break;
     case 4:
@@ -496,7 +502,7 @@ void Marks::change_marks(int gsno,string esname){
 
 
                 // Prompt user for new marks
-                cout << "Enter Marks for Roll Number" <<rno<<":" <<endl;
+                cout << "Enter Marks for Roll Number " <<rno<<":" <<endl;
                 cout << "Internal: ";
                 cin >> in;
                 cout << "Minor 1: ";
@@ -530,3 +536,21 @@ void Marks::change_marks(int gsno,string esname){
         }
 
 }
+string Teacher::get_subname(int esem,string ecode){
+    ifstream subFile("../Files/Subject_data.txt");
+    int sem,cred;
+    string subname ,code;
+    while (subFile >> sem >> subname >> code  >> cred ) {
+        if (sem == esem && code == ecode) {
+        return subname;
+        }
+        else{
+            cout<<"incorrect code"<<endl;
+        }
+    }
+
+            // Close the file after use
+    subFile.close();
+
+    // If the loop completes without finding the roll number, return 0
+    return 0;}
