@@ -72,6 +72,8 @@ void Teacher::teach_home()
         break;
     case 4:
         cout << "You selected Result" << endl;
+        result_page();
+        teach_home();
         // Add code to perform Option 1 action
         break;
     case 5:
@@ -270,6 +272,7 @@ int Teacher::sno_upd(){
 }
 return count;
 }
+
 void Teacher::delete_entry() {
     int rollNumToDelete;
     cout << "Enter Roll Number of the student to delete: ";
@@ -361,6 +364,7 @@ void Teacher::modify_entry(){int rollNumToModify;
 } else {
         cout << "Student with Roll Number " << rollNumToModify << " not found." << endl;
     }}
+
 void Teacher::change_marks() {
     
     cout << "Enter Roll Number: ";
@@ -480,6 +484,7 @@ void Marks::enterMarks(int sno,int sem,string sname){
             MarksFile.close();
             // cout << "Marks written  successfully." << endl;
         }
+
 void Marks::change_marks(int gsno,string esname){
 
     ifstream marksFile("../Files/Student_marks1.txt");
@@ -536,6 +541,7 @@ void Marks::change_marks(int gsno,string esname){
         }
 
 }
+
 string Teacher::get_subname(int esem,string ecode){
     ifstream subFile("../Files/Subject_data.txt");
     int sem,cred;
@@ -554,3 +560,96 @@ string Teacher::get_subname(int esem,string ecode){
 
     // If the loop completes without finding the roll number, return 0
     return 0;}
+
+void Results::result_page(){
+     int choice;
+system("CLS");
+    cout << "Results : " << endl
+    << "1. Particular Student" << endl
+    << "2. Particular Subject" << endl
+    << "3. Particular Branch" << endl
+    << "4. Back" << endl
+    <<endl;
+
+    cout<<"How do yoy want to see Results : ";
+    cin>>choice;
+    result_find(choice);
+}
+
+void Results::result_find(int choice){
+
+int roll_num,section,log_per,in_rno,sem;
+string name,branch;
+Student student;
+bool matched = false;
+
+ifstream datafile("../Files/Student_data.txt");
+ifstream subfile("../Files/Subject_data.txt");
+
+
+
+switch (choice)
+{
+case 1 :{
+cout<<"Enter Roll Number of Student : ";
+cin>>in_rno;
+cout<<"Semester : ";
+cin>>sem;
+while(datafile>>log_per>>roll_num>>name>>branch>>section){
+    
+    if(roll_num==in_rno){
+        matched = true;
+student.showResults(roll_num, section, log_per, sem, name, branch);
+    }
+
+}
+datafile.close();
+
+if(matched == false) cout<<"Student Not Found"<<endl;
+cout<<endl
+<<"Enter any Key to Continue";
+cin.get();
+cin.ignore();
+system("CLS");
+    break;
+}
+case 2 :
+{
+string sub_code,sub_name,isub_code;
+bool matched = false;
+int sem,cred;
+cout<<"Enter Subject Code : ";
+cin >> isub_code;
+
+while(subfile>>sem>>sub_name>>sub_code>>sem){
+    
+    if(sub_code==isub_code){
+        matched = true;
+student.showResults(sub_name);
+    }
+
+}
+
+if(matched == false) cout<<"Student Not Found"<<endl;
+cout<<endl
+<<"Enter any Key to Continue";
+cin.get();
+cin.ignore();
+system("CLS");
+
+break;
+}
+case 3 :
+
+break;
+
+case 4 : // Go BAck
+system("CLS");
+break;
+
+default:
+    break;
+}
+
+}
+    

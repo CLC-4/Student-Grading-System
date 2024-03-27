@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include"Student.h"
 using namespace std;
 
 class Marks{
@@ -18,7 +19,16 @@ class Marks{
         int get_rno(int);
     };
 
-class Teacher : public Marks
+class Results{
+
+public:
+
+void result_page();
+void result_find(int);
+
+};
+
+class Teacher : public Marks,public Results
 {
 
     static int sno;     // nos -- number of student
@@ -35,6 +45,7 @@ public:
     string get_subname(int,string);
     void change_marks();
 };
+
 
 
 #endif
