@@ -16,8 +16,6 @@ public:
     void findResults(int, int); 
     void showResults(int, int,int,int,string, string); 
     void showResults(string,int);
-    void showResults(string);
-    void per_find(int);
 };
 
 #endif
