@@ -14,7 +14,7 @@ void Teacher::teach_home()
     cout << "2. Student Entry" << endl;
     cout << "3. Enter Marks" << endl;
     cout << "4. Results" << endl;
-    cout << "5. Exit" << endl;
+    cout << "5. Log out" << endl;
     cout << "Enter your choice: ";
     cin >> choice;
 
@@ -31,6 +31,7 @@ void Teacher::teach_home()
     
 
     case 3:
+        system("CLS");
         {
          cout<<"Enter Subject Name:";
             string sname;
@@ -56,18 +57,19 @@ void Teacher::teach_home()
             found = true;
             Marks student;
             student.enterMarks(serialNumber,esem,sname);
+            system("CLS");
             student.change_marks(serialNumber,sname);
            }
         }
+        dataFile.close();
         }
-        
         break;
     case 4:
-        cout << "You selected Option 1" << endl;
+        cout << "You selected Result" << endl;
         // Add code to perform Option 1 action
         break;
     case 5:
-        cout << "Please press enter" << endl;
+      system("CLS");
         break;
     default:
         cout << "Invalid choice. Please try again." << endl;
@@ -82,7 +84,7 @@ void Teacher::student_entry()
     cout << "1. New" << endl;
     cout << "2. Delete" << endl;
     cout << "3. Modify" << endl;
-    cout << "4. Exit" << endl;
+    cout << "4. Go back" << endl;
     cout << "Enter your choice: ";
     cin >> entryChoice;
 
@@ -226,7 +228,8 @@ void Teacher::student_entry()
         
         break;
     case 4:
-        cout << "Exiting..." << endl;
+        system("CLS");
+        teach_home();
         break;
     default:
         cout << "Invalid choice. Please try again." << endl;

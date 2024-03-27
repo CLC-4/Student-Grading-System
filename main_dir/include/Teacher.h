@@ -8,13 +8,13 @@ using namespace std;
 class Marks{
 
      public:
-    float m1,m2,mj,in;
+        float m1,m2,mj,in;
 
    
         Marks() : m1(0), m2(0), mj(0) ,in(0){}
-        void enterMarks(int sno,int sem,string sname);
+        void enterMarks(int,int,string);
         void change_marks(int,string);
-         int get_rno(int);
+        int get_rno(int);
     };
 
 class Teacher : public Marks
