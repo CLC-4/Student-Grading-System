@@ -135,8 +135,10 @@ void Student::findResults(int option, int log_per)
     }
 }
 
+// Tools ..................
 void Student::showResults(int rno, int section, int log_per, int semester, string name, string branch)
 {
+    system("CLS");
     ifstream sem_m("../Files/Student_marks1.txt");
     if (!sem_m.is_open())
     {
@@ -226,4 +228,62 @@ void Student::showResults(string name, int log_per)
     {
         cout << "Subject Marks doesn't Exist!!" << endl;
     }
+}
+
+void Student::showResults(string sub_name)
+{
+
+    system("CLS");
+    cout << "Here is the Result of : " << sub_name << endl
+         << "-------------------------------------------------------------------------------" << endl;
+
+    ifstream sem_m("../Files/Student_marks1.txt");
+    if (!sem_m.is_open())
+    {
+        cout << "Error opening file." << endl;
+        return;
+    }
+
+    int unq_num;
+    bool sno_matched = false;
+
+    string subject;
+    double minor1, minor2, internal, major, total;
+    int sem;
+    string grades;
+
+    cout << setw(5) << left << "SNo." << setw(14) << "Roll_Number" << setw(15) << "Name" << setw(10) << "Minor1" << setw(10) << "Minor2" << setw(10) << "Internal" << setw(10)
+         << "Major" << setw(10) << "Total" << setw(10) << "Grades" << endl;
+    cout << "-------------------------------------------------------------------------------" << endl;
+    int i = 1;
+    while (sem_m >> unq_num >> sem >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
+    {
+
+        if (subject == sub_name)
+        {
+
+            sno_matched = true;
+
+            cout << setw(5) << i++;
+            per_find(unq_num);
+            cout << left << setw(10) << minor1 << setw(10) << minor2 << setw(10) << internal << setw(10) << major << setw(10) << total << setw(10) << grades << endl;
+        }
+    }
+    sem_m.close();
+}
+
+void Student::per_find(int unq_num)
+{
+    ifstream datafile("../Files/Student_data.txt");
+    int funq_num, roll_num, section;
+    string name, branch;
+    while (datafile >> funq_num >> roll_num >> name >> branch >> section)
+    {
+        if (unq_num == funq_num)
+        {
+            cout << left << setw(3) << "UE-" << setw(11) << roll_num << setw(15) << name;
+            break;
+        }
+    }
+    datafile.close();
 }
