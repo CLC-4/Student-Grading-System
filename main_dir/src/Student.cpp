@@ -4,8 +4,9 @@ using namespace std;
 
 void Student::displayMenu(int log_per)
 {
+
     cout << "Hello Student " << log_per << "!!\n";
-    cout << "1. Modify Personal Details" << endl
+    cout << "1. Change Password" << endl
          << "2. Show Results" << endl
          << "3. Register Re-evaluation" << endl
          << "4. Logout" << endl
@@ -14,36 +15,39 @@ void Student::displayMenu(int log_per)
     cin >> option;
 
     // CGPA will also be shown here.
-
-    switch (option)
+    do
     {
-    case 1: // Modify Personal Details
+        switch (option)
+        {
+        case 1:
             // change password
-            // change username
+            break;
 
-        break;
+        case 2: // Results
+            system("CLS");
+            cout << "Welcome To Result Page!!" << endl;
+            cout << "1. Semester Wise" << endl
+                 << "2. Particular Subject" << endl
+                 << "3. Back" << endl
+                 << endl
+                 << "How do you want to see your results : ";
+            cin >> option;
+            findResults(option, log_per);
 
-    case 2: // Results
-        system("CLS");
-        cout << "Welcome To Result Page!!" << endl;
-        cout << "1. Semester Wise" << endl
-             << "2. Particular Subject" << endl
-             << "3. Back" << endl
-             << endl
-             << "How do you want to see your results : ";
-        cin >> option;
-        findResults(option, log_per);
+            break;
 
-        break;
+        case 3: // Register Reevaluation
 
-    case 3: // Register Reevaluation
+            break;
 
-        break;
+        case 4: // Logout
+            system("CLS");
+            break;
 
-    case 4: // Exit
-
-        break;
-    }
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+        }
+    } while (1);
 }
 
 void Student::findResults(int option, int log_per)
@@ -55,21 +59,26 @@ void Student::findResults(int option, int log_per)
         cout << "Enter The Semester : ";
         cin >> semester;
 
-        fstream sem("../Files/Student_data.txt");
+        fstream sem_file("../Files/Student_data.txt");
+        if (!sem_file.is_open())
+        {
+            cout << "Error opening subject data file." << endl;
+            return;
+        }
         int sno;
         int rno;
         string name;
         string branch;
         int section;
 
-        while (sem >> sno >> rno >> name >> branch >> section)
+        while (sem_file >> sno >> rno >> name >> branch >> section)
         {
             if (sno == log_per)
             {
                 showResults(rno, section, log_per, semester, name, branch);
             }
         }
-        sem.close();
+        sem_file.close();
 
         break;
     }
@@ -120,6 +129,8 @@ void Student::findResults(int option, int log_per)
     }
 
     case 3: // Go Back
+        system("CLS");
+        displayMenu(log_per);
         break;
     }
 }

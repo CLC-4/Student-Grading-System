@@ -1,3 +1,4 @@
 3 233020 Anshdeep CSE 1
-5 233022 Batman CSE 1
-
+4 233022 Batman CSE 1
+5 233050 Aman IT 1
+6 233025 Bhupesh CSE 1
