@@ -12,8 +12,9 @@ void Teacher::teach_home()
     cout << "Menu:" << endl;
     cout << "1. Requests" << endl;
     cout << "2. Student Entry" << endl;
-    cout << "3. Results" << endl;
-    cout << "4. Exit" << endl;
+    cout << "3. Enter Marks" << endl;
+    cout << "4. Results" << endl;
+    cout << "5. Log out" << endl;
     cout << "Enter your choice: ";
     cin >> choice;
 
@@ -27,12 +28,48 @@ void Teacher::teach_home()
         system("CLS");
         student_entry(); // Call the function for student entry
         break;
+    
+
     case 3:
-        cout << "You selected Option 3" << endl;
-        // Add code to perform Option 3 action
+        system("CLS");
+        {
+         cout<<"Enter Subject Name:";
+            string sname;
+            cin>> sname;
+            cout<<"Enter Branch:";
+            string ebranch;
+            cin>> ebranch;
+            cout<<"Enter Semester:";
+            int esem;
+            cin>> esem;
+            cout<<"Enter Section:";
+            int esecname;
+            cin>> esecname;
+            ifstream dataFile("../Files/Student_data.txt");
+            
+            bool found = false;
+            int serialNumber, rollNum;
+            string name, branch, line;
+            int section;
+
+            while (dataFile >> serialNumber >> rollNum >> name >> branch >> section) {
+            if (branch==ebranch && section == esecname) {
+            found = true;
+            Marks student;
+            student.enterMarks(serialNumber,esem,sname);
+            system("CLS");
+            student.change_marks(serialNumber,sname);
+           }
+        }
+        dataFile.close();
+        }
         break;
     case 4:
-        cout << "Please press enter" << endl;
+        cout << "You selected Result" << endl;
+        // Add code to perform Option 1 action
+        break;
+    case 5:
+      system("CLS");
         break;
     default:
         cout << "Invalid choice. Please try again." << endl;
@@ -47,7 +84,7 @@ void Teacher::student_entry()
     cout << "1. New" << endl;
     cout << "2. Delete" << endl;
     cout << "3. Modify" << endl;
-    cout << "4. Exit" << endl;
+    cout << "4. Go back" << endl;
     cout << "Enter your choice: ";
     cin >> entryChoice;
 
@@ -191,7 +228,8 @@ void Teacher::student_entry()
         
         break;
     case 4:
-        cout << "Exiting..." << endl;
+        system("CLS");
+        teach_home();
         break;
     default:
         cout << "Invalid choice. Please try again." << endl;
@@ -318,6 +356,7 @@ void Teacher::modify_entry(){int rollNumToModify;
         cout << "Student with Roll Number " << rollNumToModify << " not found." << endl;
     }}
 void Teacher::change_marks() {
+    
     cout << "Enter Roll Number: ";
     int enteredrno;
     cin >> enteredrno;
@@ -400,4 +439,94 @@ int Teacher::get_sno(int enteredrno) {
 
     // If the loop completes without finding the roll number, return 0
     return 0;
+}
+
+int Marks::get_rno(int gsno) {
+    ifstream dataFile("../Files/Student_data.txt");
+    int sno, rno;
+    string name, branch;
+    int section;
+
+    while (dataFile >> sno >> rno >> name >> branch >> section) {
+        if (sno == gsno) {
+            dataFile.close();
+            return rno;
+        }
+    }
+
+    // Close the file after use
+    dataFile.close();
+
+    // If the loop completes without finding the roll number, return 0
+    return 0;
+}
+
+void Marks::enterMarks(int sno,int sem,string sname){
+
+            ofstream MarksFile("../Files/Student_Marks1.txt", ios::app); 
+            int total=0;
+            string grade = "A+";
+            if (!MarksFile) {
+                cerr << "Error opening file! " << endl;
+                return;
+            }
+            MarksFile << sno <<" "<< sem <<" "<<sname<<" "<< m1 << " " << m2 << " " <<in<<" "<< mj <<" "<< total<< " "<<grade << endl;
+            MarksFile.close();
+            // cout << "Marks written  successfully." << endl;
+        }
+void Marks::change_marks(int gsno,string esname){
+
+    ifstream marksFile("../Files/Student_marks1.txt");
+    ofstream tempMarksFile("../Files/temp_marks.txt");
+
+    int sno, sem;
+    string sname, grade;
+    float m1, m2, M, in, total;
+
+    bool found = false;
+    if (!marksFile.is_open()) {
+    cout << "Unable to open file" << endl;
+    return; // or exit the function
+    }
+    while (marksFile >> sno >> sem >> sname >> m1 >> m2 >> in >> M >> total >> grade) {
+           
+            if (sno == gsno && sname == esname) {
+                found = true;
+                int rno = get_rno(gsno);
+
+
+                // Prompt user for new marks
+                cout << "Enter Marks for Roll Number" <<rno<<":" <<endl;
+                cout << "Internal: ";
+                cin >> in;
+                cout << "Minor 1: ";
+                cin >> m1;
+                cout << "Minor 2: ";
+                cin >> m2;
+                cout << "Major: ";
+                cin >> M;
+
+                // Calculate the new total and grade
+                total = m1 + m2 + M + in;
+                // Update the grade based on total (your grading logic here)
+
+                // Write modified data to temporary file
+                tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << M << " " << total << " " << grade << endl;
+            } else {
+                // Write unchanged data to temporary file
+                tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << M << " " << total << " " << grade << endl;
+            }
+        }
+
+        marksFile.close();
+        tempMarksFile.close();
+
+        if (found) {
+            remove("../Files/Student_marks1.txt"); // Remove the original data file
+            rename("../Files/temp_marks.txt", "../Files/Student_marks1.txt"); // Rename the temporary data file
+            cout << "Marks Entered successfully." << endl;
+        } else {
+            cout << "Students not found for the specified Branch And Section." << endl;
+        }
+
 }
