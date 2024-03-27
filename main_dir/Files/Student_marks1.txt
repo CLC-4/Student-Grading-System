@@ -7,3 +7,6 @@
 5 2 sub22 30 0 20 50 100 A+
 3 1 Calculus 25 0 20 45 90 A+
 5 1 Calculus 20 0 20 45 85 A+
+3 2 Differential_Equations_and_Transforms 2 4 0 0 6 A+
+4 2 Differential_Equations_and_Transforms 1 2 0 0 3 A+
+6 2 Differential_Equations_and_Transforms 0 0 0 0 0 A+
