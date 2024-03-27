@@ -19,7 +19,7 @@ class Login
 
 public:
     void get_cred();
-    void check_cred();
+    int check_cred();
     int logged_person();
     
     
