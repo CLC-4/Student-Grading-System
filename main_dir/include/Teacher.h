@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 using namespace std;
 
 class Marks{
@@ -31,7 +32,7 @@ public:
     void modify_entry();
     void enter_marks();
     int get_sno(int);
-   
+    string get_subname(int,string);
     void change_marks();
 };
 
