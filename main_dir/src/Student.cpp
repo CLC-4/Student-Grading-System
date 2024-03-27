@@ -11,7 +11,7 @@ void Student::displayMenu(int log_per)
          << "3. Register Re-evaluation" << endl
          << "4. Logout" << endl
          << endl;
-    cout << "Enter Your Option : " << endl;
+    cout << "Enter Your Option : ";
     cin >> option;
 
     // CGPA will also be shown here.
