@@ -49,7 +49,7 @@ void Teacher::teach_home()
                 cout << "Enter Section:";
                 int esecname;
                 cin >> esecname;
-                string sname = get_subname(esem, ecode);
+                string sname = get_subname(esem, ecode,ebranch);
 
                 ifstream dataFile("../Files/Student_data.txt");
 
@@ -611,21 +611,18 @@ void Marks::change_marks(int gsno, string esname)
     }
 }
 
-string Teacher::get_subname(int esem, string ecode)
+string Teacher::get_subname(int esem, string ecode,string ebranch)
 {
     ifstream subFile("../Files/Subject_data.txt");
     int sem, cred;
-    string subname, code;
-    while (subFile >> sem >> subname >> code >> cred)
+    string subname, code, branch;
+    while (subFile >> sem >> branch >> subname >> code >> cred)
     {
-        if (sem == esem && code == ecode)
+        if (sem == esem && code == ecode  && branch==ebranch )
         {
             return subname;
         }
-        else
-        {
-            cout << "incorrect code" << endl;
-        }
+       
     }
 
     // Close the file after use
