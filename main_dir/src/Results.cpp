@@ -1,4 +1,4 @@
-#include "../include/Teacher.h"
+#include "../include/Academic_members.h"
 using namespace std;
 
 void Results::result_page()

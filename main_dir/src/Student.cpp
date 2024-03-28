@@ -1,4 +1,4 @@
-#include "../include/Student.h"
+#include "../include/Academic_members.h"
 
 using namespace std;
 
