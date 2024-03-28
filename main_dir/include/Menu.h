@@ -2,10 +2,8 @@
 #define MENU_H
 
 #include <iostream>
-#include <string>
 #include "Admin.h"
-#include "Student.h"
-#include "Teacher.h"
+#include "Academic_members.h"
 #include "Public.h"
 
 using namespace std;

@@ -1,8 +1,7 @@
 #include <iostream>
 #include "../include/Admin.h"
 #include "../include/Menu.h"
-#include "../include/Teacher.h"
-#include "../include/Student.h"
+#include "../include/Academic_members.h"
 #include "../include/Public.h"
 #include <conio.h>
 
