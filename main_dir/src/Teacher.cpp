@@ -29,9 +29,9 @@ void Teacher::teach_home()
         student_entry(); // Call the function for student entry
         break;
     case 3:
-    
+
         system("CLS");
-    {
+        {
 
             bool found = false;
 
@@ -69,8 +69,8 @@ void Teacher::teach_home()
                 }
                 dataFile.close();
 
-            }while (found != true);
-    }
+            } while (found != true);
+        }
         break;
 
     case 4:
@@ -438,7 +438,9 @@ void Teacher::change_marks()
                 cin >> M;
 
                 // Calculate the new total and grade
-                total = m1 + m2 + M + in;
+                basic_cal(m1, m2, in, M);
+                total = get_total();
+                grade = get_grade();
                 // Update the grade based on total (your grading logic here)
 
                 // Write modified data to temporary file
@@ -521,8 +523,6 @@ void Marks::enterMarks(int sno, int sem, string sname)
 {
 
     ofstream MarksFile("../Files/Student_Marks1.txt", ios::app);
-    int total = 0;
-    string grade = "A+";
     if (!MarksFile)
     {
         cerr << "Error opening file! " << endl;
@@ -551,7 +551,7 @@ void Marks::change_marks(int gsno, string esname)
     }
     while (marksFile >> sno >> sem >> sname >> m1 >> m2 >> in >> M >> total >> grade)
     {
-        
+
         if (sno == gsno && sname == esname)
         {
             found = true;
@@ -561,36 +561,40 @@ void Marks::change_marks(int gsno, string esname)
             cout << "Enter Marks for Roll Number " << rno << ":" << endl;
 
             int len = sname.length();
-            if(sname.substr(len-2,len)=="_P"){
-                cout<<"Marks: ";
-                cin>>M;
+            if (sname.substr(len - 2, len) == "_P")
+            {
+                cout << "Marks: ";
+                cin >> M;
                 // Write modified data to temporary file
-            tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << M << " " << total << " " << grade << endl;
+                tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << M << " " << total << " " << grade << endl;
+            }
+            else
+            {
+                cout << "Internal: ";
+                cin >> in;
+                cout << "Minor 1: ";
+                cin >> m1;
+                cout << "Minor 2: ";
+                cin >> m2;
+                cout << "Major: ";
+                cin >> M;
 
-            }else{
-            cout << "Internal: ";
-            cin >> in;
-            cout << "Minor 1: ";
-            cin >> m1;
-            cout << "Minor 2: ";
-            cin >> m2;
-            cout << "Major: ";
-            cin >> M;
+                // Calculate the new total and grade
+                basic_cal(m1, m2, in, M);
+                total = get_total();
+                grade = get_grade();
+                // Update the grade based on total (your grading logic here)
 
-            // Calculate the new total and grade
-            total = m1 + m2 + M + in;
-            // Update the grade based on total (your grading logic here)
-
-            // Write modified data to temporary file
-            tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << M << " " << total << " " << grade << endl;
-        }}
+                // Write modified data to temporary file
+                tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << M << " " << total << " " << grade << endl;
+            }
+        }
         else
         {
             // Write unchanged data to temporary file
             tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << M << " " << total << " " << grade << endl;
         }
-        }
-    
+    }
 
     marksFile.close();
     tempMarksFile.close();
@@ -605,8 +609,7 @@ void Marks::change_marks(int gsno, string esname)
     {
         cout << "Students not found for the specified Branch And Section." << endl;
     }
-    }
-
+}
 
 string Teacher::get_subname(int esem, string ecode)
 {
@@ -618,6 +621,10 @@ string Teacher::get_subname(int esem, string ecode)
         if (sem == esem && code == ecode)
         {
             return subname;
+        }
+        else
+        {
+            cout << "incorrect code" << endl;
         }
     }
 
@@ -781,4 +788,9 @@ void Teacher::per_find(int unq_num)
         }
     }
     datafile.close();
+}
+
+void Teacher::branch_result(){
+
+    
 }
