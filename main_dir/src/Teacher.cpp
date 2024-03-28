@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-int Teacher::sno = 0;
+
 
 void Teacher::teach_home()
 {
@@ -49,7 +49,7 @@ void Teacher::teach_home()
                 cout << "Enter Section:";
                 int esecname;
                 cin >> esecname;
-                string sname = get_subname(esem, ecode,ebranch);
+                string sname = get_subname(esem, ecode, ebranch);
 
                 ifstream dataFile("../Files/Student_data.txt");
 
@@ -250,36 +250,6 @@ void Teacher::student_entry()
     }
 }
 
-void Teacher::gen_cred(int rollnum, string name)
-{
-
-    ofstream outFile("../Files/Credentials.txt", ios::app); // Open file in append mode
-    if (outFile.is_open())
-    {
-
-        outFile << endl
-                << sno << " " << rollnum << " " << name;
-
-        outFile.close();
-    }
-    else
-    {
-        cout << "Unable to open file." << endl;
-    }
-}
-
-int Teacher::sno_upd()
-{
-    ifstream outFile("../Files/Student_data.txt");
-    int count = 3;
-    string line;
-    while (getline(outFile, line))
-    {
-        count++;
-    }
-    return count;
-}
-
 void Teacher::delete_entry()
 {
     int rollNumToDelete;
@@ -438,9 +408,8 @@ void Teacher::change_marks()
                 cin >> M;
 
                 // Calculate the new total and grade
-                basic_cal(m1, m2, in, M);
-                total = get_total();
-                grade = get_grade();
+                total = total_cal(m1, m2, in, M);
+                grade = grd_cal(total);
                 // Update the grade based on total (your grading logic here)
 
                 // Write modified data to temporary file
@@ -471,29 +440,6 @@ void Teacher::change_marks()
     {
         cout << "Roll number not found." << endl;
     }
-}
-
-int Teacher::get_sno(int enteredrno)
-{
-    ifstream dataFile("../Files/Student_data.txt");
-    int sno, rno;
-    string name, branch;
-    int section;
-
-    while (dataFile >> sno >> rno >> name >> branch >> section)
-    {
-        if (rno == enteredrno)
-        {
-            dataFile.close();
-            return sno;
-        }
-    }
-
-    // Close the file after use
-    dataFile.close();
-
-    // If the loop completes without finding the roll number, return 0
-    return 0;
 }
 
 int Marks::get_rno(int gsno)
@@ -580,9 +526,9 @@ void Marks::change_marks(int gsno, string esname)
                 cin >> M;
 
                 // Calculate the new total and grade
-                basic_cal(m1, m2, in, M);
-                total = get_total();
-                grade = get_grade();
+                total = total_cal(m1, m2, in, M);
+                grade = grd_cal(total);
+                fail(total,M,sname,sno);
                 // Update the grade based on total (your grading logic here)
 
                 // Write modified data to temporary file
@@ -611,27 +557,6 @@ void Marks::change_marks(int gsno, string esname)
     }
 }
 
-string Teacher::get_subname(int esem, string ecode,string ebranch)
-{
-    ifstream subFile("../Files/Subject_data.txt");
-    int sem, cred;
-    string subname, code, branch;
-    while (subFile >> sem >> branch >> subname >> code >> cred)
-    {
-        if (sem == esem && code == ecode  && branch==ebranch )
-        {
-            return subname;
-        }
-       
-    }
-
-    // Close the file after use
-    subFile.close();
-
-    // If the loop completes without finding the roll number, return 0
-    return 0;
-}
-
 void Results::result_page()
 {
     int choice;
@@ -653,7 +578,7 @@ void Results::result_find(int choice)
 
     int roll_num, section, log_per, in_rno, sem;
     string name, branch;
-    Student student;
+    Teacher teacher;
     bool matched = false;
 
     ifstream datafile("../Files/Student_data.txt");
@@ -673,7 +598,7 @@ void Results::result_find(int choice)
             if (roll_num == in_rno)
             {
                 matched = true;
-                student.showResults(roll_num, section, log_per, sem, name, branch);
+                showResults(roll_num, section, log_per, sem, name, branch);
             }
         }
         datafile.close();
@@ -689,14 +614,14 @@ void Results::result_find(int choice)
     }
     case 2:
     {
-        string sub_code, sub_name, isub_code;
+        string sub_code, sub_name, isub_code, stud_branch;
         bool matched = false;
         Teacher teacher;
-        int sem, cred;
+        int sem, cred, unq_num, sec;
         cout << "Enter Subject Code : ";
         cin >> isub_code;
 
-        while (subfile >> sem >> sub_name >> sub_code >> sem)
+        while (subfile >> sem >> branch >> sub_name >> sub_code >> sem)
         {
 
             if (sub_code == isub_code)
@@ -717,7 +642,7 @@ void Results::result_find(int choice)
         break;
     }
     case 3:
-
+        teacher.branch_result();
         break;
 
     case 4: // Go BAck
@@ -729,65 +654,27 @@ void Results::result_find(int choice)
     }
 }
 
-void Teacher::showResults(string sub_name)
+void Teacher::branch_result()
 {
-
     system("CLS");
-    cout << "Here is the Result of : " << sub_name << endl
-         << "-------------------------------------------------------------------------------" << endl;
+    string branch, in_branch;
+    int log_per, sem, in_section, sec;
+    string name;
+    cout << "Enter Branch : ";
+    cin >> in_branch;
+    cout << "Enter Section : ";
+    cin >> in_section;
 
-    ifstream sem_m("../Files/Student_marks1.txt");
-    if (!sem_m.is_open())
+    ifstream studfile("../Files/Student_data.txt");
+
+    while (studfile >> log_per >> sem >> name >> branch >> sec)
     {
-        cout << "Error opening file." << endl;
-        return;
-    }
-
-    int unq_num;
-    bool sno_matched = false;
-
-    string subject;
-    double minor1, minor2, internal, major, total;
-    int sem;
-    string grades;
-
-    cout << setw(5) << left << "SNo." << setw(14) << "Roll_Number" << setw(15) << "Name" << setw(10) << "Minor1" << setw(10) << "Minor2" << setw(10) << "Internal" << setw(10)
-         << "Major" << setw(10) << "Total" << setw(10) << "Grades" << endl;
-    cout << "-------------------------------------------------------------------------------" << endl;
-    int i = 1;
-    while (sem_m >> unq_num >> sem >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
-    {
-
-        if (subject == sub_name)
+        if (sec == in_section && branch == in_branch)
         {
-
-            sno_matched = true;
-
-            cout << setw(5) << i++;
-            per_find(unq_num);
-            cout << left << setw(10) << minor1 << setw(10) << minor2 << setw(10) << internal << setw(10) << major << setw(10) << total << setw(10) << grades << endl;
+            showResults(log_per, branch);
         }
     }
-    sem_m.close();
+    studfile.close();
 }
 
-void Teacher::per_find(int unq_num)
-{
-    ifstream datafile("../Files/Student_data.txt");
-    int funq_num, roll_num, section;
-    string name, branch;
-    while (datafile >> funq_num >> roll_num >> name >> branch >> section)
-    {
-        if (unq_num == funq_num)
-        {
-            cout << left << setw(3) << "UE-" << setw(11) << roll_num << setw(15) << name;
-            break;
-        }
-    }
-    datafile.close();
-}
 
-void Teacher::branch_result(){
-
-    
-}

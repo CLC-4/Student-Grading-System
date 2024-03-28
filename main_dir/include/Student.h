@@ -5,17 +5,17 @@
 #include <fstream>
 #include<iomanip>
 #include<cstdlib>
+#include"Teacher.h"
 using namespace std;
 
-class Student 
+class Student : public Results
 {
     int option;
     int semester;
 public:
     void displayMenu(int); 
     void findResults(int, int); 
-    void showResults(int, int,int,int,string, string); 
-    void showResults(string,int);
+    
 };
 
 #endif
