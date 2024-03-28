@@ -58,7 +58,7 @@ public:
     void modify_entry();
     void enter_marks();
     int get_sno(int);
-    string get_subname(int, string);
+    string get_subname(int, string,string);
     void change_marks();
     void showResults(string);
     void per_find(int);
