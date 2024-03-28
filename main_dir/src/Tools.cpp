@@ -165,6 +165,29 @@ int Tools::get_sno(int enteredrno)
     return 0;
 }
 
+int Tools::get_rno(int gsno) // given serial number
+{
+    ifstream dataFile("../Files/Student_data.txt");
+    int sno, rno;
+    string name, branch;
+    int section;
+
+    while (dataFile >> sno >> rno >> name >> branch >> section)
+    {
+        if (sno == gsno)
+        {
+            dataFile.close();
+            return rno;
+        }
+    }
+
+    // Close the file after use
+    dataFile.close();
+
+    // If the loop completes without finding the roll number, return 0
+    return 0;
+}
+
 string Tools::get_subname(int esem, string ecode, string ebranch)
 {
     ifstream subFile("../Files/Subject_data.txt");
