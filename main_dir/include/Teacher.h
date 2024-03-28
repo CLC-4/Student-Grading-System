@@ -4,70 +4,80 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "Student.h"
+#include <iomanip>
 
 using namespace std;
 
-class Tools{
-    protected:
+class Tools
+{
+protected:
     float total;
-    string grade;
-    float total_cred;
-    
+    std::string grade;
+    float total_cred = 0, acc_cred = 0, acc_pts;
+    static int sno;
+
 public:
-   Tools():total(0),grade("F"){};
-   void basic_cal(float,float,float,float);
-   void test(string);
-   string grade_cal(int);
-   int get_total();
-   string get_grade();
-   int sgpa_cal();
+    // Constructor
+    Tools() : total(0), grade("F") {}
+
+    // Marks Related Tools
+    int total_cal(float, float, float, float);
+    int grdpt_cal(int);
+    int sgpa_cal(int);
+    int total_grdpts();
+    void fail(int, int, string, int);
+    string grd_cal(int);
+
+    // Other Tools
+
+    int sno_upd();
+    int get_sno(int);
+    void gen_cred(int, string);
+    void find_student(int);
+    string get_subname(int, string, string);
 };
 
+class Results : virtual public Tools
+{
 
-class Marks:public Tools
+public:
+    void result_page();
+    void result_find(int);
+    // Focus on Student
+    void showResults(int, int, int, int, string, string);
+    void showResults(string, int);
+    // Focus on Teacher
+    void showResults(string);
+    void showResults(int, string);
+};
+
+class Marks : virtual public Tools
 {
 protected:
     float m1, m2, mj, in;
 
 public:
-    Marks() : m1(0), m2(0), mj(0), in(0){}
+    Marks() : m1(0), m2(0), mj(0), in(0) {}
     void enterMarks(int, int, string);
     void change_marks(int, string);
     int get_rno(int);
 };
 
-class Results
-{
-
-public:
-
-    void result_page();
-    void result_find(int);
-};
-
 class Teacher : public Marks, public Results
 {
 
-    static int sno; // nos -- number of student
+    // nos -- number of student
 
 public:
     void teach_home();
     void student_entry();
-    void gen_cred(int, string);
-    int sno_upd();
     void delete_entry();
     void modify_entry();
     void enter_marks();
-    int get_sno(int);
-    string get_subname(int, string);
     void change_marks();
-    void showResults(string);
-    void showResults(int,string);
-    void per_find(int);
+
     void branch_result();
     // void branch_result();
 };
-
 
 #endif
