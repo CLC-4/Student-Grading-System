@@ -135,8 +135,10 @@ void Student::findResults(int option, int log_per)
     }
 }
 
+// Tools ..................
 void Student::showResults(int rno, int section, int log_per, int semester, string name, string branch)
 {
+    system("CLS");
     ifstream sem_m("../Files/Student_marks1.txt");
     if (!sem_m.is_open())
     {
@@ -227,3 +229,4 @@ void Student::showResults(string name, int log_per)
         cout << "Subject Marks doesn't Exist!!" << endl;
     }
 }
+
