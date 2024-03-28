@@ -63,8 +63,8 @@ void Teacher::teach_home()
                     {
                         found = true;
                         Marks student;
-                        student.enterMarks(serialNumber, esem, sname);
-                        student.change_marks(serialNumber, sname);
+                        student.marks_init(serialNumber, esem, sname);
+                        student.enter_marks(serialNumber, sname);
                     }
                 }
                 dataFile.close();
@@ -442,30 +442,7 @@ void Teacher::change_marks()
     }
 }
 
-int Marks::get_rno(int gsno)
-{
-    ifstream dataFile("../Files/Student_data.txt");
-    int sno, rno;
-    string name, branch;
-    int section;
-
-    while (dataFile >> sno >> rno >> name >> branch >> section)
-    {
-        if (sno == gsno)
-        {
-            dataFile.close();
-            return rno;
-        }
-    }
-
-    // Close the file after use
-    dataFile.close();
-
-    // If the loop completes without finding the roll number, return 0
-    return 0;
-}
-
-void Marks::enterMarks(int sno, int sem, string sname)
+void Marks::marks_init(int sno, int sem, string sname)
 {
 
     ofstream MarksFile("../Files/Student_Marks1.txt", ios::app);
@@ -479,7 +456,7 @@ void Marks::enterMarks(int sno, int sem, string sname)
     // cout << "Marks written  successfully." << endl;
 }
 
-void Marks::change_marks(int gsno, string esname)
+void Marks::enter_marks(int gsno, string esname)
 {
 
     ifstream marksFile("../Files/Student_marks1.txt");
@@ -555,126 +532,6 @@ void Marks::change_marks(int gsno, string esname)
     {
         cout << "Students not found for the specified Branch And Section." << endl;
     }
-}
-
-void Results::result_page()
-{
-    int choice;
-    system("CLS");
-    cout << "Results : " << endl
-         << "1. Particular Student" << endl
-         << "2. Particular Subject" << endl
-         << "3. Particular Branch" << endl
-         << "4. Back" << endl
-         << endl;
-
-    cout << "How do yoy want to see Results : ";
-    cin >> choice;
-    result_find(choice);
-}
-
-void Results::result_find(int choice)
-{
-
-    int roll_num, section, log_per, in_rno, sem;
-    string name, branch;
-    Teacher teacher;
-    bool matched = false;
-
-    ifstream datafile("../Files/Student_data.txt");
-    ifstream subfile("../Files/Subject_data.txt");
-
-    switch (choice)
-    {
-    case 1:
-    {
-        cout << "Enter Roll Number of Student : ";
-        cin >> in_rno;
-        cout << "Semester : ";
-        cin >> sem;
-        while (datafile >> log_per >> roll_num >> name >> branch >> section)
-        {
-
-            if (roll_num == in_rno)
-            {
-                matched = true;
-                showResults(roll_num, section, log_per, sem, name, branch);
-            }
-        }
-        datafile.close();
-
-        if (matched == false)
-            cout << "Student Not Found" << endl;
-        cout << endl
-             << "Enter any Key to Continue";
-        cin.get();
-        cin.ignore();
-        system("CLS");
-        break;
-    }
-    case 2:
-    {
-        string sub_code, sub_name, isub_code, stud_branch;
-        bool matched = false;
-        Teacher teacher;
-        int sem, cred, unq_num, sec;
-        cout << "Enter Subject Code : ";
-        cin >> isub_code;
-
-        while (subfile >> sem >> branch >> sub_name >> sub_code >> sem)
-        {
-
-            if (sub_code == isub_code)
-            {
-                matched = true;
-                teacher.showResults(sub_name);
-            }
-        }
-
-        if (matched == false)
-            cout << "Student Not Found" << endl;
-        cout << endl
-             << "Enter any Key to Continue";
-        cin.get();
-        cin.ignore();
-        system("CLS");
-
-        break;
-    }
-    case 3:
-        teacher.branch_result();
-        break;
-
-    case 4: // Go BAck
-        system("CLS");
-        break;
-
-    default:
-        break;
-    }
-}
-
-void Teacher::branch_result()
-{
-    system("CLS");
-    string branch, in_branch;
-    int log_per, sem, in_section, sec;
-    string name;
-    cout << "Enter Branch : ";
-    cin >> in_branch;
-    cout << "Enter Section : ";
-    cin >> in_section;
-
-    ifstream studfile("../Files/Student_data.txt");
-
-    while (studfile >> log_per >> sem >> name >> branch >> sec)
-    {
-        if (sec == in_section && branch == in_branch)
-        {
-            showResults(log_per, branch);
-        }
-    }
-    studfile.close();
 }
 
 
