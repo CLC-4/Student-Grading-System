@@ -29,6 +29,7 @@ void Teacher::teach_home()
         student_entry(); // Call the function for student entry
         break;
     case 3:
+    
         system("CLS");
         {
             
