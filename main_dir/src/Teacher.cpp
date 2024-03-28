@@ -790,7 +790,66 @@ void Teacher::per_find(int unq_num)
     datafile.close();
 }
 
-void Teacher::branch_result(){
+void Teacher::branch_result()
+{
+    system("CLS");
+    string branch, in_branch;
+    int log_per, sem, in_section, sec;
+    string name, branch;
+    cout << "Enter Branch : ";
+    cin >> in_branch;
+    cout << "Enter Section : ";
+    cin >> in_section;
 
-    
+    ifstream studfile("Student_data.txt");
+
+    while (studfile >> log_per >> sem >> name >> branch >> sec)
+    {
+        if (sec == in_section && branch == in_branch)
+        {
+            showResults(log_per, branch);
+        }
+    }
+    studfile.close();
+}
+
+void Teacher::showResults(int log_per, string branch)
+{
+
+    system("CLS");
+    cout << "Here is the Result of : " << branch << endl
+         << "-------------------------------------------------------------------------------" << endl;
+
+    ifstream sem_m("../Files/Student_marks1.txt");
+    if (!sem_m.is_open())
+    {
+        cout << "Error opening file." << endl;
+        return;
+    }
+
+    int unq_num;
+    bool matched = false;
+
+    string subject;
+    double minor1, minor2, internal, major, total;
+    int sem;
+    string grades;
+
+    cout << setw(5) << left << "SNo." << setw(14) << "Roll_Number" << setw(15) << "Name" << setw(10) << "Total" << endl;
+    cout << "-------------------------------------------------------------------------------" << endl;
+    int i = 1;
+    while (sem_m >> unq_num >> sem >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
+    {
+
+        if (unq_num == log_per)
+        {
+
+            matched = true;
+
+            cout << setw(5) << i++;
+            per_find(unq_num);
+            cout << left << setw(10) << total << endl;
+        }
+    }
+    sem_m.close();
 }

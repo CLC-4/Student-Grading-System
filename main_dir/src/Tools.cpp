@@ -68,3 +68,27 @@ int Tools::get_total(){
 string Tools::get_grade(){
     return grade;
 }
+
+int Tools::sgpa_cal(int in_sem){
+  
+    ifstream subFile("../Files/Subject_data.txt");
+    int sem, cred;
+    string subname, code;
+    while (subFile >> sem >> subname >> code >> cred)
+    {
+        if (sem == in_sem)
+        {
+            total_cred = total_cred + cred;
+        }
+        else
+        {
+            cout << "incorrect code" << endl;
+        }
+    }
+
+    // Close the file after use
+    subFile.close();
+  
+}
+
+

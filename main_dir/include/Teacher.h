@@ -12,6 +12,7 @@ class Tools{
     protected:
     float total;
     string grade;
+    float total_cred;
     
 public:
    Tools():total(0),grade("F"){};
@@ -20,6 +21,7 @@ public:
    string grade_cal(int);
    int get_total();
    string get_grade();
+   int sgpa_cal();
 };
 
 
@@ -61,6 +63,7 @@ public:
     string get_subname(int, string);
     void change_marks();
     void showResults(string);
+    void showResults(int,string);
     void per_find(int);
     void branch_result();
     // void branch_result();
