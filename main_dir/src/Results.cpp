@@ -213,7 +213,7 @@ void Results::showResults(string name, int log_per)
                  << setw(12) << "Minor2" << setw(5) << minor2 << endl
                  << setw(12) << "Internal" << setw(5) << internal << endl
                  << setw(12) << "Major" << setw(5) << major << endl
-                 << setw(12) << "Total" << setw(5) << total << endl
+                 << setw(12) << "teach_home" << setw(5) << total << endl
                  << setw(12) << "Grades" << setw(5) << grades << endl;
         }
     }
