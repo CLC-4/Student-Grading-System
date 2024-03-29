@@ -1,4 +1,5 @@
 3 233020 Anshdeep CSE 1
-4 233022 Batman CSE 1
-6 233027 Bhupesh IT 1
-5 233050 Aman IT 1
+5 233096 Aniket CSE 2
+6 233098 Rahul CSE 2
+7 233099 Shyam CSE 2
+4 233027 Bhupesh IT 1

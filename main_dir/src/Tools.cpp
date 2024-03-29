@@ -325,7 +325,7 @@ int Tools :: Sort :: countMaxStudents() {
         return 0;
     }
 
-    int count = 0;
+    int count = 3;
     string line;
     while (getline(inputFile, line)) {
         count++;

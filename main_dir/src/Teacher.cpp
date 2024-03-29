@@ -3,12 +3,10 @@
 #include <string>
 using namespace std;
 
-
-
 void Teacher::teach_home()
 {
     int choice;
-
+do{
     cout << "Menu:" << endl;
     cout << "1. Requests" << endl;
     cout << "2. Student Entry" << endl;
@@ -26,234 +24,199 @@ void Teacher::teach_home()
         break;
     case 2:
         system("CLS");
-        student_entry(); // Call the function for student entry
+        student_entry();
         break;
     case 3:
 
         system("CLS");
-        {
-
-            bool found = false;
-
-            do
-            {
-                cout << "Enter Subject Code:";
-                string ecode;
-                cin >> ecode;
-                cout << "Enter Branch:";
-                string ebranch;
-                cin >> ebranch;
-                cout << "Enter Semester:";
-                int esem;
-                cin >> esem;
-                cout << "Enter Section:";
-                int esecname;
-                cin >> esecname;
-                string sname = get_subname(esem, ecode, ebranch);
-                
-                // Call the sort_branch function
-                Tools:: Sort sorter;
-                sorter.sort_branch();
-
-
-                ifstream dataFile("../Files/Student_data.txt");
-
-                int serialNumber, rollNum;
-                string name, branch, line;
-                int section;
-
-                while (dataFile >> serialNumber >> rollNum >> name >> branch >> section)
-                {
-                    if (branch == ebranch && section == esecname)
-                    {
-                        found = true;
-                        Marks student;
-                        student.marks_init(serialNumber, esem, sname);
-                        student.enter_marks(serialNumber, sname);
-                        cout<<"enter 1 to exit: ";
-                        int ter;
-                        cin>>ter;
-                        if(ter==1){
-                            break;
-                        }
-                    }
-                }
-                dataFile.close();
-
-            } while (found != true);
-        }
+        marks_editor();
         break;
 
     case 4:
         cout << "You selected Result" << endl;
         result_page();
-        teach_home();
-        // Add code to perform Option 1 action
-        break;
-    case 5:
-        system("CLS");
         break;
     default:
         cout << "Invalid choice. Please try again." << endl;
         break;
     }
+}while(choice!=5);
 }
 
 void Teacher::student_entry()
 {
     int entryChoice;
-    cout << "Student Entry :" << endl;
-    cout << "1. New" << endl;
-    cout << "2. Delete" << endl;
-    cout << "3. Modify" << endl;
-    cout << "4. Go back" << endl;
-    cout << "Enter your choice: ";
-    cin >> entryChoice;
-
-    switch (entryChoice)
+    do
     {
-    case 1:
-        system("CLS");
-        cout << "New Student Entry :" << endl;
-        cout << "1. Normal" << endl;
-        cout << "2. Set Default" << endl;
-        cout << "Enter your choice: ";
-        int choice;
-        cin >> choice;
 
-        switch (choice)
+        cout << "Student Entry :" << endl;
+        cout << "1. New" << endl;
+        cout << "2. Delete" << endl;
+        cout << "3. Modify" << endl;
+        cout << "4. Go back" << endl;
+        cout << "Enter your choice: ";
+        cin >> entryChoice;
+
+        switch (entryChoice)
         {
         case 1:
-        {
-            system("CLS");
-            cout << "New Student Entry :" << endl;
-            sno = sno_upd();
-            // cout << "Enter Serial Number: ";
-            // int serialNumber;
-            // cin >> serialNumber;
-            cout << "Enter Roll Number: ";
-            int rollNum;
-            cin >> rollNum;
-            cout << "Enter Name: ";
-            string name;
-            cin >> name;
-            cout << "Enter Branch: ";
-            string branch;
-            cin >> branch;
-            cout << "Enter Section: ";
-            int section;
-            cin >> section;
-
-            // Save data to file
-            ofstream outFile("../Files/Student_data.txt", ios::app); // Open file in append mode
-            if (outFile.is_open())
-            {
-                outFile << sno << " " << rollNum << " " << name << " " << branch << " " << section << endl;
-                outFile.close();
-                cout << "Student data saved successfully." << endl;
-                gen_cred(rollNum, name);
-            }
-            else
-            {
-                cout << "Unable to open file." << endl;
-            }
+            new_entry();
             break;
-        }
+
         case 2:
-
             system("CLS");
-            {
-                // cout << "You selected Set Default" << endl;
-                cout << "Set default Branch :";
-                string DefaultBranch;
-                cin >> DefaultBranch;
-                cout << "Set default Section :";
-                int DefaultSection;
-                cin >> DefaultSection;
-                cout << "Number of entries :";
-                int n;
-                cin >> n;
-                for (int i = 1; i <= n; i++)
-                {
-
-                    cout << "New Student Entry :" << endl;
-                    sno = sno_upd();
-                    // cout << "Enter Serial Number: ";
-                    // int serialNumber;
-                    // cin >> serialNumber;
-                    cout << "Enter Roll Number: ";
-                    int rollNum;
-                    cin >> rollNum;
-                    cout << "Enter Name: ";
-                    string name;
-                    cin >> name;
-                    cout << "Enter Branch: ";
-
-                    string branch;
-                    branch = DefaultBranch;
-
-                    int section;
-                    section = DefaultSection;
-
-                    // Save data to file
-                    ofstream outFile("../Files/Student_data.txt", ios::app); // Open file in append mode
-                    if (outFile.is_open())
-                    {
-                        outFile << sno << " " << rollNum << " " << name << " " << branch << " " << section << endl;
-                        outFile.close();
-                        cout << "Student data saved successfully." << endl;
-                        gen_cred(rollNum, name);
-                    }
-                    else
-                    {
-                        cout << "Unable to open file." << endl;
-                    }
-                }
-            }
+            delete_entry();
             break;
-        default:
-            cout << "Invalid choice. Please try again." << endl;
-            break;
-        }
-        break;
-
-    case 2:
-        system("CLS");
-        // cout << "You selected Delete" << endl;
-        delete_entry();
-
-        break;
-    case 3:
-        system("CLS");
-
-        do
-        {
-            cout << "Modify :" << endl;
-            cout << "1. Student Details" << endl;
-            cout << "2. Marks" << endl;
-            cout << "3. Go back" << endl;
+        case 3:
+            
+            int choice;
             do
             {
+                system("CLS");
+                cout << "Modify :" << endl;
+                cout << "1. Student Details" << endl;
+                cout << "2. Marks" << endl;
+                cout << "3. Go back" << endl;
+
                 cout << "Enter your choice :";
                 cin >> choice;
                 switch (choice)
                 {
                 case 1:
                     modify_entry();
+                    cout << "Press Enter to Continue";
+                    cin.ignore();
+                    cin.get();
+                    break;
                 case 2:
                     change_marks();
-                case 3:
-                // Go back
+                    cout << "Press Enter to Continue";
+                    cin.ignore();
+                    cin.get();
+                    break;
                 default:
                     cout << "Please enter valid choice" << endl;
+                    break;
                 }
-            } while (choice != 1 || choice != 2);
-        } while (choice != 3);
+
+            } while (choice != 3);
+
+            break;
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+            break;
+        }
+
+    } while (entryChoice != 4);
+}
+
+void Teacher::new_entry()
+{
+    system("CLS");
+    cout << "New Student Entry :" << endl;
+    cout << "1. Normal" << endl;
+    cout << "2. Set Default" << endl;
+    cout << "3. Go Back" << endl;
+    cout << "Enter your choice: ";
+    int choice;
+    cin >> choice;
+
+    switch (choice)
+    {
+    case 1:
+    {
+        system("CLS");
+        cout << "New Student Entry :" << endl;
+        sno = sno_upd();
+        cout << "Enter Roll Number: ";
+        int rollNum;
+        cin >> rollNum;
+        cout << "Enter Name: ";
+        string name;
+        cin >> name;
+        cout << "Enter Branch: ";
+        string branch;
+        cin >> branch;
+        cout << "Enter Section: ";
+        int section;
+        cin >> section;
+
+        // Save data to file
+        ofstream outFile("../Files/Student_data.txt", ios::app); // Open file in append mode
+        if (outFile.is_open())
+        {
+            outFile << sno << " " << rollNum << " " << name << " " << branch << " " << section << endl;
+            outFile.close();
+            cout << "Student data saved successfully." << endl;
+            gen_cred(rollNum, name);
+            cout << "Enter any key to Proceed!!";
+            cin.ignore(); // Ignore newline character
+            cin.get();
+            system("CLS");
+        }
+        else
+        {
+            system("CLS");
+            cout << "Unable to open file." << endl;
+        }
 
         break;
-    case 4:
+    }
+    case 2:
+
         system("CLS");
-        teach_home();
+        {
+            // cout << "You selected Set Default" << endl;
+            cout << "Set default Branch :";
+            string DefaultBranch;
+            cin >> DefaultBranch;
+            cout << "Set default Section :";
+            int DefaultSection;
+            cin >> DefaultSection;
+            cout << "Number of entries :";
+            int n;
+            cin >> n;
+            for (int i = 1; i <= n; i++)
+            {
+
+                cout << "New Student Entry :" << endl;
+                sno = sno_upd();
+                cout << "Enter Roll Number: ";
+                int rollNum;
+                cin >> rollNum;
+                cout << "Enter Name: ";
+                string name;
+                cin >> name;
+                cout << "Enter Branch: ";
+
+                string branch;
+                branch = DefaultBranch;
+
+                int section;
+                section = DefaultSection;
+
+                // Save data to file
+                ofstream outFile("../Files/Student_data.txt", ios::app); // Open file in append mode
+                if (outFile.is_open())
+                {
+                    outFile << sno << " " << rollNum << " " << name << " " << branch << " " << section << endl;
+                    outFile.close();
+                    cout << "Student data saved successfully." << endl
+                         << endl;
+                    gen_cred(rollNum, name);
+                }
+                else
+                {
+                    system("CLS");
+                    cout << "Unable to open file." << endl;
+                    break;
+                }
+            }
+            cout << "Enter any key to Proceed!!";
+            cin.ignore(); // Ignore newline character
+            cin.get();
+            system("CLS");
+        }
         break;
     default:
         cout << "Invalid choice. Please try again." << endl;
@@ -263,64 +226,97 @@ void Teacher::student_entry()
 
 void Teacher::delete_entry()
 {
-    int rollNumToDelete;
+    int del_rnum;
     cout << "Enter Roll Number of the student to delete: ";
-    cin >> rollNumToDelete;
+    cin >> del_rnum;
 
     ifstream dataFile("../Files/Student_data.txt");
     ofstream tempDataFile("../Files/temp_data.txt");
     ifstream credFile("../Files/Credentials.txt");
     ofstream tempCredFile("../Files/temp_cred.txt");
-    int serialNumber, rollNum;
-    string name, branch, line;
+    ifstream marksFile("../Files/Student_marks1.txt");
+    ofstream tempMarksFile("../Files/temp_marks1.txt");
+    int sno, roll_num;
+    string name, branch;
     int section;
     bool roll_match_d = false;
     bool roll_match_c = false;
+    bool roll_match_m = false;
 
-    while (dataFile >> serialNumber >> rollNum >> name >> branch >> section)
+    while (dataFile >> sno >> roll_num >> name >> branch >> section)
     {
-        if (rollNum == rollNumToDelete)
+        if (roll_num == del_rnum)
         {
             roll_match_d = true;
         }
         else
         {
             if (roll_match_d)
-                serialNumber--;
-            tempDataFile << serialNumber << " " << rollNum << " " << name << " " << branch << " " << section << endl; // Write to temporary data file
+                sno--;
+            tempDataFile << sno << " " << roll_num << " " << name << " " << branch << " " << section << endl; // Write to temporary data file
         }
     }
     dataFile.close();
     tempDataFile.close();
     // Remove corresponding entry from credentials file
-    while (credFile >> serialNumber >> rollNum >> name)
+    while (credFile >> sno >> roll_num >> name)
     {
-        if (rollNum == rollNumToDelete)
+        if (roll_num == del_rnum)
         {
             roll_match_c = true;
         }
         else
         {
             if (roll_match_c)
-                serialNumber--;
-            tempCredFile << serialNumber << " " << rollNum << " " << name << endl; // Write to temporary data file
+                sno--;
+            tempCredFile << sno << " " << roll_num << " " << name << endl; // Write to temporary data file
         }
     }
     credFile.close();
     tempCredFile.close();
-    if (roll_match_c && roll_match_d)
+
+    int unq_num;
+    bool sno_matched = false;
+
+    string subject;
+    double minor1, minor2, internal, major, total;
+    int sem;
+    string grades;
+
+    while (marksFile >> unq_num >> sem >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
     {
-        remove("../Files/Student_data.txt");                           // Remove the original data file
-        rename("../Files/temp_data.txt", "../Files/Student_data.txt"); // Rename the temporary data file
-        remove("../Files/Credentials.txt");                            // Remove the original credentials file
-        rename("../Files/temp_cred.txt", "../Files/Credentials.txt");  // Rename the temporary credentials file
-        cout << "Student with Roll Number " << rollNumToDelete << " deleted successfully." << endl;
+        roll_num = get_rno(unq_num);
+        if (roll_num == del_rnum)
+        {
+            roll_match_m = true;
+        }
+        else
+        {
+            if (roll_match_m)
+                unq_num--;
+            tempMarksFile << unq_num << " " << sem << " " << subject << " " << minor1 << " " << minor2 << " " << internal << " " << major << " " << total << " " << grades << endl; // Write to temporary data file
+        }
+    }
+    marksFile.close();
+    tempMarksFile.close();
+
+    if (roll_match_c && roll_match_d && roll_match_m)
+    {
+        remove("../Files/Student_data.txt");                               // Remove the original data file
+        rename("../Files/temp_data.txt", "../Files/Student_data.txt");     // Rename the temporary data file
+        remove("../Files/Credentials.txt");                                // Remove the original credentials file
+        rename("../Files/temp_cred.txt", "../Files/Credentials.txt");      // Rename the temporary credentials file
+        remove("../Files/Student_marks1.txt");                             // Remove the original marks file
+        rename("../Files/temp_marks1.txt", "../Files/Student_marks1.txt"); // Rename the temporary marks file
+
+        cout << "Student with Roll Number " << del_rnum << " deleted successfully." << endl;
     }
 
     else
     {
-        cout << "Student with Roll Number " << rollNumToDelete << " not found." << endl;
+        cout << "Student with Roll Number " << del_rnum << " not found." << endl;
     }
+    system("CLS");
 }
 
 void Teacher::modify_entry()
@@ -332,13 +328,13 @@ void Teacher::modify_entry()
     ifstream dataFile("../Files/Student_data.txt");
     ofstream tempDataFile("../Files/temp_data.txt");
 
-    int serialNumber, rollNum;
+    int sno, rollNum;
     string name, branch, line;
     int section;
 
     bool found = false;
 
-    while (dataFile >> serialNumber >> rollNum >> name >> branch >> section)
+    while (dataFile >> sno >> rollNum >> name >> branch >> section)
     {
         if (rollNum == rollNumToModify)
         {
@@ -350,11 +346,11 @@ void Teacher::modify_entry()
             getline(cin, branch);
             cout << "Enter New Section: ";
             cin >> section;
-            tempDataFile << serialNumber << " " << rollNum << " " << name << " " << branch << " " << section << endl; // Write modified data
+            tempDataFile << sno << " " << rollNum << " " << name << " " << branch << " " << section << endl; // Write modified data
         }
         else
         {
-            tempDataFile << serialNumber << " " << rollNum << " " << name << " " << branch << " " << section << endl; // Write unchanged data
+            tempDataFile << sno << " " << rollNum << " " << name << " " << branch << " " << section << endl; // Write unchanged data
         }
     }
 
@@ -374,7 +370,7 @@ void Teacher::modify_entry()
     }
 }
 
-void Teacher::change_marks()
+void Marks::change_marks()
 {
 
     cout << "Enter Roll Number: ";
@@ -453,6 +449,60 @@ void Teacher::change_marks()
     }
 }
 
+void Marks::marks_editor()
+{
+
+    bool found = false;
+
+    do
+    {
+        cout << "Enter Subject Code:";
+        string ecode;
+        cin >> ecode;
+        cout << "Enter Branch:";
+        string ebranch;
+        cin >> ebranch;
+        cout << "Enter Semester:";
+        int esem;
+        cin >> esem;
+        cout << "Enter Section:";
+        int esecname;
+        cin >> esecname;
+        string sname = get_subname(esem, ecode, ebranch);
+
+        // Call the sort_branch function
+        Tools::Sort sorter;
+        sorter.sort_branch();
+
+        ifstream dataFile("../Files/Student_data.txt");
+
+        int sno, rollNum;
+        string name, branch, line;
+        int section;
+
+        while (dataFile >> sno >> rollNum >> name >> branch >> section)
+        {
+            if (branch == ebranch && section == esecname)
+            {
+                found = true;
+                Marks student;
+                student.marks_init(sno, esem, sname);
+                student.enter_marks(sno, sname);
+                cout << "Enter (1. Exit) (2. Continue) : ";
+                int ter;
+                cin >> ter;
+                if (ter == 1)
+                {
+                    system("CLS");
+                    break;
+                }
+            }
+        }
+        dataFile.close();
+
+    } while (found != true);
+}
+
 void Marks::marks_init(int sno, int sem, string sname)
 {
 
@@ -516,7 +566,7 @@ void Marks::enter_marks(int gsno, string esname)
                 // Calculate the new total and grade
                 total = total_cal(m1, m2, in, M);
                 grade = grd_cal(total);
-                fail(total,M,sname,sno);
+                fail(total, M, sname, sno);
                 // Update the grade based on total (your grading logic here)
 
                 // Write modified data to temporary file
@@ -544,5 +594,3 @@ void Marks::enter_marks(int gsno, string esname)
         cout << "Students not found for the specified Branch And Section." << endl;
     }
 }
-
-
