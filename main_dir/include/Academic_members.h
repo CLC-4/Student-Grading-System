@@ -53,7 +53,7 @@ public:
     void change_marks();
 };
 
-class Student : public Teacher
+class Student : public Results
 {
     int option;
     int semester;

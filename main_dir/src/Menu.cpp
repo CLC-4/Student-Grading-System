@@ -70,6 +70,11 @@ void Menu::choice_exe(Admin &admin, Login &login, Teacher &teacher, Student &stu
         system("CLS");
         cout << "Welcome to Public Helpdesk Page!" << endl;
         pub.pub_home();
+
+        // Now furthur code runs if public_login returns,(Invalid Credentials)
+        show_menu();
+        get_choice();
+        choice_exe(admin, login, teacher, student, pub);
         break;
 
     default:
