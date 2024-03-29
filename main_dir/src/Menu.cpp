@@ -98,7 +98,7 @@ void Menu::admin_login(Admin &admin, Login &login)
             cin.get();
             system("CLS"); // Clears the screen
 
-            admin.admin_home(); // If correct login details, directed to admin_home.
+           // admin.admin_home(); // If correct login details, directed to admin_home.
         }
         else
         {

@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 #include <iomanip>
-#include"Tools.h"
+#include "Tools.h"
 
 using namespace std;
 
@@ -17,13 +17,13 @@ public:
     void result_page();
     void result_find(int);
     void branch_result();
-    void student_res(ifstream&);
-    void subject_res(ifstream&);
+    void student_res(ifstream &);
+    void subject_res(ifstream &);
     // Focus on Student
     void showResults(int, int, int, int, string, string);
     void showResults(string, int);
     // Focus on Teacher
-    
+
     void showResults(string);
     void showResults(int, string);
 };
@@ -35,6 +35,9 @@ protected:
 
 public:
     Marks() : m1(0), m2(0), mj(0), in(0) {}
+
+    void marks_editor();
+    void change_marks();
     void marks_init(int, int, string);
     void enter_marks(int, string);
 };
@@ -47,20 +50,19 @@ class Teacher : public Marks, public Results
 public:
     void teach_home();
     void student_entry();
+    void new_entry();
     void delete_entry();
     void modify_entry();
-    void enter_marks();
-    void change_marks();
 };
 
 class Student : public Results
 {
     int option;
     int semester;
+
 public:
-    void displayMenu(int); 
-    void findResults(int, int); 
-    
+    void displayMenu(int);
+    void findResults(int, int);
 };
 
 #endif
