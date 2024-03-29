@@ -50,6 +50,11 @@ void Teacher::teach_home()
                 int esecname;
                 cin >> esecname;
                 string sname = get_subname(esem, ecode, ebranch);
+                
+                // Call the sort_branch function
+                Tools:: Sort sorter;
+                sorter.sort_branch();
+
 
                 ifstream dataFile("../Files/Student_data.txt");
 
@@ -65,6 +70,12 @@ void Teacher::teach_home()
                         Marks student;
                         student.marks_init(serialNumber, esem, sname);
                         student.enter_marks(serialNumber, sname);
+                        cout<<"enter 1 to exit: ";
+                        int ter;
+                        cin>>ter;
+                        if(ter==1){
+                            break;
+                        }
                     }
                 }
                 dataFile.close();

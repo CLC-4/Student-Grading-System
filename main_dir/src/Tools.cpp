@@ -223,3 +223,114 @@ void Tools::find_student(int unq_num)
     }
     datafile.close();
 }
+
+void Tools :: Sort ::sort(Sort branch[], int arrSize, string filename)
+{ 
+     // function for sorting data branchwise 
+    for(int i = 0; i<arrSize; i++){                          // This will take data branchwise and sort them and write them in the file itself
+    int j = i;
+        while(j>0 && branch[j].rno < branch[j-1].rno){
+            Sort temp = branch[j];
+            branch[j] = branch[j-1];
+            branch[j-1]= temp;
+            j--;
+        }
+    }
+    ofstream out(filename, ios::app);
+    for(int i=0; i<arrSize; i++){
+        out<<branch[i].sno<<" "<<branch[i].rno<<" "<<branch[i].name<<" "<<branch[i].branch<<" "<<branch[i].sec<<"\n";
+    }
+}
+
+
+void Tools :: Sort :: sort_branch(){                          //This function will group the data branch wise and then call the sorting function
+    string filename= "../Files/Student_data.txt";
+    Tools tools;
+    int i = 0, size = tools.sno_upd()-3;
+    int cse = 0, it = 0, ece = 0, eee  = 0, me = 0,  bio = 0;  //This is for no of entries in particular branch
+    ifstream in(filename);
+    
+    // Create arrays to store students for each branch using dynamic memory allocation
+    Sort* students = new Sort[size]; 
+    Sort* Cse = new Sort[size];
+    Sort* It = new Sort[size];
+    Sort* Ece = new Sort[size];
+    Sort* Eee = new Sort[size];
+    Sort* Me = new Sort[size];
+    Sort* Bio = new Sort[size];
+
+    while(in>>students[i].sno>>students[i].rno>>students[i].name>>students[i].branch>>students[i].sec){
+        // cout<<students[i].name;
+        if(students[i].branch == "CSE"){                  //Moving data branch wise to different array of objects
+            Cse[cse] = students[i];
+            cse++;
+            // cout<<"Cse  ";
+        }
+
+        else if(students[i].branch == "IT"){
+            It[it] = students[i];
+            it++;
+        }
+
+        else if(students[i].branch == "ECE"){
+            Ece[ece] = students[i];
+            ece++;
+        }
+
+        else if(students[i].branch == "EEE"){
+            Eee[eee] = students[i];
+            eee++;
+        }
+
+        else if(students[i].branch == "ME"){
+            Me[me] = students[i];
+            me++;
+        }
+
+        else if(students[i].branch == "BIO"){
+            Bio[bio] = students[i];
+            bio++;
+        }
+        else {
+            cout<<"Unkown branch was found, check again the data at line no "<<i+1;
+        }
+    }
+
+    in.close();
+    
+    ofstream out(filename);                             //Sorting the data for every branch created
+    sort(Cse, cse, filename);
+    sort(It, it, filename);
+    sort(Ece, ece, filename);
+    sort(Eee, eee, filename);
+    sort(Me, me, filename);
+    sort(Bio, bio, filename);
+
+    out.close();
+
+    // Free dynamically allocated memory
+    delete[] students;
+    delete[] Cse;
+    delete[] It;
+    delete[] Ece;
+    delete[] Eee;
+    delete[] Me;
+    delete[] Bio;
+
+}
+int Tools :: Sort :: countMaxStudents() {
+    ifstream inputFile("../Files/Student_data.txt");
+    if (!inputFile) {
+        cerr << "Error: Unable to open file! "<<endl;
+        return 0;
+    }
+
+    int count = 0;
+    string line;
+    while (getline(inputFile, line)) {
+        count++;
+    }
+
+    inputFile.close();
+    return count;
+}
