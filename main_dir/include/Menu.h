@@ -27,14 +27,10 @@ class Menu
 {
 
     int log_per;
-
-
     int option;
 
-public:
-    void show_menu();                                                                          // This function shows Menu
-    void get_choice();                                                                         // This function gets user choice
-    void choice_exe(Admin &admin, Login &login, Teacher &teacher, Student &student, Pub &pub); // This function executes users choice
+public:                                                                       // This function gets user choice
+    void home_page(Admin &admin, Login &login, Teacher &teacher, Student &student, Pub &pub); // This function executes users choice
     void admin_login(Admin &admin, Login &login);
     void teacher_login(Teacher &teacher, Login &login);
     void student_login(Student &student, Login &login);
