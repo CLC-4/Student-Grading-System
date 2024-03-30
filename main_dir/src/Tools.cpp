@@ -6,7 +6,7 @@ using namespace std;
 
 int Tools::sno = 0;
 
-//Marks Related Tools
+// Marks Related Tools
 
 int Tools::total_cal(float m1, float m2, float in, float mj)
 {
@@ -110,7 +110,7 @@ int Tools::total_grdpts()
     return 0;
 }
 
-//Other Tools
+// Other Tools
 
 void Tools::gen_cred(int rollnum, string name)
 {
@@ -224,81 +224,102 @@ void Tools::find_student(int unq_num)
     datafile.close();
 }
 
-void Tools :: Sort ::sort(Sort branch[], int arrSize, string filename)
-{ 
-     // function for sorting data branchwise 
-    for(int i = 0; i<arrSize; i++){                          // This will take data branchwise and sort them and write them in the file itself
-    int j = i;
-        while(j>0 && branch[j].rno < branch[j-1].rno){
+bool Tools::is_practical(string sub_name)
+{
+    int len = sub_name.length();
+    if (sub_name.substr(len - 2, len) == "_P")
+        return 1;
+    else
+        return 0;
+}
+
+// Sorting Tools
+void Tools ::Sort ::sort(Sort branch[], int arrSize, string filename)
+{
+    // function for sorting data branchwise
+    for (int i = 0; i < arrSize; i++)
+    { // This will take data branchwise and sort them and write them in the file itself
+        int j = i;
+        while (j > 0 && branch[j].rno < branch[j - 1].rno)
+        {
             Sort temp = branch[j];
-            branch[j] = branch[j-1];
-            branch[j-1]= temp;
+            branch[j] = branch[j - 1];
+            branch[j - 1] = temp;
             j--;
         }
     }
     ofstream out(filename, ios::app);
-    for(int i=0; i<arrSize; i++){
-        out<<branch[i].sno<<" "<<branch[i].rno<<" "<<branch[i].name<<" "<<branch[i].branch<<" "<<branch[i].sec<<"\n";
+    for (int i = 0; i < arrSize; i++)
+    {
+        out << branch[i].sno << " " << branch[i].rno << " " << branch[i].name << " " << branch[i].branch << " " << branch[i].sec << "\n";
     }
 }
 
-
-void Tools :: Sort :: sort_branch(){                          //This function will group the data branch wise and then call the sorting function
-    string filename= "../Files/Student_data.txt";
+void Tools ::Sort ::sort_branch()
+{ // This function will group the data branch wise and then call the sorting function
+    string filename = "../Files/Student_data.txt";
     Tools tools;
-    int i = 0, size = tools.sno_upd()-3;
-    int cse = 0, it = 0, ece = 0, eee  = 0, me = 0,  bio = 0;  //This is for no of entries in particular branch
+    int i = 0, size = tools.sno_upd() - 3;
+    int cse = 0, it = 0, ece = 0, eee = 0, me = 0, bio = 0; // This is for no of entries in particular branch
     ifstream in(filename);
-    
-    // Create arrays to store students for each branch using dynamic memory allocation
-    Sort* students = new Sort[size]; 
-    Sort* Cse = new Sort[size];
-    Sort* It = new Sort[size];
-    Sort* Ece = new Sort[size];
-    Sort* Eee = new Sort[size];
-    Sort* Me = new Sort[size];
-    Sort* Bio = new Sort[size];
 
-    while(in>>students[i].sno>>students[i].rno>>students[i].name>>students[i].branch>>students[i].sec){
+    // Create arrays to store students for each branch using dynamic memory allocation
+    Sort *students = new Sort[size];
+    Sort *Cse = new Sort[size];
+    Sort *It = new Sort[size];
+    Sort *Ece = new Sort[size];
+    Sort *Eee = new Sort[size];
+    Sort *Me = new Sort[size];
+    Sort *Bio = new Sort[size];
+
+    while (in >> students[i].sno >> students[i].rno >> students[i].name >> students[i].branch >> students[i].sec)
+    {
         // cout<<students[i].name;
-        if(students[i].branch == "CSE"){                  //Moving data branch wise to different array of objects
+        if (students[i].branch == "CSE")
+        { // Moving data branch wise to different array of objects
             Cse[cse] = students[i];
             cse++;
             // cout<<"Cse  ";
         }
 
-        else if(students[i].branch == "IT"){
+        else if (students[i].branch == "IT")
+        {
             It[it] = students[i];
             it++;
         }
 
-        else if(students[i].branch == "ECE"){
+        else if (students[i].branch == "ECE")
+        {
             Ece[ece] = students[i];
             ece++;
         }
 
-        else if(students[i].branch == "EEE"){
+        else if (students[i].branch == "EEE")
+        {
             Eee[eee] = students[i];
             eee++;
         }
 
-        else if(students[i].branch == "ME"){
+        else if (students[i].branch == "ME")
+        {
             Me[me] = students[i];
             me++;
         }
 
-        else if(students[i].branch == "BIO"){
+        else if (students[i].branch == "BIO")
+        {
             Bio[bio] = students[i];
             bio++;
         }
-        else {
-            cout<<"Unkown branch was found, check again the data at line no "<<i+1;
+        else
+        {
+            cout << "Unkown branch was found, check again the data at line no " << i + 1;
         }
     }
 
     in.close();
-    
-    ofstream out(filename);                             //Sorting the data for every branch created
+
+    ofstream out(filename); // Sorting the data for every branch created
     sort(Cse, cse, filename);
     sort(It, it, filename);
     sort(Ece, ece, filename);
@@ -316,18 +337,20 @@ void Tools :: Sort :: sort_branch(){                          //This function wi
     delete[] Eee;
     delete[] Me;
     delete[] Bio;
-
 }
-int Tools :: Sort :: countMaxStudents() {
+int Tools ::Sort ::countMaxStudents()
+{
     ifstream inputFile("../Files/Student_data.txt");
-    if (!inputFile) {
-        cerr << "Error: Unable to open file! "<<endl;
+    if (!inputFile)
+    {
+        cerr << "Error: Unable to open file! " << endl;
         return 0;
     }
 
     int count = 3;
     string line;
-    while (getline(inputFile, line)) {
+    while (getline(inputFile, line))
+    {
         count++;
     }
 

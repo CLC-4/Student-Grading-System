@@ -3,46 +3,49 @@ using namespace std;
 
 void Results::result_page()
 {
-    int choice;
-    system("CLS");
-    cout << "Results : " << endl
-         << "1. Particular Student" << endl
-         << "2. Particular Subject" << endl
-         << "3. Particular Branch" << endl
-         << "4. Back" << endl
-         << endl;
-
-    cout << "How do yoy want to see Results : ";
-    cin >> choice;
-    result_find(choice);
-}
-
-void Results::result_find(int choice)
-{
-    ifstream datafile("../Files/Student_data.txt");
-    ifstream subfile("../Files/Subject_data.txt");
-
-    switch (choice)
+    do
     {
-    case 1:
-        student_res(datafile);
-        break;
-    case 2:
-        subject_res(subfile);
-        break;
-    case 3:
-        branch_result();
-        break;
-    case 4:
-        system("CLS");
-        break;
-    default:
-        break;
-    }
+        cout << "Results : " << endl
+             << "1. Particular Student" << endl
+             << "2. Particular Subject" << endl
+             << "3. Particular Branch" << endl
+             << "4. Back" << endl
+             << endl;
 
-    datafile.close();
-    subfile.close();
+        cout << "How do yoy want to see Results : ";
+        cin >> choice;
+
+        ifstream datafile("../Files/Student_data.txt");
+        ifstream subfile("../Files/Subject_data.txt");
+
+        switch (choice)
+        {
+        case 1:
+            system("CLS");
+            student_res(datafile);
+            break;
+        case 2:
+            system("CLS");
+            subject_res(subfile);
+            break;
+        case 3:
+            system("CLS");
+            branch_result();
+            break;
+        case 4:
+            system("CLS");
+            return;
+        default:
+            system("CLS");
+            cout << "Invalid choice. Please try again." << endl;
+            break;
+        }
+
+        datafile.close();
+        subfile.close();
+    } while (1);
 }
+// Result Functions specific to Teacher only
 
 void Results::student_res(ifstream &datafile)
 {
@@ -66,14 +69,9 @@ void Results::student_res(ifstream &datafile)
 
     if (!matched)
     {
+        system("CLS");
         cout << "Student Not Found" << endl;
     }
-
-    cout << endl
-         << "Press any key to continue...";
-    cin.ignore();
-    cin.get();
-    system("CLS");
 }
 
 void Results::subject_res(ifstream &subfile)
@@ -90,44 +88,62 @@ void Results::subject_res(ifstream &subfile)
         if (sub_code == isub_code)
         {
             matched = true;
-            Teacher().showResults(sub_name);
+            showResults(sub_name);
         }
     }
 
-    if (!matched)
+    if (matched)
     {
-        cout << "Subject Not Found" << endl;
+        cout << "Press Enter to continue.." << endl;
+        cin.ignore();
+        cin.get();
+        system("CLS");
     }
-
-    cout << endl
-         << "Press any key to continue...";
-    cin.ignore();
-    cin.get();
-    system("CLS");
+    else
+    {
+        system("CLS");
+        cout << "Subject Marks doesn't Exist!!" << endl;
+    }
 }
 
 void Results::branch_result()
 {
     system("CLS");
-    string branch, in_branch;
-    int log_per, sem, in_section, sec;
-    string name;
+    string branch, in_branch,name;
+    int unq_num, roll_num, in_section, sec;
+   
     cout << "Enter Branch : ";
     cin >> in_branch;
     cout << "Enter Section : ";
     cin >> in_section;
-
+    bool matched = false;
     ifstream studfile("../Files/Student_data.txt");
 
-    while (studfile >> log_per >> sem >> name >> branch >> sec)
+    while (studfile >> unq_num >> roll_num >> name >> branch >> sec)
     {
         if (sec == in_section && branch == in_branch)
         {
-            showResults(log_per, branch);
+            matched = true;
+            showResults(unq_num, branch);
         }
     }
     studfile.close();
+
+    if (matched)
+    {
+        cout << "Press Enter to continue.." << endl;
+        cin.ignore();
+        cin.get();
+        system("CLS");
+    }
+    else
+    {
+        system("CLS");
+        cout << "Branch Marks doesn't Exist!!" << endl;
+    }
 }
+
+// Function For students
 
 void Results::showResults(int rno, int section, int log_per, int semester, string name, string branch)
 {
@@ -140,7 +156,7 @@ void Results::showResults(int rno, int section, int log_per, int semester, strin
     }
 
     int unq_num;
-    bool sno_matched = false;
+    bool found = false;
 
     string subject;
     double minor1, minor2, internal, major, total;
@@ -167,7 +183,7 @@ void Results::showResults(int rno, int section, int log_per, int semester, strin
         if (unq_num == log_per && sem == semester)
         {
 
-            sno_matched = true;
+            found = true;
             double length = subject.length();
             cout << setw(5) << i++ << left << setw(30) << subject.substr(0, 28) << setw(10) << minor1 << setw(10) << minor2 << setw(10) << internal << setw(10) << major << setw(10) << total << setw(10) << grades << endl;
 
@@ -183,6 +199,14 @@ void Results::showResults(int rno, int section, int log_per, int semester, strin
             }
         }
     }
+
+    if (!found)
+    {
+        cout << "No Record Found !!" << endl;
+    }
+    cout << "Press Enter to continue..";
+    cin.ignore();
+    cin.get();
 }
 
 void Results::showResults(string name, int log_per)
@@ -196,7 +220,7 @@ void Results::showResults(string name, int log_per)
 
     int unq_num;
     int sem;
-    bool matched = false;
+    bool found = false;
 
     string subject;
     double minor1, minor2, internal, major, total;
@@ -207,7 +231,7 @@ void Results::showResults(string name, int log_per)
 
         if (unq_num == log_per && subject == name)
         {
-            matched = true;
+            found = true;
 
             cout << left << setw(12) << "Minor1" << setw(5) << minor1 << endl
                  << setw(12) << "Minor2" << setw(5) << minor2 << endl
@@ -217,11 +241,16 @@ void Results::showResults(string name, int log_per)
                  << setw(12) << "Grades" << setw(5) << grades << endl;
         }
     }
-    if (!matched)
+    if (!found)
     {
         cout << "Subject Marks doesn't Exist!!" << endl;
     }
+    cout << "Press Enter to continue.." << endl;
+    cin.ignore();
+    cin.get();
 }
+
+// Functions For teachers
 
 void Results::showResults(string sub_name)
 {
@@ -238,7 +267,6 @@ void Results::showResults(string sub_name)
     }
 
     int unq_num;
-    bool sno_matched = false;
 
     string subject;
     double minor1, minor2, internal, major, total;
@@ -255,8 +283,6 @@ void Results::showResults(string sub_name)
         if (subject == sub_name)
         {
 
-            sno_matched = true;
-
             cout << setw(5) << i++;
             find_student(unq_num);
             cout << left << setw(10) << minor1 << setw(10) << minor2 << setw(10) << internal << setw(10) << major << setw(10) << total << setw(10) << grades << endl;
@@ -265,7 +291,7 @@ void Results::showResults(string sub_name)
     sem_m.close();
 }
 
-void Results::showResults(int log_per, string branch)
+void Results::showResults(int g_unq, string branch)
 {
 
     system("CLS");
@@ -280,7 +306,6 @@ void Results::showResults(int log_per, string branch)
     }
 
     int unq_num;
-    bool matched = false;
 
     string subject;
     double minor1, minor2, internal, major, total;
@@ -293,11 +318,8 @@ void Results::showResults(int log_per, string branch)
     while (marksfile >> unq_num >> sem >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
     {
 
-        if (unq_num == log_per)
+        if (unq_num == g_unq)
         {
-
-            matched = true;
-
             cout << setw(5) << i++;
             find_student(unq_num);
             cout << left << setw(10) << total << endl;

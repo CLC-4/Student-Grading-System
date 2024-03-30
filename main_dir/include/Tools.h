@@ -8,7 +8,7 @@ using namespace std;
 
 class Tools
 {
-    
+
 protected:
     float total;
     std::string grade;
@@ -16,18 +16,17 @@ protected:
     static int sno;
 
 public:
-
-class Sort {                                        // class for getting data     from file
-        public:
+    class Sort
+    { // class for getting data     from file
+    public:
         int sno, rno, sec;
         string branch, name;
-        void sort( Sort* ,int,string);
+        void sort(Sort *, int, string);
         void sort_branch();
         int countMaxStudents();
-
     };
     // Constructor
-    Tools() : total(0), grade("F") {}
+    Tools() : total(-1), grade("F") {}
 
     // Marks Related Tools
     int total_cal(float, float, float, float);
@@ -45,6 +44,7 @@ class Sort {                                        // class for getting data   
     void gen_cred(int, string);
     void find_student(int);
     string get_subname(int, string, string);
+    bool is_practical(string);
 };
 
 #endif
