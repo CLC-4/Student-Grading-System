@@ -17,7 +17,7 @@ int choice;
 protected:
 
     // Result Menus
-    void result_page();
+    
     void branch_result();
     void student_res(ifstream &);
     void subject_res(ifstream &);
@@ -52,6 +52,8 @@ int option;
 
 public:
     void teach_home();
+    void result_page();
+    void displayFailed();
     void student_entry();
     void new_entry();
     void delete_entry();

@@ -30,11 +30,11 @@ public:
 
     // Marks Related Tools
     int total_cal(float, float, float, float);
-    int grdpt_cal(int);
+    int grdpt_cal(int,bool);
     int sgpa_cal(int);
     int total_grdpts();
     void fail(int, int, string, int);
-    string grd_cal(int);
+    string grd_cal(int,int,bool);
 
     // Other Tools
 

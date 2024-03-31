@@ -14,7 +14,7 @@ int main()
     Login login;
     Teacher teacher;
     Student student;
-    Pub pub;                                  
+    Public pub;                                  
     menu.home_page(admin, login, teacher, student, pub); // Calls home_page function from Menu class.                                             
     return 0;
 }

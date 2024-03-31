@@ -10,14 +10,23 @@ int Tools::sno = 0;
 
 int Tools::total_cal(float m1, float m2, float in, float mj)
 {
-    float minor = m1 > m2 ? m1 : m2;
+
+    float minor = m1 >= m2 ? m1 : m2;
     total = minor + in + mj;
+
     return total;
 }
 
-string Tools::grd_cal(int total)
+string Tools::grd_cal(int total, int mj, bool practical)
 {
-    if (total >= 90)
+
+    if (practical)
+    {
+        total = total * 2;
+    }
+    if (mj < 10 && !practical)
+        return "F";
+    else if (total >= 90)
         return "A+";
     else if (total >= 80 && total < 90)
         return "A";
@@ -37,8 +46,12 @@ string Tools::grd_cal(int total)
         return "F";
 }
 
-int Tools::grdpt_cal(int total)
+int Tools::grdpt_cal(int total, bool practical)
 {
+    if (practical)
+    {
+        total = total * 2;
+    }
     if (total >= 90)
         return 10;
     else if (total >= 80 && total < 90)
@@ -68,22 +81,35 @@ void Tools::fail(int total, int major, string subname, int stud_num)
         cout << "Error opening fail file." << endl;
         return;
     }
-
-    int rstud_num, rtotal, rmajor;
-    string rsub_name;
-
-    while (failFile >> rstud_num >> rsub_name >> rtotal >> rmajor)
+    ofstream tempfile("../Files/tempfail.txt");
+    if (!tempfile.is_open())
     {
-        if (rstud_num == stud_num && rsub_name == subname)
+        cout << "Error opening temp file." << endl;
+        return;
+    }
+    int frno, fmj, ftotal;
+    string fsub;
+    int roll_num = get_rno(stud_num);
+    while (failFile >> frno >> fsub >> fmj >> ftotal)
+    {
+        if (frno == roll_num && fsub == subname)
         {
-            return;
+            continue;
+        }
+        else
+        {
+            failFile << frno << " " << fsub << " " << fmj << " " << ftotal << endl;
         }
     }
+    remove("../Files/fail.txt");
+    rename("../Files/tempfail.txt", "../Files/fail.txt");
 
     if (total < 40 || major < 10)
     {
-        failFile << stud_num << subname << total << major;
+        cout << "hi";
+        failFile << roll_num << " " << subname << " " << major << " " << total << endl;
     }
+    failFile.close();
 }
 
 int Tools::sgpa_cal(int in_sem)
@@ -215,7 +241,7 @@ void Tools::find_student(int unq_num)
     string name, branch;
     while (datafile >> funq_num >> roll_num >> name >> branch >> section)
     {
-        if (unq_num == funq_num)
+        if (funq_num == unq_num)
         {
             cout << left << setw(3) << "UE-" << setw(11) << roll_num << setw(15) << name;
             break;
