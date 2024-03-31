@@ -48,6 +48,84 @@ void Teacher::teach_home()
     } while (1);
 }
 
+void Teacher::result_page()
+{
+    int choice;
+    do
+    {
+        cout << "Results : " << endl
+             << "1. Particular Student" << endl
+             << "2. Particular Subject" << endl
+             << "3. Particular Branch" << endl
+             << "4. Failed Students" << endl
+             << "5. Back" << endl
+             << endl;
+
+        cout << "How do yoy want to see Results : ";
+        cin >> choice;
+
+        ifstream datafile("../Files/Student_data.txt");
+        ifstream subfile("../Files/Subject_data.txt");
+
+        switch (choice)
+        {
+        case 1:
+            system("CLS");
+            student_res(datafile);
+            break;
+        case 2:
+            system("CLS");
+            subject_res(subfile);
+            break;
+        case 3:
+            system("CLS");
+            branch_result();
+            break;
+        case 4:
+            system("CLS");
+            displayFailed();
+            break;
+        case 5:
+            system("CLS");
+            return;
+        default:
+            system("CLS");
+            cout << "Invalid choice. Please try again." << endl;
+            break;
+        }
+
+        datafile.close();
+        subfile.close();
+    } while (1);
+}
+
+void Teacher::displayFailed()
+{
+    ifstream readFile("../Files/fail.txt");
+    int rollNum, total, major, length, i = 1;
+    string subName;
+    cout << setw(5) << left << "SNo" << setw(10) << "Roll_No" << setw(30) << "Subject" << setw(8) << "Major" << setw(8) << "Total" << endl;
+    cout << "-------------------------------------------------------------------------------------------------------------------------" << endl;
+    while (readFile >> rollNum >> subName >> major >> total)
+    {
+        cout << setw(5) << left << i++ << setw(10) << rollNum << setw(30) << subName.substr(0, 28) << setw(5) << major << setw(5) << total << endl;
+        if (length > 28)
+        {
+            int rem_len = subName.length() - 28;
+            while (rem_len > 0)
+            {
+                cout << setw(15) << left << setw(1) << "-" << setw(29) << subName.substr(28) << endl;
+                subName = subName.substr(28);
+                rem_len = subName.length() - 28;
+            }
+        }
+    }
+    cout << "\nPress Enter to Continue" << endl;
+    cin.ignore();
+    cin.get();
+    system("CLS");
+}
+
 void Teacher::student_entry()
 {
     do
@@ -201,7 +279,7 @@ void Teacher::new_entry()
             system("CLS");
             return;
         default:
-        system("CLS");
+            system("CLS");
             cout << "Invalid choice. Please try again." << endl;
             break;
         }
@@ -432,6 +510,22 @@ void Teacher::edit_marks()
 
             if (sno == gsno && sname == esname)
             {
+                if (is_practical(sname))
+                {
+                    do
+                    {
+                        cout << "Marks: ";
+                        cin >> M;     // Store the marks in major
+                    } while (M > 50); // Checks if marks entered is less then max_marks(50)
+
+                    total = total_cal(m1, m2, in, M);
+                    grade = grd_cal(total,M,is_practical(sname));
+                    fail(total, M, sname, sno);
+
+                    // Write modified data to temporary file
+                    tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << M << " " << total << " " << grade << endl;
+                }else{
+
                 found = true;
 
                 // Prompt user for new marks
@@ -445,11 +539,12 @@ void Teacher::edit_marks()
 
                 // Calculate the new total and grade
                 total = total_cal(m1, m2, in, M);
-                grade = grd_cal(total);
-                // Update the grade based on total (your grading logic here)
-
+                grade = grd_cal(total,M,is_practical(sname));
+                fail(total, M, sname, sno);
+    
                 // Write modified data to temporary file
                 tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << M << " " << total << " " << grade << endl;
+                }
             }
             else
             {
@@ -590,6 +685,10 @@ void Marks::enter_marks(int gsno, string esname)
                     cin >> mj;     // Store the marks in major
                 } while (mj > 50); // Checks if marks entered is less then max_marks(50)
 
+                total = total_cal(m1, m2, in, mj);
+                grade = grd_cal(total,mj,is_practical(sname));
+                fail(total, mj, sname, sno);
+
                 // Write modified data to temporary file
                 tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << mj << " " << total << " " << grade << endl;
             }
@@ -606,7 +705,7 @@ void Marks::enter_marks(int gsno, string esname)
 
                 // Calculate the new total and grade
                 total = total_cal(m1, m2, in, mj);
-                grade = grd_cal(total);
+                grade = grd_cal(total,mj,is_practical(sname));
                 fail(total, mj, sname, sno);
                 // Update the grade based on total (your grading logic here)
 
@@ -629,9 +728,6 @@ void Marks::enter_marks(int gsno, string esname)
         remove("../Files/Student_marks1.txt");                            // Remove the original data file
         rename("../Files/temp_marks.txt", "../Files/Student_marks1.txt"); // Rename the temporary data file
         cout << "Marks Entered successfully." << endl;
-        cout << "Press Enter to continue" << endl;
-        cin.ignore();
-        cin.get();
     }
     else
     {

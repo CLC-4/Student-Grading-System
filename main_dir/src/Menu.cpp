@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void Menu::home_page(Admin &admin, Login &login, Teacher &teacher, Student &student, Pub &pub) // This function executes users choice
+void Menu::home_page(Admin &admin, Login &login, Teacher &teacher, Student &student, Public &pub) // This function executes users choice
 {
     do
     {
@@ -35,7 +35,7 @@ void Menu::home_page(Admin &admin, Login &login, Teacher &teacher, Student &stud
             break;
 
         case 4: // Public
-            cout << "Welcome to Public Helpdesk Page!" << endl;
+            system("CLS");
             pub.pub_home();
             break;
 

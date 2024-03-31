@@ -1,50 +1,7 @@
 #include "../include/Academic_members.h"
 using namespace std;
 
-void Results::result_page()
-{
-    do
-    {
-        cout << "Results : " << endl
-             << "1. Particular Student" << endl
-             << "2. Particular Subject" << endl
-             << "3. Particular Branch" << endl
-             << "4. Back" << endl
-             << endl;
 
-        cout << "How do yoy want to see Results : ";
-        cin >> choice;
-
-        ifstream datafile("../Files/Student_data.txt");
-        ifstream subfile("../Files/Subject_data.txt");
-
-        switch (choice)
-        {
-        case 1:
-            system("CLS");
-            student_res(datafile);
-            break;
-        case 2:
-            system("CLS");
-            subject_res(subfile);
-            break;
-        case 3:
-            system("CLS");
-            branch_result();
-            break;
-        case 4:
-            system("CLS");
-            return;
-        default:
-            system("CLS");
-            cout << "Invalid choice. Please try again." << endl;
-            break;
-        }
-
-        datafile.close();
-        subfile.close();
-    } while (1);
-}
 // Result Functions specific to Teacher only
 
 void Results::student_res(ifstream &datafile)
@@ -67,10 +24,17 @@ void Results::student_res(ifstream &datafile)
         }
     }
 
-    if (!matched)
+     if (matched)
+    {
+        cout << "Press Enter to continue.." << endl;
+        cin.ignore();
+        cin.get();
+        system("CLS");
+    }
+    else
     {
         system("CLS");
-        cout << "Student Not Found" << endl;
+        cout << "Student Not Found!!" << endl;
     }
 }
 
@@ -166,16 +130,16 @@ void Results::showResults(int rno, int section, int log_per, int semester, strin
     system("CLS");
 
     cout << "University Institute of Engineering and Technology" << endl
-         << "-------------------------------------------------------------------------------" << endl;
+         << "----------------------------------------------------------------------------------------------------" << endl;
 
     cout << "Name: " << name << endl
          << "Roll No.: " << rno << endl
          << "Branch/Section: " << branch << "-" << section << endl
-         << "-------------------------------------------------------------------------------" << endl;
+         << "----------------------------------------------------------------------------------------------------" << endl;
 
     cout << setw(5) << left << "SNo." << setw(30) << "Subject" << setw(10) << "Minor1" << setw(10) << "Minor2" << setw(10) << "Internal" << setw(10)
          << "Major" << setw(10) << "Total" << setw(10) << "Grades" << endl;
-    cout << "-------------------------------------------------------------------------------" << endl;
+    cout << "-----------------------------------------------------------------------------------------------------" << endl;
     int i = 1;
     while (sem_m >> unq_num >> sem >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
     {
@@ -200,13 +164,18 @@ void Results::showResults(int rno, int section, int log_per, int semester, strin
         }
     }
 
-    if (!found)
+     if (found)
     {
-        cout << "No Record Found !!" << endl;
+        cout << "Press Enter to continue.." << endl;
+        cin.ignore();
+        cin.get();
+        system("CLS");
     }
-    cout << "Press Enter to continue..";
-    cin.ignore();
-    cin.get();
+    else
+    {
+        system("CLS");
+        cout << "No Record Found" << endl;
+    }
 }
 
 void Results::showResults(string name, int log_per)
@@ -305,11 +274,11 @@ void Results::showResults(int g_unq, string branch)
         return;
     }
 
-    int unq_num;
+    
 
     string subject;
     double minor1, minor2, internal, major, total;
-    int sem;
+    int sem,unq_num;
     string grades;
 
     cout << setw(5) << left << "SNo." << setw(14) << "Roll_Number" << setw(15) << "Name" << setw(10) << "Total" << endl;
