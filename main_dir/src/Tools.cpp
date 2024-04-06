@@ -66,8 +66,6 @@ int Tools::grdpt_cal(int total, bool practical)
         return 5;
     else if (total >= 40 && total < 45)
         return 4;
-    else if (total < 40)
-        return 0;
     else
         return 0;
 }
@@ -75,7 +73,7 @@ int Tools::grdpt_cal(int total, bool practical)
 void Tools::fail(int total, int major, string subname, int stud_num)
 {
 
-    fstream failFile("../Files/fail.txt", ios::app);
+    fstream failFile("../Files/fail.txt", ios::in | ios::out);
     if (!failFile.is_open())
     {
         cout << "Error opening fail file." << endl;
@@ -98,42 +96,93 @@ void Tools::fail(int total, int major, string subname, int stud_num)
         }
         else
         {
-            failFile << frno << " " << fsub << " " << fmj << " " << ftotal << endl;
+            tempfile << frno << " " << fsub << " " << fmj << " " << ftotal << endl;
         }
     }
-    remove("../Files/fail.txt");
-    rename("../Files/tempfail.txt", "../Files/fail.txt");
 
+    failFile.clear();
+    failFile.seekp(0, ios::end);
     if (total < 40 || major < 10)
     {
-        cout << "hi";
-        failFile << roll_num << " " << subname << " " << major << " " << total << endl;
+        tempfile << roll_num << " " << subname << " " << major << " " << total << endl;
     }
+
     failFile.close();
+    tempfile.close();
+    remove("../Files/fail.txt");
+    rename("../Files/tempfail.txt", "../Files/fail.txt");
 }
 
-int Tools::sgpa_cal(int in_sem)
+float Tools::sgpa_cal(int sno, int sem)
 {
+    float total = 0, mtotal = 0, sgpa;
+    int fsno, fsem, fm1, fm2, fin, fmj, ftotal, credit, accCredits = 0;
+    string fsub, fgrade;
+    bool practical = false, found = false;
+    ifstream in("../Files/Student_marks1.txt");
+    while (in >> fsno >> fsem >> fsub >> fm1 >> fm2 >> fin >> fmj >> ftotal >> fgrade)
+    {
+        practical = is_practical(fsub);
+        if (fsno == sno && fsem == sem && ftotal >= 40 && fmj >= 10)
+        {
+            found = true;
+            credit = get_subcred(fsem, fsub);
+            accCredits = accCredits + credit;
+            mtotal = mtotal + (grdpt_cal(ftotal, practical) * credit);
+        }
+    }
+    in.close();
+    if (found)
+    {
+        sgpa = (float)mtotal / accCredits;
+        return sgpa;
+    }
+    return 0;
+}
 
+int Tools::get_subcred(int esem, string ename)
+{
     ifstream subFile("../Files/Subject_data.txt");
     int sem, cred;
-    string subname, code;
-    while (subFile >> sem >> subname >> code >> cred)
+    string subname, code, branch;
+    while (subFile >> sem >> branch >> subname >> code >> cred)
     {
-        if (sem == in_sem)
+        if (sem == esem && subname == ename)
         {
-            total_cred = total_cred + cred;
+            return cred;
         }
     }
 
     // Close the file after use
     subFile.close();
+
+    // If the loop completes without finding the roll number, return 0
     return 0;
 }
 
-int Tools::total_grdpts()
+float Tools::cgpa_cal(int sno)
 {
-    return 0;
+    float cgpa = sgpa_cal(sno, 1); // Calculate SGPA for the first semester
+    int curruntSem = 1;
+    int fsno, fsem, fm1, fm2, fin, fmj, ftotal;
+    string fsub, fgrade;
+
+    ifstream in("../Files/Student_marks1.txt");
+    while (in >> fsno >> fsem >> fsub >> fm1 >> fm2 >> fin >> fmj >> ftotal >> fgrade)
+    {
+        if (fsno == sno)
+        {
+            curruntSem = fsem >= curruntSem ? fsem : curruntSem; // Update current semester if needed
+        }
+    }
+    in.close(); // Close the input file
+
+    for (int i = 2; i <= curruntSem; i++) // Start from the second semester as first semester SGPA is already calculated
+    {
+        cgpa = (cgpa * (i - 1) + sgpa_cal(sno, i)) / i; // Calculate CGPA based on SGPA of each semester
+    }
+
+    return cgpa;
 }
 
 // Other Tools
@@ -214,14 +263,40 @@ int Tools::get_rno(int gsno) // given serial number
     return 0;
 }
 
-string Tools::get_subname(int esem, string ecode, string ebranch)
+string Tools::get_branch(int gsno)
+{
+    ifstream dataFile("../Files/Student_data.txt");
+    int sno, rno;
+    string name, branch;
+    int section;
+
+    while (dataFile >> sno >> rno >> name >> branch >> section)
+    {
+        cout << "Check" << endl;
+        if (sno == gsno)
+        {
+            cout << "Check2" << endl;
+            dataFile.close();
+            return branch;
+        }
+    }
+
+    // Close the file after use
+    dataFile.close();
+
+    // If the loop completes without finding the roll number, return 0
+    return "Not_Found";
+}
+
+string Tools::get_subname(string ecode, string ebranch)
 {
     ifstream subFile("../Files/Subject_data.txt");
     int sem, cred;
     string subname, code, branch;
     while (subFile >> sem >> branch >> subname >> code >> cred)
     {
-        if (sem == esem && code == ecode && branch == ebranch)
+
+        if (code == ecode && branch == ebranch)
         {
             return subname;
         }
@@ -231,7 +306,7 @@ string Tools::get_subname(int esem, string ecode, string ebranch)
     subFile.close();
 
     // If the loop completes without finding the roll number, return 0
-    return 0;
+    return "X";
 }
 
 void Tools::find_student(int unq_num)
