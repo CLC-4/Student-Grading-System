@@ -88,7 +88,7 @@ void Results::branch_result()
         if (sec == in_section && branch == in_branch)
         {
             matched = true;
-            showResults(unq_num, branch);
+            showResults(in_section, branch);
         }
     }
     studfile.close();
@@ -164,9 +164,11 @@ void Results::showResults(int rno, int section, int log_per, int semester, strin
         }
     }
 
+    cout<<"\nSGPA : "<<sgpa_cal(log_per,semester)<<endl;
+
      if (found)
     {
-        cout << "Press Enter to continue.." << endl;
+        cout << "\n\nPress Enter to continue.." << endl;
         cin.ignore();
         cin.get();
         system("CLS");
@@ -260,15 +262,15 @@ void Results::showResults(string sub_name)
     sem_m.close();
 }
 
-void Results::showResults(int g_unq, string branch)
+void Results::showResults(int section, string branch)
 {
 
     system("CLS");
     cout << "Here is the Result of : " << branch << endl
          << "-------------------------------------------------------------------------------" << endl;
 
-    ifstream marksfile("../Files/Student_marks1.txt");
-    if (!marksfile.is_open())
+    ifstream studfile("../Files/Student_data.txt");
+    if (!studfile.is_open())
     {
         cout << "Error opening file." << endl;
         return;
@@ -276,23 +278,24 @@ void Results::showResults(int g_unq, string branch)
 
     
 
-    string subject;
-    double minor1, minor2, internal, major, total;
-    int sem,unq_num;
-    string grades;
+    string subject,fbranch;
+    int rno,unq_num,sec;
+    string grades,name;
+    float cgpa=0;
 
-    cout << setw(5) << left << "SNo." << setw(14) << "Roll_Number" << setw(15) << "Name" << setw(10) << "Total" << endl;
+    cout << setw(5) << left << "SNo." << setw(14) << "Roll_Number" << setw(15) << "Name" << setw(10) << "CGPA" << endl;
     cout << "-------------------------------------------------------------------------------" << endl;
     int i = 1;
-    while (marksfile >> unq_num >> sem >> subject >> minor1 >> minor2 >> internal >> major >> total >> grades)
+    while (studfile >> unq_num >> rno >> name >> fbranch >> sec)
     {
 
-        if (unq_num == g_unq)
+        if (fbranch == branch && sec == section)
         {
             cout << setw(5) << i++;
             find_student(unq_num);
-            cout << left << setw(10) << total << endl;
+            cgpa = cgpa_cal(unq_num);
+            cout << left << setw(10)<<cgpa<< endl;
         }
     }
-    marksfile.close();
+    studfile.close();
 }

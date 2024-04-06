@@ -31,6 +31,7 @@ void Student::displayMenu(int log_per)
 
         case 3: // Register Reevaluation
             system("CLS");
+            re_eval();
             break;
 
         case 4: // Logout
@@ -151,3 +152,6 @@ void Student::Results(int log_per)
     } while (1);
 }
 
+void Student::re_eval(){
+
+}

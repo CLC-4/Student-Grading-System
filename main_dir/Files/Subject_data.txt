@@ -1,7 +1,9 @@
 1 CSE	Calculus	ASM101	5
+1 CSE	Quantum_Physics	ASPX02	4
+1 CSE   Quantum_Physics_P	ASPX52	1
 1 CSE	Professional_Communication	HSMCX01	2
 1 CSE	Professional_Communication_P	HSMCX51	1
-1 CSE	Workshop	ESCX53	2
+1 CSE	Workshop_P	ESCX53	2
 1 CSE	Fundamentals_of_Biotechnology	BTBSX01	2
 1 CSE	Programming_fundamentals	ESCX01	3
 1 CSE	Programming_fundamentals_P	ESCX51	1

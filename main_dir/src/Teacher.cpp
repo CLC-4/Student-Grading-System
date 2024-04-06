@@ -108,7 +108,7 @@ void Teacher::displayFailed()
     cout << "-------------------------------------------------------------------------------------------------------------------------" << endl;
     while (readFile >> rollNum >> subName >> major >> total)
     {
-        cout << setw(5) << left << i++ << setw(10) << rollNum << setw(30) << subName.substr(0, 28) << setw(5) << major << setw(5) << total << endl;
+        cout << setw(5) << left << i++ << setw(10) << rollNum << setw(30) << subName.substr(0, 28) << setw(8) << major << setw(8) << total << endl;
         if (length > 28)
         {
             int rem_len = subName.length() - 28;
@@ -486,17 +486,15 @@ void Teacher::edit_marks()
 
     int gsno = get_sno(enteredrno); // Getting the sno for the entered roll number
 
-    if (gsno != 0)
-    {
-        cout << "Enter Subject Name: ";
-        string esname;
-        cin >> esname;
+        cout << "Enter Subject Code: ";
+        string ecode;
+        cin >> ecode;
 
         ifstream marksFile("../Files/Student_marks1.txt");
         ofstream tempMarksFile("../Files/temp_marks.txt");
 
         int sno, sem;
-        string sname, grade;
+        string sname, grade, branch, gsname;
         double m1, m2, M, in, total;
 
         bool found = false;
@@ -505,13 +503,19 @@ void Teacher::edit_marks()
             cout << "Unable to open file" << endl;
             return; // or exit the function
         }
+        
+        branch = get_branch(gsno);
+        gsname = get_subname(ecode, branch);
+        cout<<branch<<gsname<<endl; //Debug
+        
         while (marksFile >> sno >> sem >> sname >> m1 >> m2 >> in >> M >> total >> grade)
         {
 
-            if (sno == gsno && sname == esname)
+            if (sno == gsno && sname == gsname)
             {
                 if (is_practical(sname))
                 {
+                    found = true;
                     do
                     {
                         cout << "Marks: ";
@@ -519,31 +523,35 @@ void Teacher::edit_marks()
                     } while (M > 50); // Checks if marks entered is less then max_marks(50)
 
                     total = total_cal(m1, m2, in, M);
-                    grade = grd_cal(total,M,is_practical(sname));
+                    grade = grd_cal(total, M, is_practical(sname));
                     fail(total, M, sname, sno);
 
                     // Write modified data to temporary file
                     tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << M << " " << total << " " << grade << endl;
-                }else{
+                }
+                else
+                {
 
-                found = true;
+                    found = true;
 
-                // Prompt user for new marks
-                cout << "Enter New Marks:" << endl;
-                cout << "Minor 1: ";
-                cin >> m1;
-                cout << "Minor 2: ";
-                cin >> m2;
-                cout << "Major: ";
-                cin >> M;
+                    // Prompt user for new marks
+                    cout << "Enter New Marks:" << endl;
+                    cout << "Minor 1: ";
+                    cin >> m1;
+                    cout << "Minor 2: ";
+                    cin >> m2;
+                    cout << "Internal: ";
+                    cin >> in;
+                    cout << "Major: ";
+                    cin >> M;
 
-                // Calculate the new total and grade
-                total = total_cal(m1, m2, in, M);
-                grade = grd_cal(total,M,is_practical(sname));
-                fail(total, M, sname, sno);
-    
-                // Write modified data to temporary file
-                tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << M << " " << total << " " << grade << endl;
+                    // Calculate the new total and grade
+                    total = total_cal(m1, m2, in, M);
+                    grade = grd_cal(total, M, is_practical(sname));
+                    fail(total, M, sname, sno);
+
+                    // Write modified data to temporary file
+                    tempMarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << M << " " << total << " " << grade << endl;
                 }
             }
             else
@@ -564,6 +572,7 @@ void Teacher::edit_marks()
             cout << "Press Enter to Continue";
             cin.ignore();
             cin.get();
+            system("CLS");
         }
         else
         {
@@ -571,12 +580,8 @@ void Teacher::edit_marks()
             remove("../Files/temp_marks.txt");
             cout << "Marks not found for the specified student and subject." << endl;
         }
-    }
-    else
-    {
-        system("CLS");
-        cout << "Roll number not found." << endl;
-    }
+    
+    
 }
 
 void Marks::marks_editor()
@@ -597,7 +602,7 @@ void Marks::marks_editor()
     int esecname;
     cin >> esecname;
 
-    string sname = get_subname(esem, ecode, ebranch);
+    string sname = get_subname(ecode, ebranch);
 
     // Call the sort_branch function
     Tools::Sort sorter;
@@ -608,15 +613,19 @@ void Marks::marks_editor()
     int sno, rollNum;
     string name, branch, line;
     int section;
-
+    Marks student; // Object is created to call constructor.
     while (dataFile >> sno >> rollNum >> name >> branch >> section)
     {
         if (branch == ebranch && section == esecname)
         {
             found = true;
-            Marks student;
-            student.marks_init(sno, esem, sname);
-            student.enter_marks(sno, sname);
+
+            marks_init(sno, esem, sname);
+            cout << studMarksPresent << endl;
+            if (!studMarksPresent)
+            {
+                enter_marks(sno, sname);
+            }
             cout << "Enter (1. Exit) (2. Continue) : ";
             int ter;
             cin >> ter;
@@ -640,15 +649,33 @@ void Marks::marks_editor()
 void Marks::marks_init(int sno, int sem, string sname)
 {
 
-    ofstream MarksFile("../Files/Student_Marks1.txt", ios::app);
+    fstream MarksFile("../Files/Student_Marks1.txt", ios::in | ios::out);
     if (!MarksFile)
     {
         cerr << "Error opening file! " << endl;
         return;
     }
-    MarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << mj << " " << total << " " << grade << endl;
+
+    int fsno, fsem;
+    float fm1, fm2, fin, fmj, ftotal;
+    string fsname, fgrade;
+    studMarksPresent = false;
+    while (MarksFile >> fsno >> fsem >> fsname >> fm1 >> fm2 >> fin >> fmj >> ftotal >> fgrade)
+
+    {
+        if (fsno == sno && fsname == sname)
+        {
+            studMarksPresent = true;
+            break;
+        }
+    }
+    MarksFile.clear();
+    MarksFile.seekp(0, ios::end);
+    if (!studMarksPresent)
+    {
+        MarksFile << sno << " " << sem << " " << sname << " " << m1 << " " << m2 << " " << in << " " << mj << " " << total << " " << grade << endl;
+    }
     MarksFile.close();
-    // cout << "Marks written  successfully." << endl;
 }
 
 void Marks::enter_marks(int gsno, string esname)
@@ -669,7 +696,7 @@ void Marks::enter_marks(int gsno, string esname)
     while (marksFile >> sno >> sem >> sname >> m1 >> m2 >> in >> mj >> total >> grade)
     {
 
-        if (sno == gsno && sname == esname && total == -1)
+        if (sno == gsno && sname == esname)
         {
             found = true;
             int rno = get_rno(gsno);
@@ -686,7 +713,7 @@ void Marks::enter_marks(int gsno, string esname)
                 } while (mj > 50); // Checks if marks entered is less then max_marks(50)
 
                 total = total_cal(m1, m2, in, mj);
-                grade = grd_cal(total,mj,is_practical(sname));
+                grade = grd_cal(total, mj, is_practical(sname));
                 fail(total, mj, sname, sno);
 
                 // Write modified data to temporary file
@@ -705,7 +732,7 @@ void Marks::enter_marks(int gsno, string esname)
 
                 // Calculate the new total and grade
                 total = total_cal(m1, m2, in, mj);
-                grade = grd_cal(total,mj,is_practical(sname));
+                grade = grd_cal(total, mj, is_practical(sname));
                 fail(total, mj, sname, sno);
                 // Update the grade based on total (your grading logic here)
 

@@ -35,19 +35,23 @@ class Marks : virtual public Tools
 {
 private:
     float m1, m2, mj, in;
+    bool studMarksPresent;
+    
+    void marks_init(int, int, string);
+    void enter_marks(int, string);
 
 public:
     Marks() : m1(0), m2(0), mj(), in(0) {}
-
-    void marks_editor();
-    void marks_init(int, int, string);
-    void enter_marks(int, string);
+    ~Marks(){}
+void marks_editor();
+    
 };
 
-class Teacher : public Marks, public Results
+class Teacher :  public Results, public Marks
 {
 private:
 int option;
+
     // nos -- number of student
 
 public:
@@ -69,6 +73,7 @@ class Student : public Results
 
 public:
     void displayMenu(int);
+    void re_eval();
     void Results(int);
 };
 
