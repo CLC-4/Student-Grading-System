@@ -48,11 +48,11 @@ void Menu::home_page(Teacher &teacher, Student &student, Public &pub, Admin &adm
 
         case 3: // Public
             system("CLS");
-            admin.admin_home();
+            pub.pub_home();
             break;
         case 4: // Admin
             system("CLS");
-            pub.pub_home();
+            admin.admin_home();
             break;
         case 5:
             system("CLS");
