@@ -68,6 +68,7 @@ public:
     void reject_all(string &, string &);
     void re_eval(int &, string &);
     void process_roll_number(string &);
+    void rejectSingleRequest(fstream&,int&,string&,string&);
 };
 
 class Student : public Results

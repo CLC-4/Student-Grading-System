@@ -3,7 +3,7 @@
 6 1 Calculus 30 0 20 45 95 A+
 5 2 Applied_Chemistry 2 2 2 2 6 F
 6 2 Applied_Chemistry 20 20 20 22 62 B
-3 1 Calculus 22 0 20 28 70 B+
+3 1 Calculus 20 0 20 5 45 F
 3 1 Professional_Communication 20.5 0 15 44.5 80 A
 3 1 Professional_Communication_P 0 0 0 49 49 A+
 3 1 Workshop_P 0 0 0 36 36 B+

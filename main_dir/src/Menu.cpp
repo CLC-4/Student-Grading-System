@@ -12,7 +12,7 @@ using namespace std;
 
 using namespace std;
 
-void Menu::home_page(Teacher &teacher, Student &student, Public &pub)
+void Menu::home_page(Teacher &teacher, Student &student, Public &pub, Admin &admin)
 {
     do
     {
@@ -26,7 +26,8 @@ void Menu::home_page(Teacher &teacher, Student &student, Public &pub)
         cout << left << setw(50) << " " << setw(40) << "1. Teacher" << endl;
         cout << left << setw(50) << " " << setw(40) << "2. Student" << endl;
         cout << left << setw(50) << " " << setw(40) << "3. Public" << endl;
-        cout << left << setw(50) << " " << setw(40) << "4. Exit" << endl;
+        cout << left << setw(50) << " " << setw(40) << "4. Admin" << endl;
+        cout << left << setw(50) << " " << setw(40) << "5. Exit" << endl;
         tool.setColor(7); // white
         cout << setw(39) << " " << setw(50) << "-----------------------------------------" << endl;
         tool.setColor(14);
@@ -47,10 +48,13 @@ void Menu::home_page(Teacher &teacher, Student &student, Public &pub)
 
         case 3: // Public
             system("CLS");
+            admin.admin_home();
+            break;
+        case 4: // Admin
+            system("CLS");
             pub.pub_home();
             break;
-
-        case 4:
+        case 5:
             system("CLS");
             return;
 
@@ -63,6 +67,35 @@ void Menu::home_page(Teacher &teacher, Student &student, Public &pub)
         }
 
     } while (1);
+}
+
+
+void Menu::admin_login(Admin &admin)
+{
+    system("CLS");
+    cout << setw(30) << " " << setw(50) << "----------------------------------------" << endl;
+    tool.setColor(14); // yellow
+    cout << setw(30) << " " << setw(50) << "          Admin Login Page             " << endl;
+    tool.setColor(7);
+    cout << setw(30) << " " << setw(50) << "----------------------------------------" << endl;
+
+    get_cred();             // Getting Teacher Credentials
+    log_per = check_cred(); // Checking Teacher Credentials
+
+    cout << "----------------------------------------" << endl;
+
+    if (log_per == 1)
+    {
+        system("CLS");
+        admin.admin_home();
+    }
+    else
+    {
+        system("CLS");
+        tool.setColor(12);
+        cout << "Invalid Credentials!" << endl;
+        tool.setColor(7);
+    }
 }
 
 void Menu::teacher_login(Teacher &teacher)
