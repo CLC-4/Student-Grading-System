@@ -116,21 +116,23 @@ void Tools::fail(int total, int major, string subname, int stud_num)
 float Tools::sgpa_cal(int sno, int sem)
 {
     float total = 0, mtotal = 0, sgpa;
-    int fsno, fsem, fm1, fm2, fin, fmj, ftotal, credit, accCredits = 0;
+    int fsno, fsem; 
+    float fm1, fm2, fin, fmj, ftotal;
+    int credit, accCredits = 0;
     string fsub, fgrade;
     bool practical = false, found = false;
     ifstream in("../Files/Student_marks1.txt");
-    while (in >> fsno >> fsem >> fsub >> fm1 >> fm2 >> fin >> fmj >> ftotal >> fgrade)
+   while (in >> fsno >> fsem >> fsub >> fm1 >> fm2 >> fin >> fmj >> ftotal >> fgrade)
+{   
+    practical = is_practical(fsub);
+    if (fsno == sno && fsem == sem && ftotal >= 40 && fmj >= 10)
     {
-        practical = is_practical(fsub);
-        if (fsno == sno && fsem == sem && ftotal >= 40 && fmj >= 10)
-        {
-            found = true;
-            credit = get_subcred(fsem, fsub);
-            accCredits = accCredits + credit;
-            mtotal = mtotal + (grdpt_cal(ftotal, practical) * credit);
-        }
+        found = true;
+        credit = get_subcred(fsem, fsub);
+        accCredits = accCredits + credit;
+        mtotal = mtotal + (grdpt_cal(ftotal, practical) * credit);
     }
+}
     in.close();
     if (found)
     {
