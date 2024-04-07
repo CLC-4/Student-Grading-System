@@ -33,40 +33,55 @@ void Menu::home_page(Teacher &teacher, Student &student, Public &pub, Admin &adm
         tool.setColor(14);
         cout << setw(40) << " "
              << "Enter your Option : ";
-        cin >> option;
-        tool.setColor(7);
 
-        switch (option)
-        {
-        case 1: // Teacher Login
-            teacher_login(teacher);
-            break;
+        try {
+            int option;
+            cin >> option;
+            if (cin.fail()) {
+                // Clear error state
+                cin.clear();
+                // Ignore characters until the end of the line
+                cin.ignore();
+                throw invalid_argument("Invalid input.Please enter an integer.");
+            } else {
+                switch (option)
+                {
+                case 1: // Teacher Login
+                    teacher_login(teacher);
+                    break;
 
-        case 2: // Student Login
-            student_login(student);
-            break;
+                case 2: // Student Login
+                    student_login(student);
+                    break;
 
-        case 3: // Public
-            system("CLS");
-            pub.pub_home();
-            break;
-        case 4: // Admin
-            system("CLS");
-            admin.admin_home();
-            break;
-        case 5:
-            system("CLS");
-            return;
+                case 3: // Public
+                    system("CLS");
+                    pub.pub_home();
+                    break;
+                case 4: // Admin
+                    system("CLS");
+                    admin.admin_home();
+                    break;
+                case 5:
+                    system("CLS");
+                    return;
 
-        default:
+                default:
+                    system("CLS");
+                    tool.setColor(12);
+                    cout << "Invalid option! Please enter a valid option." << endl;
+                    tool.setColor(7);
+                    break;
+                }
+            }
+        } catch (const invalid_argument& e) {
             system("CLS");
             tool.setColor(12);
-            cout << "Invalid option! Please enter a valid option." << endl;
-            tool.setColor(7);
-            break;
+            cout << setw(40) << " ";
+            cerr << "Error : " << e.what() << endl;
         }
 
-    } while (1);
+    } while (true);
 }
 
 
