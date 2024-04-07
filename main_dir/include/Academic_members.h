@@ -11,13 +11,12 @@ using namespace std;
 
 class Results : virtual public Tools
 {
-private :
-int choice;
+private:
+    int choice;
 
 protected:
-
     // Result Menus
-    
+
     void branch_result();
     void student_res(ifstream &);
     void subject_res(ifstream &);
@@ -36,26 +35,26 @@ class Marks : virtual public Tools
 private:
     float m1, m2, mj, in;
     bool studMarksPresent;
-    
+
     void marks_init(int, int, string);
     void enter_marks(int, string);
 
 public:
     Marks() : m1(0), m2(0), mj(), in(0) {}
-    ~Marks(){}
-void marks_editor();
-    
+    ~Marks() {}
+    void marks_editor();
 };
 
-class Teacher :  public Results, public Marks
+class Teacher : public Results, public Marks
 {
 private:
-int option;
-
+    int option;
+    int frno;
+    string fsname, fbranch;
     // nos -- number of student
 
 public:
-    void teach_home();
+    void teach_home(int);
     void result_page();
     void displayFailed();
     void student_entry();
@@ -63,7 +62,12 @@ public:
     void delete_entry();
     void modify_entry();
     void edit_entry();
-    void edit_marks();
+    void edit_marks(int);
+    void request_viewer();
+    void request_manager(string &, string &);
+    void reject_all(string &, string &);
+    void re_eval(int &, string &);
+    void process_roll_number(string &);
 };
 
 class Student : public Results
@@ -73,7 +77,7 @@ class Student : public Results
 
 public:
     void displayMenu(int);
-    void re_eval();
+    void re_eval(int);
     void Results(int);
 };
 

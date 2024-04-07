@@ -3,12 +3,13 @@
 
 #include <iostream>
 #include<iostream>
-class Public
+#include<iomanip>
+#include"Tools.h"
+class Public : Tools
 {
 public:
 void pub_home();
     void help_desk();
-    void pub_rank();
     void passing_conditions();
     void marks_breakdown();
     void subCode_finder();

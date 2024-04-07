@@ -205,6 +205,62 @@ void Tools::gen_cred(int rollnum, string name)
     }
 }
 
+void Tools::change_password(int log_per)
+{
+    int fid, flog_per;
+    string fpass, newPass;
+    bool found = false;
+    ifstream passFile("../Files/Credentials.txt");
+    ofstream tempFile("../Files/tempCredentials.txt");
+
+    // Displaying heading with separators
+    system("CLS");
+    setColor(14);                                                // Set text color to yellow
+    cout << "-----------------------------------------" << endl; // Separator
+    cout << "Change Password" << endl;
+    cout << "-----------------------------------------" << endl; // Separator
+    setColor(7);                                                 // Set text color back to default
+
+    while (passFile >> flog_per >> fid >> fpass)
+    {
+        if (flog_per == log_per)
+        {
+            found = true;
+            cout << "Enter New Password : ";
+            cin >> newPass;
+            tempFile << log_per << " " << fid << " " << newPass << endl;
+        }
+        else
+            tempFile << flog_per << " " << fid << " " << fpass << endl;
+    }
+
+    // Displaying final separator after processing
+    cout << "-----------------------------------------" << endl; // Separator
+
+    passFile.close();
+    tempFile.close();
+    remove("../Files/Credentials.txt");
+    rename("../Files/tempCredentials.txt", "../Files/Credentials.txt");
+
+    if (!found)
+    {
+        system("CLS");
+        setColor(12); // Set text color to red
+        cout << "Something Went Wrong!! Please Try again Later.." << endl;
+        setColor(7); // Set text color back to default
+    }
+    else
+    {
+        system("CLS");
+        setColor(10); // Set text color to green
+        cout << "Password changed Successfully" << endl;
+        setColor(7); // Set text color back to default
+        cout << "Press Enter to Continue.." << endl;
+        cin.ignore();
+        cin.get();
+    }
+}
+
 int Tools::sno_upd()
 {
     ifstream outFile("../Files/Student_data.txt");
@@ -457,4 +513,11 @@ int Tools ::Sort ::countMaxStudents()
 
     inputFile.close();
     return count;
+}
+
+// Console
+
+void Tools::setColor(int color)
+{
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
