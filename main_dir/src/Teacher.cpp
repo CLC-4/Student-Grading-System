@@ -60,13 +60,6 @@ void Teacher::teach_home(int log_per)
             break;
         }
 
-        // Pause before clearing the screen
-        cout << "\nPress Enter to continue...";
-        cin.ignore();
-        cin.get();
-
-        // Clear the screen
-        system("CLS");
     } while (true);
 }
 
@@ -883,8 +876,10 @@ void Marks::enter_marks(int gsno, string esname)
 
 void Teacher::request_viewer()
 {
+    
     // Declare variables
     string subjectCode, branch;
+    char ans;
     bool requestFound = false;
 
     // Get input from user
@@ -895,7 +890,7 @@ void Teacher::request_viewer()
 
     // Get subject name based on subject code and branch
     string subjectName = get_subname(subjectCode, branch);
-
+do{
     // Open re-evaluation file
     fstream evalFile("../Files/re_eval.txt");
     if (!evalFile.is_open())
@@ -954,53 +949,55 @@ void Teacher::request_viewer()
     {
 
         request_manager(subjectName, branch); // Call request_manager function with subject name and branch
+    cout<<"Go Back to Menu?(y,n) : ";
+    cin>>ans;
+    if(ans =='y') system("CLS");
     }
+    }while(ans == 'n');
 }
 
 void Teacher::request_manager(string &sname, string &branch)
 {
     int choice;
-    do
+
+    // Display menu options
+    setColor(14);
+    cout << "--------------------------------------------" << endl;
+    cout << "Teacher Request Manager" << endl;
+    cout << "--------------------------------------------" << endl;
+    setColor(15);
+    cout << "1. Enter Roll Number" << endl
+         << "2. Reject all Requests" << endl
+         << "3. Go Back" << endl;
+    setColor(14);
+    cout << "--------------------------------------------" << endl;
+    setColor(7);
+    cout << "Enter Choice: ";
+    cin >> choice;
+
+    switch (choice)
     {
+    case 1:
+        // Process roll number for re-evaluation
+        process_roll_number(sname);
+        break;
 
-        // Display menu options
-        setColor(14);
-        cout << "--------------------------------------------" << endl;
-        cout << "Teacher Request Manager" << endl;
-        cout << "--------------------------------------------" << endl;
-        setColor(15);
-        cout << "1. Enter Roll Number" << endl
-             << "2. Reject all Requests" << endl
-             << "3. Go Back" << endl;
-        setColor(14);
-        cout << "--------------------------------------------" << endl;
+    case 2:
+        // Reject all requests for the subject and branch
+        reject_all(sname, branch);
+        break;
+
+    case 3:
+        system("CLS");
+        return; // Exit the loop and function
+
+    default:
+        system("CLS");
+        setColor(12);
+        cout << "Invalid Option. Please try again." << endl;
         setColor(7);
-        cout << "Enter Choice: ";
-        cin >> choice;
-
-        switch (choice)
-        {
-        case 1:
-            // Process roll number for re-evaluation
-            process_roll_number(sname);
-            break;
-
-        case 2:
-            // Reject all requests for the subject and branch
-            reject_all(sname, branch);
-            break;
-
-        case 3:
-            return; // Exit the loop and function
-
-        default:
-            system("CLS");
-            setColor(12);
-            cout << "Invalid Option. Please try again." << endl;
-            setColor(7);
-            break;
-        }
-    } while (true);
+        break;
+    }
 }
 
 void Teacher::reject_all(string &sname, string &branch)
@@ -1096,38 +1093,13 @@ void Teacher::re_eval(int &rno, string &sname)
         system("CLS");
         // Function to edit marks
         edit_marks(rno);
+        rejectSingleRequest(evalFile,rno,branch,sname);
+
         break;
     }
     case 2:
     {
-        system("CLS");
-        // Open temporary file for writing rejected requests
-        ofstream tempFile("../Files/tempEval.txt");
-        while (evalFile >> frno >> branch >> fsname)
-        {
-            if (frno == rno && fsname == sname)
-            {
-                continue; // Skip rejected request
-            }
-            else
-            {
-                tempFile << frno << " " << branch << " " << fsname << endl; // Write non-rejected requests to temporary file
-            }
-        }
-        tempFile.close(); // Close temporary file
-        evalFile.close(); // Close original file before deletion or renaming
-
-        // Remove original evaluation file and rename temporary file
-        if (remove("../Files/re_eval.txt") != 0)
-        {
-            cerr << "Error: Unable to remove original file." << endl;
-            return;
-        }
-        if (rename("../Files/tempEval.txt", "../Files/re_eval.txt") != 0)
-        {
-            cerr << "Error: Unable to rename temporary file." << endl;
-            return;
-        }
+        rejectSingleRequest(evalFile,rno,branch,sname);
         break;
     }
 
@@ -1180,4 +1152,35 @@ void Teacher::process_roll_number(string &sname)
         cout << "---------------------------------------" << endl;
         setColor(7);
     }
+}
+
+void Teacher::rejectSingleRequest(fstream& evalFile,int& rno, string& branch, string&sname){
+system("CLS");
+        // Open temporary file for writing rejected requests
+        ofstream tempFile("../Files/tempEval.txt");
+        while (evalFile >> frno >> branch >> fsname)
+        {
+            if (frno == rno && fsname == sname)
+            {
+                continue; // Skip rejected request
+            }
+            else
+            {
+                tempFile << frno << " " << branch << " " << fsname << endl; // Write non-rejected requests to temporary file
+            }
+        }
+        tempFile.close(); // Close temporary file
+        evalFile.close(); // Close original file before deletion or renaming
+
+        // Remove original evaluation file and rename temporary file
+        if (remove("../Files/re_eval.txt") != 0)
+        {
+            cerr << "Error: Unable to remove original file." << endl;
+            return;
+        }
+        if (rename("../Files/tempEval.txt", "../Files/re_eval.txt") != 0)
+        {
+            cerr << "Error: Unable to rename temporary file." << endl;
+            return;
+        }
 }
