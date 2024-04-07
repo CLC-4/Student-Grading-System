@@ -202,7 +202,7 @@ void Public::subCode_finder()
 
     else
     {
-        
+
         cout << "Press Enter to Continue" << endl;
         cin.ignore();
         cin.get();
