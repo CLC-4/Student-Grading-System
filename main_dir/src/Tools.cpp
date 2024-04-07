@@ -515,9 +515,7 @@ int Tools ::Sort ::countMaxStudents()
     return count;
 }
 
-
 // Console
-
 
 void Tools::setColor(int color)
 {

@@ -49,8 +49,8 @@ class Teacher : public Results, public Marks
 {
 private:
     int option;
-int frno;
-string fsname,fbranch;
+    int frno;
+    string fsname, fbranch;
     // nos -- number of student
 
 public:
@@ -64,12 +64,10 @@ public:
     void edit_entry();
     void edit_marks(int);
     void request_viewer();
-    void request_manager(string&,string&);
-    void reject_all(string&,string&);
-    void re_eval(int&,string&);
-    void process_roll_number(string&);
-    
-    
+    void request_manager(string &, string &);
+    void reject_all(string &, string &);
+    void re_eval(int &, string &);
+    void process_roll_number(string &);
 };
 
 class Student : public Results
@@ -81,7 +79,6 @@ public:
     void displayMenu(int);
     void re_eval(int);
     void Results(int);
-    
 };
 
 #endif

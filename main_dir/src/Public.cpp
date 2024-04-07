@@ -7,12 +7,25 @@ void Public::pub_home()
 {
     do
     {
+        setColor(7);                                                                                        // Set text color to default
+        cout << left << setw(39) << " " << setw(50) << "-----------------------------------------" << endl; // Separator
+        setColor(14);                                                                                       // Set text color to yellow
+        cout << left << setw(37) << " " << setw(50) << "    Welcome to Public Helpdesk Page!    " << endl;  // Heading
+        setColor(7);                                                                                        // Set text color to default
+        cout << left << setw(39) << " " << setw(50) << "-----------------------------------------" << endl; // Separator
+
         int choice;
-        cout << "Welcome to Public Helpdesk Page!" << endl;
-        cout << "1. Help" << endl;
-        cout << "2. Ranking" << endl;
-        cout << "3. Go Back" << endl;
-        cout << "Enter your choice : ";
+        cout << left << setw(50) << " "
+             << "1. Help" << endl;
+        cout << left << setw(50) << " "
+             << "2. Subject Details Finder" << endl;
+        cout << left << setw(50) << " "
+             << "3. Go Back" << endl;
+        cout << left << setw(39) << " " << setw(50) << "-----------------------------------------" << endl; // Separator
+        setColor(14);
+        cout << left << setw(40) << " "
+             << "Enter your choice : ";
+        setColor(7);
         cin >> choice;
 
         switch (choice)
@@ -23,14 +36,16 @@ void Public::pub_home()
             break;
         case 2:
             system("CLS");
-            pub_rank(); // Call the pub_rank function
+            subCode_finder();
             break;
         case 3:
             system("CLS");
             return;
         default:
             system("CLS");
+            setColor(12);
             cout << "Invalid choice. Try Again !!" << endl;
+            setColor(7);
         }
     } while (1);
 }
@@ -40,15 +55,17 @@ void Public::help_desk()
     do
     {
         int choice;
-        cout << "Welcome to the Help section!" << endl
-             << "Choose from the following options:" << endl
-             << "1. Passing Conditions" << endl
-             << "2. Marks Breakdown" << endl
-             << "3. Subject Credits" << endl
-             << "4. Go Back" << endl;
-
-        cout << "Enter your choice (1, 2, 3, or 4): ";
+        setColor(14);                                                        // Yellow color for heading
+        cout << left << "-----------------------------------------" << endl; // Separator
+        cout << left << setw(40) << "Welcome to the Help section!" << endl;
+        cout << left << "Choose from the following options:" << endl;
+        setColor(7); // Reset color to default
+        cout << left << setw(45) << "1. Passing Conditions" << endl;
+        cout << left << setw(45) << "2. Marks Breakdown" << endl;
+        cout << left << setw(45) << "3. Go Back" << endl;
+        cout << left << setw(40) << "Enter your choice (1, 2, or 3): ";
         cin >> choice;
+
         switch (choice)
         {
         case 1:
@@ -61,13 +78,11 @@ void Public::help_desk()
             break;
         case 3:
             system("CLS");
-            subCode_finder();
-            break;
-        case 4:
-            system("CLS");
             return;
         default:
-            cout << "Invalid choice. Please select 1, 2, 3, or 4." << endl;
+            setColor(12); // Red color for error message
+            cout << "Invalid choice." << endl;
+            setColor(7); // Reset color to default
             break;
         }
     } while (1);
@@ -137,7 +152,7 @@ void Public::subCode_finder()
     int sem, len, in_len, cred;
     bool found = false;
 
-    // Ask the user for a subject name
+    // Ask the user for a branch and subject name
     cout << "Enter a branch : ";
     cin >> in_branch;
     cout << "Enter a subject name: ";
@@ -148,30 +163,49 @@ void Public::subCode_finder()
     if (!inputFile.is_open())
     {
         cerr << "Error opening file." << endl;
+        return;
     }
+
+    // Formatting
+    setColor(7);                                                                                        // Set text color to default
+    cout << left << setw(39) << " " << setw(50) << "-----------------------------------------" << endl; // Separator
+    setColor(14);                                                                                       // Set text color to yellow
+    cout << left << setw(35) << " " << setw(50) << "       Subject Details       " << endl;             // Heading
+    setColor(7);                                                                                        // Set text color to default
+    cout << left << setw(39) << " " << setw(50) << "-----------------------------------------" << endl; // Separator
 
     while (inputFile >> sem >> branch >> subject >> sub_code >> cred)
     {
         if (subject.find(in_subject) != string::npos && branch == in_branch)
         {
-            cout << "Code for subject " << subject << ": " << sub_code << " Credits : " << cred << endl;
+            setColor(15); // Set text color to bright white
+            cout << left << setw(40) << " " << subject << ": ";
+            setColor(7);
+            cout << sub_code;
+            setColor(15);
+            cout << ", Credits : ";
+            setColor(7);
+            cout << cred << endl;
             found = true;
         }
     }
 
     inputFile.close();
 
-    if (found)
+    if (!found)
     {
+        system("CLS");
+        setColor(12); // Set text color to red
+        cout << "Subject name not found." << endl;
+        setColor(7); // Set text color back to default
+    }
+
+    else
+    {
+        
         cout << "Press Enter to Continue" << endl;
         cin.ignore();
         cin.get();
-    }
-    else
-    {
         system("CLS");
-        cout << "Subject name not found." << endl;
     }
 }
-
-void Public::pub_rank() {}
