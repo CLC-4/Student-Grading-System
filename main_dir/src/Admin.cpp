@@ -22,4 +22,5 @@ void Admin::admin_home()
     tool.setColor(7);
     cin.ignore();
     cin.get();
+    system("CLS");
 }
