@@ -6,99 +6,109 @@
 
 using namespace std;
 
-void Menu::home_page(Admin &admin, Login &login, Teacher &teacher, Student &student, Public &pub) // This function executes users choice
+#include <iostream>
+#include <iomanip>
+#include <cstdlib> // For system("CLS")
+
+using namespace std;
+
+void Menu::home_page(Teacher &teacher, Student &student, Public &pub)
 {
+    bool running = true;
     do
     {
-        cout << "Welcome To Student Grading System" << endl
-             << "1. Admin" << endl
-             << "2. Teacher" << endl
-             << "3. Student" << endl
-             << "4. Public" << endl
-             << "5. Exit" << endl;
-
-        cout << "Enter your Option : ";
+        tool.setColor(7);
+        cout << left << setw(39) << " " << setw(50) << "-----------------------------------------" << endl;
+        tool.setColor(14); // yellow
+        cout << left << setw(39) << " " << setw(50) << "           Student Grading System         " << endl;
+        tool.setColor(7);
+        cout << left << setw(39) << " " << setw(50) << "-----------------------------------------" << endl;
+        tool.setColor(15); // bright white
+        cout << left << setw(50) << " " << setw(40) << "1. Teacher" << endl;
+        cout << left << setw(50) << " " << setw(40) << "2. Student" << endl;
+        cout << left << setw(50) << " " << setw(40) << "3. Public" << endl;
+        cout << left << setw(50) << " " << setw(40) << "4. Exit" << endl;
+        tool.setColor(7); // white
+        cout << setw(39) << " " << setw(50) << "-----------------------------------------" << endl;
+        tool.setColor(14);
+        cout << setw(40) << " "
+             << "Enter your Option : ";
         cin >> option;
+        tool.setColor(7);
 
         switch (option)
         {
-        case 1: // Admin Login
-            admin_login(admin, login);
+        case 1: // Teacher Login
+            teacher_login(teacher);
             break;
 
-        case 2: // Teacher Login
-            teacher_login(teacher, login);
+        case 2: // Student Login
+            student_login(student);
             break;
 
-        case 3: // Student Login
-            student_login(student, login);
-            break;
-
-        case 4: // Public
+        case 3: // Public
             system("CLS");
             pub.pub_home();
             break;
 
-        case 5:
-            exit(1);
+        case 4:
+            running = false; // Exit the loop
             break;
 
         default:
-            cout << "Invalid option!" << endl;
+            system("CLS");
+            tool.setColor(12);
+            cout << "Invalid option! Please enter a valid option." << endl;
+            tool.setColor(7);
             break;
         }
-    } while (option != 5);
+
+    } while (1);
 }
 
-void Menu::admin_login(Admin &admin, Login &login)
+void Menu::teacher_login(Teacher &teacher)
 {
     system("CLS");
-    cout << "Welcome to Admin Login Page!" << endl
-         << "Enter your Credentials!" << endl;
+    cout << setw(30) << " " << setw(50) << "----------------------------------------" << endl;
+    tool.setColor(14); // yellow
+    cout << setw(30) << " " << setw(50) << "          Teacher Login Page             " << endl;
+    tool.setColor(7);
+    cout << setw(30) << " " << setw(50) << "----------------------------------------" << endl;
 
-    login.get_cred();             // Getting Admin Credentials
-    log_per = login.check_cred(); // Checking Admin Credentials
-    if (log_per == 1)             // Admin has SNo 1, prevents other users from logging in through the Admin Login Page.
-    {
-        system("CLS");
-        // admin.admin_home(); // If correct login details, directed to admin_home.
-    }
-    else
-    {
-        system("CLS");
-        cout << "Invalid Credentials!" << endl;
-        return;
-    }
-}
+    get_cred();             // Getting Teacher Credentials
+    log_per = check_cred(); // Checking Teacher Credentials
 
-void Menu::teacher_login(Teacher &teacher, Login &login)
-{
-    system("CLS");
-    cout << "Welcome to Teacher Login Page!" << endl
-         << "Enter your Credentials!" << endl;
-    login.get_cred();
-    log_per = login.check_cred();
+    cout << "----------------------------------------" << endl;
+
     if (log_per == 2)
     {
         system("CLS");
-        teacher.teach_home();
+        teacher.teach_home(log_per);
     }
     else
     {
         system("CLS");
+        tool.setColor(12);
         cout << "Invalid Credentials!" << endl;
+        tool.setColor(7);
     }
 }
 
-void Menu::student_login(Student &student, Login &login)
+void Menu::student_login(Student &student)
 {
     system("CLS");
 
-    cout << "Welcome to Student Login Page!" << endl
-         << "Enter your Credentials!" << endl;
+    cout << setw(30) << " " << setw(50) << "----------------------------------------" << endl;
+    tool.setColor(14); // yellow
+    cout << setw(30) << " " << setw(50) << "          Student Login Page             " << endl;
+    tool.setColor(7);
+    cout << setw(30) << " " << setw(50) << "----------------------------------------" << endl;
 
-    login.get_cred();
-    log_per = login.check_cred();
+    get_cred();
+    log_per = check_cred();
+
+    cout << "----------------------------------------" << endl;
+
     if (log_per != 1 && log_per != 2 && log_per != 0)
     {
         system("CLS");
@@ -107,28 +117,32 @@ void Menu::student_login(Student &student, Login &login)
     else
     {
         system("CLS");
+        tool.setColor(12);
         cout << "Invalid Credentials!" << endl;
+        tool.setColor(7);
     }
 }
 
-// Class : Login Member Functions
-
-void Login::get_cred()
+void Menu::get_cred()
 {
-    Menu menu;
-
-    cout << "Login ID : ";
+    tool.setColor(15);
+    cout << setw(30) << " "
+         << "Login ID : ";
+    tool.setColor(7);
     cin >> id;
-    cout << "Password : ";
+    tool.setColor(15);
+    cout << setw(30) << " "
+         << "Password : ";
+    tool.setColor(7);
     cin >> password;
 }
 
-int Login::check_cred()
+int Menu::check_cred()
 {
 
     int stored_id;
     string stored_pass;
-    fstream file_cred("../Files/Credentials.txt", ios::in);
+    ifstream file_cred("../Files/Credentials.txt");
 
     while (file_cred >> num >> stored_id >> stored_pass)
     {

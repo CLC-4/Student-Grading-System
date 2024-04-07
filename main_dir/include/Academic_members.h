@@ -54,7 +54,7 @@ string fsname,fbranch;
     // nos -- number of student
 
 public:
-    void teach_home();
+    void teach_home(int);
     void result_page();
     void displayFailed();
     void student_entry();
@@ -69,6 +69,7 @@ public:
     void re_eval(int&,string&);
     void process_roll_number(string&);
     
+    
 };
 
 class Student : public Results
@@ -80,6 +81,7 @@ public:
     void displayMenu(int);
     void re_eval(int);
     void Results(int);
+    
 };
 
 #endif

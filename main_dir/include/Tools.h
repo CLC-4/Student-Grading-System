@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <windows.h> // Required for Windows API functions
 
 using namespace std;
 
@@ -43,9 +44,13 @@ public:
     int get_sno(int);
     int get_rno(int);
     void gen_cred(int, string);
+    void change_password(int);
     void find_student(int);
     string get_subname(string, string);
     bool is_practical(string);
+
+    //console
+    void setColor(int color);
 };
 
 #endif

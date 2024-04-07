@@ -2,38 +2,26 @@
 #define MENU_H
 
 #include <iostream>
-#include "Admin.h"
 #include "Academic_members.h"
 #include "Public.h"
 
 using namespace std;
 
-class Login 
+class Menu
 {
+    int log_per;
+    int option;
     int id;
     string password;
     int num;
-   
+    Tools tool;
 
 public:
+    void home_page(Teacher &teacher, Student &student, Public &pub);
+    void teacher_login(Teacher &teacher);
+    void student_login(Student &student);
     void get_cred();
     int check_cred();
-    int logged_person();
-    
-    
-};
-
-class Menu
-{
-
-    int log_per;
-    int option;
-
-public:                                                                       // This function gets user choice
-    void home_page(Admin &admin, Login &login, Teacher &teacher, Student &student, Public &pub); // This function executes users choice
-    void admin_login(Admin &admin, Login &login);
-    void teacher_login(Teacher &teacher, Login &login);
-    void student_login(Student &student, Login &login);
 };
 
 #endif
