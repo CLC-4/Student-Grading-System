@@ -14,7 +14,6 @@ using namespace std;
 
 void Menu::home_page(Teacher &teacher, Student &student, Public &pub)
 {
-    bool running = true;
     do
     {
         tool.setColor(7);
@@ -52,8 +51,8 @@ void Menu::home_page(Teacher &teacher, Student &student, Public &pub)
             break;
 
         case 4:
-            running = false; // Exit the loop
-            break;
+            system("CLS");
+            return;
 
         default:
             system("CLS");

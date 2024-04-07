@@ -20,7 +20,12 @@ void Student::displayMenu(int log_per)
         cout << left << setw(30) << " " << setw(50) << "2. Show Results" << endl;
         cout << left << setw(30) << " " << setw(50) << "3. Register Re-evaluation" << endl;
         cout << left << setw(30) << " " << setw(50) << "4. Logout" << endl;
-        setColor(14); // Yellow color for separator
+        setColor(15); // Yellow color for separator
+        cout << setw(30) << " " << setw(50) << "-----------------------------------------" << endl;
+        setColor(2);
+        cout << setw(30) << " "
+             << "CGPA : "<<cgpa_cal(log_per)<<endl;
+        setColor(15);
         cout << setw(30) << " " << setw(50) << "-----------------------------------------" << endl;
         setColor(14); // Yellow color for input prompt
         cout << setw(30) << " "
@@ -270,5 +275,3 @@ void Student::re_eval(int log_per)
     marksFile.close();
     evalFile.close();
 }
-
-
