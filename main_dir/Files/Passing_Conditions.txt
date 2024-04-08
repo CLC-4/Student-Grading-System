@@ -1,0 +1,11 @@
+Passing Conditions:
+All B.E programmes are organized around semester-based credit system of study. The credit 
+system is based on continuous evaluation of a student’s performance/progress and includes
+flexibility to allow a student to progress at an optimum pace suited to his/her ability or
+convenience, subject to fulfilling minimum requirements for continuation.
+Performance/progress of a student is measured by the number of credits that he/she has 
+earned (completed satisfactorily). Based on the course credits and grades obtained by the 
+student, grade point average is calculated, subject to his qualification ofminimum grade in
+each subject.
+
+The student is required to score a minimum of 10 in minor and 40 in major examination

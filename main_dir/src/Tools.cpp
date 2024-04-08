@@ -117,8 +117,7 @@ float Tools::sgpa_cal(int sno, int sem)
 {
     float total = 0, mtotal = 0, sgpa;
     int fsno, fsem; 
-    float fm1, fm2, fin, fmj, ftotal;
-    int credit, accCredits = 0;
+    float fm1, fm2, fin, fmj, ftotal, credit, accCredits = 0;
     string fsub, fgrade;
     bool practical = false, found = false;
     ifstream in("../Files/Student_marks1.txt");
@@ -166,7 +165,7 @@ float Tools::cgpa_cal(int sno)
 {
     float cgpa = sgpa_cal(sno, 1); // Calculate SGPA for the first semester
     int curruntSem = 1;
-    int fsno, fsem, fm1, fm2, fin, fmj, ftotal;
+    float fsno, fsem, fm1, fm2, fin, fmj, ftotal;
     string fsub, fgrade;
 
     ifstream in("../Files/Student_marks1.txt");
