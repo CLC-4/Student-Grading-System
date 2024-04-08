@@ -1,4 +1,5 @@
 #include "../include/Academic_members.h"
+
 using namespace std;
 
 // Result Functions specific to Teacher only
