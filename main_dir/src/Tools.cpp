@@ -192,6 +192,7 @@ void Tools::gen_cred(int rollnum, string name)
 {
 
     ofstream outFile("../Files/Credentials.txt", ios::app); // Open file in append mode
+    outFile.seekp(0,ios::end);
     if (outFile.is_open())
     {
 
@@ -389,6 +390,27 @@ bool Tools::is_practical(string sub_name)
         return 1;
     else
         return 0;
+}
+
+bool Tools::studMarksPresent(string sname, int sno){
+       ifstream MarksFile("../Files/Student_Marks1.txt", ios::in | ios::out);
+    
+    int fsno, fsem;
+    float fm1, fm2, fin, fmj, ftotal;
+    string fsname, fgrade;
+    bool studMarksPresent = false;
+
+    // Check if student's marks are already present in the file
+    while (MarksFile >> fsno >> fsem >> fsname >> fm1 >> fm2 >> fin >> fmj >> ftotal >> fgrade)
+    {
+        if (fsno == sno && fsname == sname)
+        {
+            studMarksPresent = true;
+            break;
+        }
+    }
+
+    return studMarksPresent;
 }
 
 // Sorting Tools

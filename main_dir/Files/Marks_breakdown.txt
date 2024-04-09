@@ -1,32 +1,28 @@
- Continuous Assessment
-There shall be continuous evaluation of the student during the semester. For 
-evaluation purpose, total marks assigned to each subject shall be distributed as:
-Two Mid Semester Examination (Minor-1 and Minor-2) with 30 % of total
-marks assigned to the subject. Best Marks of one of these two will be 
-considered for award of sessional.
-Assignments/Class projects/ short class tests/MCQ based
-quizzes/projects/presentations/group discussions/ Attendance with 20% of total marks
-assigned to the subject.
-One End Semester Examination (Major Examination) with 50 % of total marks 
-assigned to the subject. It is compulsory to appear in End Semester Examination 
-and secure at least 20% marks of total End semester exam marks.If a candidate secures less than 20% marks of total End semester exam marks, he/she
-will be awarded F grade.
+Continuous Assessment :
 
-Method for the Award of Grades:
-For the award of grades in a course, all component wise evaluation shall be done in terms of 
-marks. The components include: Midterm-1 and Midterm-2 examinations,
-Assignments/projects/class presentations/Attendance, and End semesterexamination as per 
-regulation 4.1. After converting the marks obtained in percentage, the grades will be 
-assigned as per the guidelines given below:
+-> There shall be continuous evaluation of the student during the semester. For evaluation purposes, total marks assigned to each subject shall be distributed as follows:
 
+-> Two Mid Semester Examinations (Minor-1 and Minor-2) with 30% of total marks assigned to the subject. The best marks of one of these two will be considered for the award of sessional marks.
 
+-> Assignments/Class projects/short class tests/MCQ based quizzes/projects/presentations/group discussions/Attendance with 20% of total marks assigned to the subject.
 
- No.     Marks  Grade Grade_Point
- ≥90              A+      10
- ≥80  &  < 90     A       9
- ≥70  &  < 80     B+      8
- ≥60  &  < 70     B       7
- ≥40  &  < 45     D       4
- ≥50  &  < 60     C+      6
- ≥45  &  < 50     C       5
- <40 F 0
+-> One End Semester Examination (Major Examination) with 50% of total marks assigned to the subject. It is compulsory to appear in the End Semester Examination and secure at least 20% marks of total End semester exam marks. If a candidate secures less than 20% marks of total End semester exam marks, he/she will be awarded an F grade.
+
+Method for the Award of Grades :
+
+--> For the award of grades in a course, all component-wise evaluations shall be done in terms of marks. The components include:
+
+Midterm-1 and Midterm-2 examinations,
+Assignments/projects/class presentations/Attendance, and
+End semester examination as per regulation.
+After converting the marks obtained into percentages, the grades will be assigned as per the guidelines given below:
+
+No.	Marks	Grade	Grade Point
+1.  ≥90	     A	     10	
+2.  ≥80	<90	 A	     9
+3.  ≥70	<80	 B+	     8
+4.  ≥60	<70	 B	     7
+5.  ≥50	<60	 C+	     6
+6.  ≥45	<50	 C	     5
+7.  ≥40	<45	 D	     4
+8.  <40	     F       0

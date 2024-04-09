@@ -12,7 +12,7 @@ class Tools
 
 protected:
     float total;
-    std::string grade;
+    string grade;
     float total_cred = 0, acc_cred = 0, acc_pts;
     static int sno;
 
@@ -48,6 +48,7 @@ public:
     void find_student(int);
     string get_subname(string, string);
     bool is_practical(string);
+    bool studMarksPresent(string,int);
 
     //console
     void setColor(int color);

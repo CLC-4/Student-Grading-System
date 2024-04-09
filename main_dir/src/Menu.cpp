@@ -1,14 +1,11 @@
 #include <iostream>
-#include <cstdlib>
+
 #include <fstream>
 #include "../include/Menu.h"
 #include <string>
-
-using namespace std;
-
-#include <iostream>
 #include <iomanip>
 #include <cstdlib> // For system("CLS")
+using namespace std;
 
 using namespace std;
 
@@ -34,16 +31,20 @@ void Menu::home_page(Teacher &teacher, Student &student, Public &pub, Admin &adm
         cout << setw(40) << " "
              << "Enter your Option : ";
 
-        try {
+        try
+        {
             int option;
             cin >> option;
-            if (cin.fail()) {
+            if (cin.fail())
+            {
                 // Clear error state
                 cin.clear();
                 // Ignore characters until the end of the line
                 cin.ignore();
                 throw invalid_argument("Invalid input.Please enter an integer.");
-            } else {
+            }
+            else
+            {
                 switch (option)
                 {
                 case 1: // Teacher Login
@@ -60,7 +61,7 @@ void Menu::home_page(Teacher &teacher, Student &student, Public &pub, Admin &adm
                     break;
                 case 4: // Admin
                     system("CLS");
-                    admin.admin_home();
+                    admin_login(admin);
                     break;
                 case 5:
                     system("CLS");
@@ -74,7 +75,9 @@ void Menu::home_page(Teacher &teacher, Student &student, Public &pub, Admin &adm
                     break;
                 }
             }
-        } catch (const invalid_argument& e) {
+        }
+        catch (invalid_argument &e)
+        {
             system("CLS");
             tool.setColor(12);
             cout << setw(40) << " ";
@@ -83,7 +86,6 @@ void Menu::home_page(Teacher &teacher, Student &student, Public &pub, Admin &adm
 
     } while (true);
 }
-
 
 void Menu::admin_login(Admin &admin)
 {

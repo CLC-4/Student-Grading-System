@@ -34,13 +34,13 @@ class Marks : virtual public Tools
 {
 private:
     float m1, m2, mj, in;
-    bool studMarksPresent;
+
 
     void marks_init(int, int, string);
     void enter_marks(int, string);
 
 public:
-    Marks() : m1(0), m2(0), mj(), in(0) {}
+    Marks() : m1(0), m2(0), mj(0), in(0){}
     ~Marks() {}
     void marks_editor();
 };
@@ -68,7 +68,7 @@ public:
     void reject_all(string &, string &);
     void re_eval(int &, string &);
     void process_roll_number(string &);
-    void rejectSingleRequest(fstream&,int&,string&,string&);
+    void rejectSingleRequest(fstream &, int &, string &, string &);
 };
 
 class Student : public Results

@@ -248,6 +248,7 @@ void Teacher::new_entry()
 
             // Save data to file
             ofstream outFile("../Files/Student_data.txt", ios::app); // Open file in append mode
+            outFile.seekp(0, ios::end);
             if (outFile.is_open())
             {
                 outFile << sno << " " << rollNum << " " << name << " " << branch << " " << section << endl;
@@ -690,8 +691,8 @@ void Marks::marks_editor()
     cin >> esem;
 
     cout << "Enter Section: ";
-    int esecname;
-    cin >> esecname;
+    int esec;
+    cin >> esec;
 
     string sname = get_subname(ecode, ebranch);
 
@@ -705,27 +706,27 @@ void Marks::marks_editor()
     string name, branch, line;
     int section;
     Marks student; // Object is created to call constructor.
+    bool marksPresent = false;
     while (dataFile >> sno >> rollNum >> name >> branch >> section)
     {
-        if (branch == ebranch && section == esecname)
+        marksPresent = studMarksPresent(sname, sno);
+        if (branch == ebranch && section == esec)
         {
             found = true;
-
-            marks_init(sno, esem, sname);
-
-            if (!studMarksPresent)
+            if (!marksPresent)
             {
-                enter_marks(sno, sname);
-            }
-            setColor(2);
-            cout << "\nEnter (1. Exit) (2. Continue): ";
-            setColor(7);
-            int ter;
-            cin >> ter;
-            if (ter == 1)
-            {
-                system("CLS");
-                break;
+                student.marks_init(sno, esem, sname);
+                student.enter_marks(sno, sname);
+                setColor(2);
+                cout << "Press (1. Exit)(2. Continue) : ";
+                setColor(7);
+                int ter;
+                cin >> ter;
+                if (ter == 1)
+                {
+                    system("CLS");
+                    break;
+                }
             }
         }
     }
@@ -735,47 +736,31 @@ void Marks::marks_editor()
     {
         system("CLS");
         setColor(12);
-        cout << "\nNo student records found!\nPlease check Section and Branch and try again.\n";
+        cout << "\nNo student records found!" << endl
+             << "Please check Section and Branch and try again." << endl;
+        setColor(7);
+    }
+    else if(marksPresent = true){
+        system("CLS");
+        setColor(2);
+        cout << "Marks Already Exists For Section/Branch" << endl;
         setColor(7);
     }
 }
 
 void Marks::marks_init(int sno, int sem, string sname)
 {
+    
     fstream MarksFile("../Files/Student_Marks1.txt", ios::in | ios::out);
-    if (!MarksFile)
-    {
-        setColor(2);
-        cerr << "Error opening file!" << endl;
-        setColor(7);
-        return;
-    }
-
-    int fsno, fsem;
-    float fm1, fm2, fin, fmj, ftotal;
-    string fsname, fgrade;
-    studMarksPresent = false;
-
-    // Check if student's marks are already present in the file
-    while (MarksFile >> fsno >> fsem >> fsname >> fm1 >> fm2 >> fin >> fmj >> ftotal >> fgrade)
-    {
-        if (fsno == sno && fsname == sname)
-        {
-            studMarksPresent = true;
-            break;
-        }
-    }
-
     MarksFile.clear();
     MarksFile.seekp(0, ios::end);
-
+    bool marksPresent = studMarksPresent(sname, sno);
     // If marks are not present, add them to the file
-    if (!studMarksPresent)
+    if (!marksPresent)
     {
         MarksFile << sno << " " << sem << " " << sname << " " << m1 << " "
                   << m2 << " " << in << " " << mj << " " << total << " " << grade << endl;
     }
-
     MarksFile.close();
 }
 
@@ -876,7 +861,7 @@ void Marks::enter_marks(int gsno, string esname)
 
 void Teacher::request_viewer()
 {
-    
+
     // Declare variables
     string subjectCode, branch;
     char ans;
@@ -890,70 +875,72 @@ void Teacher::request_viewer()
 
     // Get subject name based on subject code and branch
     string subjectName = get_subname(subjectCode, branch);
-do{
-    // Open re-evaluation file
-    fstream evalFile("../Files/re_eval.txt");
-    if (!evalFile.is_open())
+    do
     {
-        setColor(12);
-        cerr << "Error: Unable to open re-evaluation file." << endl;
-        setColor(7);
-        return;
-    }
-
-    // Display subject and branch information
-    system("CLS");
-    setColor(14);
-    cout << "--------------------------------------------" << endl;
-    setColor(7);
-    cout << "Subject: " << subjectName << endl;
-    cout << "Branch: " << branch << endl;
-    setColor(14);
-    cout << "--------------------------------------------" << endl;
-    setColor(7);
-    cout << "Roll Numbers:" << endl;
-    setColor(14);
-    cout << "--------------------------------------------" << endl;
-    setColor(7);
-
-    // Loop through re-evaluation file to find matching entries
-    string rollNo, fileBranch, fileSubject;
-    while (evalFile >> rollNo >> fileBranch >> fileSubject)
-    {
-        if (fileSubject == subjectName && fileBranch == branch)
+        // Open re-evaluation file
+        fstream evalFile("../Files/re_eval.txt");
+        if (!evalFile.is_open())
         {
-            requestFound = true;
-            cout << rollNo << endl; // Display matching roll number
+            setColor(12);
+            cerr << "Error: Unable to open re-evaluation file." << endl;
+            setColor(7);
+            return;
         }
-    }
-    evalFile.close(); // Close re-evaluation file
 
-    // Check if any re-evaluation requests were found
-    if (!requestFound)
-    {
-        setColor(14);
-        cout << "--------------------------------------------" << endl;
-        setColor(12);
-        cout << "No requests for Re-evaluation found." << endl;
-        setColor(7);
-        cout << "Press Enter to Continue." << endl;
+        // Display subject and branch information
+        system("CLS");
         setColor(14);
         cout << "--------------------------------------------" << endl;
         setColor(7);
-        cin.ignore();
-        cin.get();
-        system("CLS"); // Clear screen
-        return;        // Exit function
-    }
-    else
-    {
+        cout << "Subject: " << subjectName << endl;
+        cout << "Branch: " << branch << endl;
+        setColor(14);
+        cout << "--------------------------------------------" << endl;
+        setColor(7);
+        cout << "Roll Numbers:" << endl;
+        setColor(14);
+        cout << "--------------------------------------------" << endl;
+        setColor(7);
 
-        request_manager(subjectName, branch); // Call request_manager function with subject name and branch
-    cout<<"Go Back to Menu?(y,n) : ";
-    cin>>ans;
-    if(ans =='y') system("CLS");
-    }
-    }while(ans == 'n');
+        // Loop through re-evaluation file to find matching entries
+        string rollNo, fileBranch, fileSubject;
+        while (evalFile >> rollNo >> fileBranch >> fileSubject)
+        {
+            if (fileSubject == subjectName && fileBranch == branch)
+            {
+                requestFound = true;
+                cout << rollNo << endl; // Display matching roll number
+            }
+        }
+        evalFile.close(); // Close re-evaluation file
+
+        // Check if any re-evaluation requests were found
+        if (!requestFound)
+        {
+            setColor(14);
+            cout << "--------------------------------------------" << endl;
+            setColor(12);
+            cout << "No requests for Re-evaluation found." << endl;
+            setColor(7);
+            cout << "Press Enter to Continue." << endl;
+            setColor(14);
+            cout << "--------------------------------------------" << endl;
+            setColor(7);
+            cin.ignore();
+            cin.get();
+            system("CLS"); // Clear screen
+            return;        // Exit function
+        }
+        else
+        {
+
+            request_manager(subjectName, branch); // Call request_manager function with subject name and branch
+            cout << "Go Back to Menu?(y,n) : ";
+            cin >> ans;
+            if (ans == 'y')
+                system("CLS");
+        }
+    } while (ans == 'n');
 }
 
 void Teacher::request_manager(string &sname, string &branch)
@@ -1051,9 +1038,12 @@ void Teacher::reject_all(string &sname, string &branch)
     }
     else
     {
+        remove("../Files/re_eval.txt");
+        rename("../Files/tempEval.txt","../Files/re_eval.txt");
         setColor(2);
         cout << "All requests for Re-evaluation rejected successfully." << endl;
         setColor(7);
+
     }
 
     cout << "Press Enter to Continue." << endl;
@@ -1093,13 +1083,13 @@ void Teacher::re_eval(int &rno, string &sname)
         system("CLS");
         // Function to edit marks
         edit_marks(rno);
-        rejectSingleRequest(evalFile,rno,branch,sname);
+        rejectSingleRequest(evalFile, rno, branch, sname);
 
         break;
     }
     case 2:
     {
-        rejectSingleRequest(evalFile,rno,branch,sname);
+        rejectSingleRequest(evalFile, rno, branch, sname);
         break;
     }
 
@@ -1154,33 +1144,34 @@ void Teacher::process_roll_number(string &sname)
     }
 }
 
-void Teacher::rejectSingleRequest(fstream& evalFile,int& rno, string& branch, string&sname){
-system("CLS");
-        // Open temporary file for writing rejected requests
-        ofstream tempFile("../Files/tempEval.txt");
-        while (evalFile >> frno >> branch >> fsname)
+void Teacher::rejectSingleRequest(fstream &evalFile, int &rno, string &branch, string &sname)
+{
+    system("CLS");
+    // Open temporary file for writing rejected requests
+    ofstream tempFile("../Files/tempEval.txt");
+    while (evalFile >> frno >> branch >> fsname)
+    {
+        if (frno == rno && fsname == sname)
         {
-            if (frno == rno && fsname == sname)
-            {
-                continue; // Skip rejected request
-            }
-            else
-            {
-                tempFile << frno << " " << branch << " " << fsname << endl; // Write non-rejected requests to temporary file
-            }
+            continue; // Skip rejected request
         }
-        tempFile.close(); // Close temporary file
-        evalFile.close(); // Close original file before deletion or renaming
+        else
+        {
+            tempFile << frno << " " << branch << " " << fsname << endl; // Write non-rejected requests to temporary file
+        }
+    }
+    tempFile.close(); // Close temporary file
+    evalFile.close(); // Close original file before deletion or renaming
 
-        // Remove original evaluation file and rename temporary file
-        if (remove("../Files/re_eval.txt") != 0)
-        {
-            cerr << "Error: Unable to remove original file." << endl;
-            return;
-        }
-        if (rename("../Files/tempEval.txt", "../Files/re_eval.txt") != 0)
-        {
-            cerr << "Error: Unable to rename temporary file." << endl;
-            return;
-        }
+    // Remove original evaluation file and rename temporary file
+    if (remove("../Files/re_eval.txt") != 0)
+    {
+        cerr << "Error: Unable to remove original file." << endl;
+        return;
+    }
+    if (rename("../Files/tempEval.txt", "../Files/re_eval.txt") != 0)
+    {
+        cerr << "Error: Unable to rename temporary file." << endl;
+        return;
+    }
 }
