@@ -1,0 +1,22 @@
+# ─── Compiled Binaries ───────────────────────────────────────────────────────
+*.exe
+*.out
+*.o
+*.obj
+
+# ─── VS Code (machine-specific settings) ─────────────────────────────────────
+# c_cpp_properties.json contains local compiler paths — don't commit it.
+# tasks.json and launch.json may also be local; add them below if needed.
+.vscode/c_cpp_properties.json
+
+# ─── Runtime / Temp Files ────────────────────────────────────────────────────
+temp/
+
+# ─── OS Artifacts ────────────────────────────────────────────────────────────
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# ─── Build Directories ───────────────────────────────────────────────────────
+build/
+bin/
